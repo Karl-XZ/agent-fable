@@ -1,0 +1,21 @@
+{
+  "stage": "01-pre-interaction",
+  "label": "尚未加入情境互动模式",
+  "original_remote_commit": "7754911837483d81ed722d1027db1f656636a3cb",
+  "reconstruction": {
+    "source": "02-interaction-modes",
+    "overlays": [
+      "app.py",
+      "narrative.py",
+      "story.json",
+      "tests/agent-navigation.test.cjs",
+      "tests/test_memory_story.py",
+      "web/src/agent.ts",
+      "web/src/main.ts"
+    ]
+  },
+  "shared_files": "Unchanged files inherit from the next newer snapshot; this is not an exact whole-directory historical archive.",
+  "test_adjustments": [
+    "Removed the playback telemetry test, introduced by the later speech queue repair."
+  ]
+}

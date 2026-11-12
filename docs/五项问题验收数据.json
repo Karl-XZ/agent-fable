@@ -1,0 +1,195 @@
+{
+  "sandbox": {
+    "count": 1014,
+    "radius": 2.384975840666966,
+    "floorsOpaque": true,
+    "continuousFrames": [
+      4,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "gate": {
+    "before": 2,
+    "after": 2,
+    "stillSpeaking": true
+  },
+  "live": {
+    "requests": [
+      {
+        "text": "您可以先向西走，门已经打开了。",
+        "at": 26073.699999999255
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 29791.39999999851
+      }
+    ],
+    "sources": [
+      {
+        "text": "您可以先向西走，门已经打开了。",
+        "at": 26705.5,
+        "scheduled": 23.530666666666665,
+        "contextTime": 23.490666666666666,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 27135.89999999851
+      },
+      {
+        "text": "您可以先向西走，门已经打开了。",
+        "at": 26805.89999999851,
+        "scheduled": 23.930666666666664,
+        "contextTime": 23.6,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 27535.800000000745
+      },
+      {
+        "text": "您可以先向西走，门已经打开了。",
+        "at": 26938.699999999255,
+        "scheduled": 24.330666666666662,
+        "contextTime": 23.730666666666668,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 27935.89999999851
+      },
+      {
+        "text": "您可以先向西走，门已经打开了。",
+        "at": 26972,
+        "scheduled": 24.73066666666666,
+        "contextTime": 23.76,
+        "duration": 0.8,
+        "ended": true,
+        "stopped": false,
+        "endAt": 28743.60000000149
+      },
+      {
+        "text": "您可以先向西走，门已经打开了。",
+        "at": 27197.60000000149,
+        "scheduled": 25.53066666666666,
+        "contextTime": 23.992,
+        "duration": 0.93,
+        "ended": true,
+        "stopped": false,
+        "endAt": 29668
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30094.800000000745,
+        "scheduled": 26.919999999999998,
+        "contextTime": 26.88,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 30526
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30171.699999999255,
+        "scheduled": 27.319999999999997,
+        "contextTime": 26.96,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 30925.800000000745
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30204.800000000745,
+        "scheduled": 27.719999999999995,
+        "contextTime": 26.992,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 31326.10000000149
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30290.699999999255,
+        "scheduled": 28.119999999999994,
+        "contextTime": 27.08,
+        "duration": 0.8,
+        "ended": true,
+        "stopped": false,
+        "endAt": 32125.89999999851
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30351.60000000149,
+        "scheduled": 28.919999999999995,
+        "contextTime": 27.141333333333332,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 32529.800000000745
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30419.699999999255,
+        "scheduled": 29.319999999999993,
+        "contextTime": 27.21066666666667,
+        "duration": 0.8,
+        "ended": true,
+        "stopped": false,
+        "endAt": 33326
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30482,
+        "scheduled": 30.119999999999994,
+        "contextTime": 27.272,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 33726
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30506.5,
+        "scheduled": 30.519999999999992,
+        "contextTime": 27.301333333333332,
+        "duration": 0.4,
+        "ended": true,
+        "stopped": false,
+        "endAt": 34127.89999999851
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30552.699999999255,
+        "scheduled": 30.91999999999999,
+        "contextTime": 27.341333333333335,
+        "duration": 1.25,
+        "ended": true,
+        "stopped": false,
+        "endAt": 35387.89999999851
+      }
+    ],
+    "captions": [
+      {
+        "text": "您可以先向西走，门已经打开了。",
+        "at": 26706.39999999851
+      },
+      {
+        "text": "别着急，我会陪着您。沿着走廊往南走，到了中庭再停下来。",
+        "at": 30095
+      }
+    ]
+  },
+  "memory": {
+    "name": "如常",
+    "text": "你走进一间一模一样的屋子，却想不起刚才要去哪里。早餐还是热的。此后的日子，你继续幸福地生活着。",
+    "audioClips": 7,
+    "replay": true
+  },
+  "cupStationary": true,
+  "escapedWordless": true,
+  "errors": []
+}

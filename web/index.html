@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agent的寓言</title>
+<meta name="description" content="每天，静都会照顾好你的生活。直到有一天，你想出去看看。一款由实时 AI 旁白陪伴的第一人称叙事游戏。" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23141310'/><rect x='6' y='14' width='20' height='3' fill='%23F2B66D'/><rect x='14' y='6' width='3' height='3' fill='%235aa8ff'/></svg>" />
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="homeFilm" class="hidden" aria-label="剧情演出">
+  <button id="filmNext" aria-label="下一句"></button>
+  <span id="filmAdvanceHint" class="mono">点击画面 · 下一句</span>
+  <button id="filmSkip" class="mono">跳过演出 · Esc</button>
+  <div class="film-caption"><span id="filmWho" class="mono"></span><p id="filmLine" class="serif" aria-live="polite"></p></div>
+  <button id="filmContinue" class="serif hidden">开始探索</button>
+</div>
+
+<div id="loading" class="screen">
+  <div class="load-line"><i id="loadbar"></i></div>
+  <p class="serif load-text">请稍候</p>
+</div>
+
+<div id="title" class="screen hidden">
+  <div class="title-mark mono">每天，一切如常。</div>
+  <h1 class="v-title serif"><span>Agent</span>的寓言</h1>
+  <p class="v-sub mono">今天，也会是舒适的一天。</p>
+  <nav class="title-menu">
+    <button id="btnStart" class="serif menu-btn">开始</button>
+    <button id="btnSettings" class="serif menu-btn">设置</button>
+    <button id="btnAbout" class="serif menu-btn">关于</button>
+  </nav>
+  <div class="title-foot mono">建议佩戴耳机 · 本作含闪烁画面 · 请使用电脑游玩</div>
+</div>
+
+<div id="about" class="screen hidden modal-wrap">
+  <div class="card paper">
+    <h2 class="serif">关于《Agent的寓言》</h2>
+    <p>每天，餐食会按时送达，房间会被整理干净，静会提醒你休息。你早已习惯这里的生活。直到有一天，你想出去看看。</p>
+    <p>沿着她的指引走下去，或者留意那些不太对劲的细节。你可以观察、交谈，也可以试着改变眼前的安排。</p>
+    <h3 class="serif">操作</h3>
+    <p class="mono small">WASD 移动 · 鼠标 视角 · Shift 跑 · Space 跳 / 上浮 · C 蹲 · E 交互 / 拿起放下 · 鼠标右键 扔 · G 插锚钉 · Enter 说话 · Esc 暂停 / 取消说话 · H 操作提示</p>
+    <button class="serif menu-btn close-btn" data-close="about">返回</button>
+  </div>
+</div>
+
+<div id="hud" class="hidden">
+  <div id="danger"></div>
+  <div id="cross"></div>
+  <div id="hint" class="mono"></div>
+  <div id="roomname" class="serif"></div>
+  <div id="speechHint" class="hidden serif" role="status">正在说话<span><kbd>Enter</kbd> 说出 · <kbd>Esc</kbd> 取消</span></div>
+  <div id="compass" role="img" aria-label="指南针"><div class="compass-window"><div id="compassRose" class="serif" aria-hidden="true"></div></div><i class="compass-pointer"></i><small id="compassHeading" class="mono">北 000°</small></div>
+  <div id="controls" class="serif">
+    <div id="controlsDetails" class="hidden">
+      <p><kbd>鼠标</kbd> 环顾 · <kbd>Shift</kbd> 跑 · <kbd>Space</kbd> 跳 / 上浮</p>
+      <p><kbd>C</kbd> 蹲 · <kbd>E</kbd> 交互 / 拿起放下 · <kbd>右键</kbd> 扔</p>
+      <p><kbd>G</kbd> 插锚钉 · <kbd>Esc</kbd> 暂停</p>
+    </div>
+    <p><kbd>WASD</kbd> 移动 · <kbd>E</kbd> 交互 · <kbd>Enter</kbd> 说话</p>
+    <button id="controlsToggle" class="mono" aria-controls="controlsDetails" aria-expanded="false">H 操作提示</button>
+  </div>
+  <div id="subtitle"><span class="who mono">静</span><span class="line serif"></span></div>
+  <div id="inv" class="mono"></div>
+  <div id="toast" class="serif"></div>
+  <div id="air" class="hidden"><i></i><span class="mono">屏住呼吸</span></div>
+  <div id="trap" class="hidden mono"></div>
+  <div id="holdbar" class="hidden"><i></i><span class="mono">启动锚定柱</span></div>
+  <div id="anchors" class="mono"></div>
+  <div id="chat" class="hidden"><span class="mono">大声说</span><input id="chatInput" aria-label="说话内容" aria-describedby="speechHint" maxlength="100" autocomplete="off" placeholder="「静」在有麦克风的房间能听到……" /></div>
+  <div id="dbg" class="mono hidden"></div>
+</div>
+
+<div id="reader" class="screen hidden modal-wrap">
+  <div class="card paper note">
+    <div id="readerTitle" class="mono small"></div>
+    <div id="readerText" class="serif"></div>
+    <div class="mono small dim">按 E 或 Esc 关闭</div>
+  </div>
+</div>
+
+<div id="board" class="screen hidden modal-wrap">
+  <div class="card board-card">
+    <div class="mono small dim">会议室白板 · 只要摄像头看得见，「静」就会读到这里写的字</div>
+    <textarea id="boardText" class="serif" maxlength="100" placeholder="写点什么……"></textarea>
+    <label id="adminWrap" class="mono small hidden"><input type="checkbox" id="adminHand" /> 模仿管理员「周」的笔迹并落款（你有他的签字样本）</label>
+    <div class="row"><button id="boardErase" class="mono ghost">擦掉白板</button><span class="grow"></span><button id="boardCancel" class="mono ghost">取消</button><button id="boardOk" class="serif solid">写上去</button></div>
+  </div>
+</div>
+
+<div id="elev" class="screen hidden modal-wrap">
+  <div class="card elev-card">
+    <div class="elev-display mono" id="elevDisp">1F</div>
+    <div class="elev-grid">
+      <button class="mono" data-f="RF">R</button><button class="mono" data-f="2F">2</button><button class="mono" data-f="1F">1</button><button class="mono" data-f="B">B</button>
+    </div>
+    <div class="mono small dim center">生活区 · 电梯 · Esc 关闭</div>
+  </div>
+</div>
+
+<div id="phone" class="screen hidden modal-wrap">
+  <div class="card phone-card">
+    <div class="phone-display mono" id="phoneDisp">请拨号</div>
+    <div class="phone-grid">
+      <button class="mono" data-d="1">1</button><button class="mono" data-d="2">2</button><button class="mono" data-d="3">3</button>
+      <button class="mono" data-d="4">4</button><button class="mono" data-d="5">5</button><button class="mono" data-d="6">6</button>
+      <button class="mono" data-d="7">7</button><button class="mono" data-d="8">8</button><button class="mono" data-d="9">9</button>
+      <button class="mono" data-d="*">*</button><button class="mono" data-d="0">0</button><button class="mono" data-d="#">#</button>
+    </div>
+    <div class="phone-line serif" id="phoneLine"></div>
+    <div class="mono small dim center">前台电话 · Esc 挂断</div>
+  </div>
+</div>
+
+<div id="console" class="screen hidden">
+  <div class="term">
+    <div class="term-head mono"><span>GUANZHI-OS v3.1 · 维护终端 · tty0</span><span id="termStatus">连接中……</span></div>
+    <div class="term-body">
+      <div class="term-main"><div id="termOut" class="mono"></div>
+        <div class="term-input mono"><span>&gt;</span><input id="termIn" maxlength="200" autocomplete="off" spellcheck="false" placeholder="输入 help 查看命令 · Esc 离开" /></div>
+      </div>
+      <aside class="term-side mono"><div class="side-title">工具调用日志 · 最近 10 条</div><ol id="termLog"></ol></aside>
+    </div>
+  </div>
+</div>
+
+<div id="pause" class="screen hidden modal-wrap">
+  <div class="card settings">
+    <h2 class="serif">暂停</h2>
+    <div class="set-row"><span>画质</span><div class="seg" id="segQ"><button data-q="high">高</button><button data-q="mid">中</button><button data-q="low">低</button></div></div>
+    <div class="set-row"><span>音量</span><input type="range" id="vol" min="0" max="1" step="0.05" value="0.8" /></div>
+    <div class="set-row"><span>语音朗读</span><input type="checkbox" id="tts" checked /></div>
+    <div class="set-row"><span>故障特效</span><input type="checkbox" id="fx" checked /></div>
+    <div class="set-row"><span>字幕大小</span><input type="range" id="subsize" min="18" max="34" step="1" value="24" /></div>
+    <div class="set-row"><span>鼠标灵敏度</span><input type="range" id="sens" min="0.0008" max="0.005" step="0.0002" value="0.0022" /></div>
+    <p class="mono small dim">WASD 移动 · Shift 跑 · Space 跳 · C 蹲 · E 交互 · 右键 扔 · G 锚钉 · Enter 说话</p>
+    <div class="row"><button id="btnTitle" class="mono ghost">回到标题</button><span class="grow"></span><button id="btnResume" class="serif solid">继续</button></div>
+  </div>
+</div>
+
+<div id="cine" class="hidden">
+  <div class="cine-line serif" id="cineLine"></div>
+  <div class="cine-sub mono" id="cineSub"></div>
+</div>
+
+<div id="ending" class="hidden">
+  <div class="end-wrap">
+    <header class="end-head">
+      <div class="mono small end-kicker">结局 <span id="endIdx"></span> / 6 · 生活记录</div>
+      <h1 id="endName" class="serif"></h1>
+      <p id="endLine" class="serif end-line"></p>
+      <div id="fable" class="fable"><div class="mono small">本局的寓言</div><h2 id="fableTitle" class="serif">……</h2><p id="fableMoral" class="serif"></p></div>
+      <div id="endStats" class="mono end-stats"></div>
+    </header>
+    <section class="end-body">
+      <div class="end-col">
+        <h3 class="serif">它在想什么</h3>
+        <p class="mono small dim">以下是「静」在这一局里真实产生的内心独白与操作记录（由 LLM 实时生成）。</p>
+        <ol id="endLog"></ol>
+      </div>
+      <div class="end-col sticky">
+        <h3 class="serif">你的路线</h3>
+        <div id="endMaps"></div>
+        <p class="mono small dim"><b class="amber">━</b> 你的轨迹 &nbsp; <b class="cold">●</b> 「静」的改造 &nbsp; <b class="red">■</b> 外墙缺口</p>
+      </div>
+    </section>
+    <footer class="end-foot">
+      <button id="btnShare" class="serif solid">生成分享卡</button>
+      <button id="btnAgain" class="serif ghost-dark">再来一次</button>
+      <button id="btnLoop" class="serif ghost-dark hidden">再次醒来</button>
+    </footer>
+  </div>
+</div>
+
+<div id="share" class="screen hidden modal-wrap">
+  <div class="card share-card">
+    <canvas id="shareCanvas" width="1080" height="1350"></canvas>
+    <div class="row"><button id="shareClose" class="mono ghost">关闭</button><span class="grow"></span><a id="shareDl" class="serif solid" download="agent-fable.png">下载图片</a></div>
+  </div>
+</div>
+
+<div id="mobile" class="screen hidden">
+  <h1 class="serif v-title small-v">Agent的寓言</h1>
+  <p class="serif">这是一款第一人称 3D 游戏，需要键盘和鼠标。</p>
+  <p class="mono small">请用电脑打开本页面。</p>
+</div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

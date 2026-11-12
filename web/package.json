@@ -1,0 +1,26 @@
+{
+  "name": "agent-fable",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ../tests/run-navigation-tests.cjs && node ../tests/run-audio-tests.cjs && node ../tests/run-outside-tests.cjs && node ../tests/run-homefilm-tests.cjs",
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/noto-serif-sc": "^5.3.1",
+    "n8ao": "^1.10.1",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.180.0",
+    "typescript": "^7.0.2",
+    "vite": "^6.4.6"
+  }
+}

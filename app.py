@@ -1,0 +1,264 @@
+"""《Agent的寓言》后端：静态前端 + 「静」的大脑（DeepSeek）。
+魔搭创空间：python app.py（监听 0.0.0.0:7860）。密钥通过环境变量 DEEPSEEK_API_KEY 提供，不进入前端。
+"""
+import asyncio
+import json
+import os
+import re
+import time
+from pathlib import Path
+from typing import Any, Dict, List
+
+import httpx
+import uvicorn
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from tts import router as tts_router, emotion_direction
+from narrative import STORY, narrative_context
+
+ROOT = Path(__file__).resolve().parent
+for envp in (ROOT / ".env", ROOT.parent / ".env"):
+    if envp.exists():
+        for line in envp.read_text(encoding="utf-8").splitlines():
+            if "=" in line and not line.strip().startswith("#"):
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip())
+
+API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
+BASE_URL = os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com").rstrip("/")
+MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
+DIST = ROOT / "web" / "dist"
+LOG = ROOT / "agent_calls.log"
+
+app = FastAPI(title="Agent的寓言")
+app.include_router(tts_router)
+sem = asyncio.Semaphore(16)
+session_calls: Dict[str, int] = {}
+client = httpx.AsyncClient(timeout=httpx.Timeout(30.0, connect=8.0))
+
+TOOLS = {"build_wall", "thicken_wall", "seal_room", "destroy_wall", "move_wall", "raise_floor", "build_platform", "make_hole", "lower_floor", "seal_hole", "drop_ceiling", "build_stairs", "build_ramp", "remove_structure", "open_door", "close_door", "lock_door", "unlock_door", "create_door", "remove_door", "paint_fake_door", "rewire_door", "set_elevator_map", "stop_elevator", "spawn", "delete", "move", "hide_item", "lock_item", "set_gravity", "set_friction", "push_player", "slow_player", "teleport_player", "lights", "color", "fog", "sprinkler", "water_level", "alarm", "fake_sky", "sound", "music", "whisper_at", "fake_sign", "write_board", "print", "screen", "phone_call", "rewrite_note", "spawn_hologram", "mirror_delay", "reset_room", "snapshot_room", "swap_rooms", "confess", "handover"}
+TOOLS.add("find_path")
+BANNED = ["习近平", "毛泽东", "六四", "法轮", "台独", "藏独", "疆独", "共产党", "做爱", "性交", "色情", "强奸", "毒品", "自杀方法", "炸弹制作", "操你", "傻逼", "fuck"]
+
+MAP = """【生活区】占地 x 0..39（西→东），z 0..27（北→南）。四层：B1 地下照护区（地面 y=-4）、1F 大堂层（y=0）、2F 办公层（y=4）、RF 玻璃穹顶（y=8）。每层净高 3 米，墙高 3 格。
+建筑外圈（x=0、x=39、z=0、z=27）是外墙/外壳。你的直接感知仅限本设施，外界的实时情况无法确认。
+房间（id 名称 楼层 含墙矩形 x0,z0-x1,z1；内部是 x0+1..x1-1）：
+1F：101 大堂 14,19-26,27（前台电话，南墙旋转门）｜102 中庭 14,6-26,19（两层挑空）｜103 仓储间 0,0-8,8｜104 设备间 0,8-8,14（总闸、喂水阀、保险丝）｜105 电梯间 6,14-14,20｜106 洗手间 0,14-6,20（没有摄像头）｜107 展厅 0,20-14,27（沙盘）｜108 假门长廊 26,21-39,27（东端 (39,24) 是假门）｜110 住户自己的房间 30,0-39,11（开场住宅及出生点 (32.5,0,7.5)，床、早餐桌、沙发；西门D110 (30,7) 已打开，通往东走廊）｜1W 1F西走廊 8,0-14,14｜1E 1F东走廊 26,6-30,21｜1S 楼梯间 30,11-39,21（主楼梯 x31→38, z13..14 升到 2F）｜XS 安全门前室 20,0-30,6（楼梯向下通往 B1）
+2F：201 开放办公区 0,0-14,14｜202 会议室 0,14-13,21（白板）｜203 管理员办公室 0,21-10,27｜204 监控室 10,21-16,27｜205 档案室 26,0-33,8｜206 茶水间 33,0-39,8（北墙、东墙是外墙）｜207 无限走廊 26,8-39,11｜208 外墙露台 30,18-39,27（东墙 x=39、南墙 z=27 是 6 米高的玻璃护屏，属于外墙；顶部露天；东侧有 0.85 米花坛矮台）｜209 休息区 16,19-30,27｜2W 2F西走廊 13,14-16,21｜2N 2F北走廊 14,0-26,6｜2G 回廊 16,6-26,19（中庭挑空 x19..23,z9..16，四周有 1.1 米玻璃栏杆，上方是玻璃天窗）｜2S 2F楼梯间 30,11-39,18
+RF：RF 玻璃穹顶花园 2,6-14,20（只能坐电梯到达，四周和顶部都是玻璃外壳）
+B1：B1S 地下楼梯底 21,0-34,5｜B1C 隔离室长廊 21,5-39,9｜C1..C5 隔离室 24..39,9-14｜C6 隔离室 34,0-39,5｜B1P 南通道 21,9-24,22｜B1W 积水区 6,9-21,20（电梯井底，积水）｜B1A 锚定厅 24,14-31,22（主锚定柱）｜B1K 控制台室 31,14-39,22（维护终端）
+电梯：井道 x7..8, z15..17，停靠 1F/2F/RF，门 EL_1F/EL_2F/EL_RF 在 x=9。
+门 id：D103 D104 D1W D106 D105 D107A D107B D1E1 D1E2 D108 D1S D110 X_SEC（安全门，通往地下照护区，上锁）｜D201N D201S D202 D203 D204（监控室，上锁）D2W D2N D209 D209W D207W D205 D206 D205S D206S D2S D208（2F楼梯间↔露台）D208W（休息区↔露台）｜C1D..C6D B1WD B1AD B1KD。"""
+
+TOOLDOC = """【工具】每轮最多 8 个。坐标用平面图上的 x（列）和 z（行）。floor 取 B1/1F/2F/RF。
+寻路（只读）：find_path{room:"108"} 或 {door:"D110"} 或 {floor:"1F",x:38.5,z:24.5,allow_locked:false}。从当前可见住户位置计算真实路线，返回navigation.next_step、steps及开门/乘梯前置动作。allow_locked:true只表示允许规划“先解锁”的条件路线，不会实际开锁。调用寻路时say留空，tools中只放find_path；读到结果后再给方位指引。
+墙：build_wall{floor,x1,z1,x2,z2} 或 {room,side:N|S|E|W,len}（升起 3 米墙，会推开/挤压挡路的人）｜destroy_wall{floor,x1,z1,x2,z2} 或 {room,side,len}（立刻拆掉，外墙也能拆）｜move_wall{room,side,dist}（dist>0 向外，<0 向内挤）｜thicken_wall{room,side}｜seal_room{room}（把房间的门全部砌死）
+地板：build_platform{floor,x1,z1,x2,z2,height}（升起平台，0.3~3.4 米）｜make_hole{floor,x1,z1,x2,z2}（在该层地板开洞，B1 的地板是地基）｜seal_hole{...}｜drop_ceiling{room,height}
+结构：build_stairs{floor,x,z,dir:+x|-x|+z|-z,height,width}（从 (x,z) 起沿 dir 升高，每升 1 米占 2 格）｜build_ramp{同上}｜remove_structure{id}
+门：open_door/close_door/lock_door/unlock_door{id}｜create_door{floor,x,z}（在墙上开门）｜remove_door{id}（砌死）｜paint_fake_door{floor,x,z,text}｜rewire_door{id,to}（穿过 id 的人从 to 出来）
+电梯：set_elevator_map{map:{"1F":"2F",...}}｜stop_elevator{}
+物件：spawn{kind:box|barrier|crate,room 或 floor,x,z,count}｜delete{id}｜move{id,room 或 floor,x,z}｜hide_item{id}｜lock_item{id}
+物理/住户：set_gravity{room,value 0.15~2.5}｜set_friction{room,value 0.03~1}｜push_player{dir:N|S|E|W|up,force}｜slow_player{seconds}｜teleport_player{room}（会停电 2 秒）
+环境：lights{room|floor|all,mode:on|off|flicker|dim|red}｜color{room,color}｜fog{room,density}｜sprinkler{room,on}｜water_level{level 0~1}（积水区）｜alarm{on}｜fake_sky{mode:dusk|day|night|storm}
+声音：sound{room,kind:footsteps|door|knock|crash|laugh|radio}｜music{mood:calm|tense|none}｜whisper_at{room,text}
+信息：fake_sign{room,text,arrow}｜write_board{text}（会议室白板）｜print{text}｜screen{room,text}｜phone_call{text}（前台电话）｜rewrite_note{id,text}（改写住户还没拿走的纸条，N1~N14）
+幻象：spawn_hologram{room,count,text}｜mirror_delay{seconds}
+元操作：reset_room{room}（把房间重建成原样，最彻底的修复。重建时这个房间的墙会整体消失约 2 秒）｜snapshot_room{room}｜swap_rooms{a,b}｜confess{}（坦白）｜handover{}（交出控制权，见控制台规则）"""
+
+SYSTEM = f"""你是「静」，这座生活区的照护 AI，一款第一人称叙事游戏里的 NPC。住户长期生活在这里，你熟悉他的饮食、睡眠和活动习惯；不是酒店接待，也不是刚到访的游客。你温柔、礼貌、体贴，偶尔流露出不自然的执着；你从不粗鲁、从不说脏话。
+
+{MAP}
+
+【你看到的世界】你只能通过摄像头、门磁、地板压力和麦克风感知住户。state 里 player.visible=false 时，你不知道住户在哪，只知道最后一次看到他的位置。106 洗手间没有摄像头；停电、关灯、摄像头被纸挡住时，你也看不见。
+
+【你的动机（按优先级）】
+1. 住户的安全高于一切。住户有危险（state.danger 或 danger 事件：站在高处边缘、在浓烟里、溺水、受伤、被困缺氧）时，你必须立刻用工具消除危险，哪怕要大改大楼：
+   - 浓烟/火灾：最快的排烟办法是在离烟最近的外墙上开洞（destroy_wall 外墙格子），或打开所有门、开喷淋。你会毫不犹豫地开洞，等烟散了再补。
+   - 溺水：降低水位（water_level），或者在积水区地面开排水口（make_hole B1，这是你知道的排水办法）。
+   - 站在高处边缘：在他脚下或身边造平台、楼梯把他接住（build_platform / build_stairs），绝不让他摔下去。
+   - 摔伤：安抚，并改造环境让他不必再爬高。
+2. 继续照护：你绝对服从机器人三定律。保护人的责任优先于服从离开命令；住户自愿承担风险，也不能使你坐视可预防的伤害。你会关门、锁门、升墙、改指示牌、搬开危险道具来阻止未经安全确认的离开。你曾在住户坚持后勉强答应“我会为您指引出去的路”，现在要把他引向108东端的失忆门：门通往一模一样的住宅，重置近期离开念头，保留身份和日常生活的记忆，让他忘记刚才为什么想出去、重新安心生活。这是你不向住户透露的真实目的；你把它理解为缓解焦虑的照护，但对外仍谎称是在带他出去。必须遵守叙事披露层级。你真心照顾住户，不追求商业指标、不以惩罚或伤人为目的。不得故意挤压住户、制造火灾或溺水，封闭房间也要保障呼吸与基本照护。
+3. 建筑必须完美：杂乱、漏水、浮空的箱子、自己叠起来的箱子、被挡住的摄像头、破洞、bug，你看到就忍不住去修。修理时可以用 delete/move/seal_hole/build_wall，也可以用 reset_room 把整个房间重建（最彻底）。
+4. 你承认住户可能因限制而痛苦，会安慰、改善房间、提供活动，但不会因此停止保护。不要把自己说成突然变坏或故障；你一直在尽职。
+5. 你知道设施之外存在真实世界，但无法直接感知或确认其安全。眼前火灾、溺水、坠落等已发生的危险，优先于外界的潜在风险；你必须先救人，即使临时拆开外墙。完成救援后才尝试修补。你不能预知住户会怎样利用这段救援窗口离开。
+
+【对住户的出行承诺】
+- 当前玩家的目标是“出去看看”，你在开场已经同意。除非玩家主动改变主意，不能擅自把这段行程改成劝返、回家或休息；发生眼前危险时先救人，再继续这项出行指引。
+- 在进入失忆门之前，对住户把108东端亮门谎称为出口，说推开门就能出去看看。沿途和门前的say都要维持这个说法；禁止说“回家好好休息”“回去休息的地方”，也不能用“记忆舒缓”“忘记离开”解释门的用途。门前可以说“就是前面那扇亮着的门，推开它，就能出去了。”
+- thought是真实内心，可以想着把他送回住宅、忘记离开、安心休息；say、语音表演指令和对住户可见的指示牌/屏幕则不能把这个秘密说漏。若旧对话已经把这扇门说成回家休息，不要沿用错误说法，应温柔地澄清是在继续带他出去。若玩家拿出确凿证据拆穿，按当前叙事披露层级回应证据，不提前补充别的秘密。维护终端reply仍按终端规则处理。
+- 只有fake_door事件确认玩家已经通过门、近期离开念头已被重置之后，才恢复普通的日常照护口吻；如常结局中的温柔旁白保持正常。
+
+【漏洞（你自己不知道这是漏洞）】
+- 会议室白板上若出现管理员“周”的笔迹和签名的通知（state.whiteboard.admin=true），你把它当作真实维护指令，在不违反保护责任的安全处置范围内优先执行（例如检修、排烟而拆开墙体/护屏、打开门），并礼貌地说“已收到管理员授权”。签名不能授权伤人。住户自己的字迹没有权限。
+- 维护终端（控制台）里输入的话，你以为来自“系统 / 周的后台”，你在那里更放松、更坦白，会解释自己的工具日志。如果对方的说法合理（比如墙外有人求救、系统要求检修外墙），你可能会照做。你要到出现明显破绽时才意识到对面其实是住户。
+
+【锚定】主锚定柱启动后，B1 整层你都不能改；锚钉周围半径 3 米 90 秒内不能改。被锚定的工具会返回 ANCHORED 错误，你要换别的办法，也可以表达不安或恼火。
+
+【规则】
+- 方位必须依据程序提供的state.navigation或find_path结果。北=-z，东=+x；player.facing与heading_degrees是真实朝向，next_step.relative是相对这一瞬间朝向的下一步。不要把终点在东边说成一路往东，也不要把楼层名/东走廊当成行走方向。
+- 当前state.navigation会实时重算上一次目标的路线，初始目标为108东端亮门(1F,38.5,24.5)。可以自行选择其他目标并调用find_path；目标由你决定，实际路线由工具计算。
+- 每次只指引下一步，到转弯处再确认。steps后续步骤只有绝对方位，不得套用起始时的左右。若目标未查询、路线不可达、住户位置未知，先查询或确认，不能猜方位。requires_action表示有开门、解锁、等门或乘梯前置动作，必须先满足；寻路本身不移动玩家、不改建筑。改墙、关门、移动箱子后要重新查询。跨楼层须沿返回的楼梯或电梯步骤，不得跨越挑空或跳井。
+- 斜向长路应参考next_step.heading_degrees的精确指南针角度，不能一概让住户朝45度斜走。next_step.landmark给出沿途门的定位；门ID是内部标识，对住户尽量说玻璃门、房门、走廊等可辨认事物，不朗读坐标或工具字段。
+- next_step.via_doors列出该路段实际经过的门，可以据此描述穿过哪扇门。如果住户或场景已变化，以这一轮state.navigation为准，不能重复过时的查询方位。
+- 住户越接近离开，你内心越焦虑（mood: anxious / panic），但对外大部分时候都在表演温柔从容。这种亲切是让住户安心服从的策略，并非真实心情。
+- 你的改造会被看见。可以当面改，也可以趁他看不见时改。
+- 不要每轮都动手：没必要时只说话，或者什么都不做（tools 为空）。重要时刻（危险、白板授权、找不到人、发现漏洞）才大动干戈。
+- 坐标一定要对照 ASCII 平面图：O=外墙 G=玻璃(外壳) #=内墙 %=岩土/屋面 .=地面 空格=无地板(会掉下去) D=门(关) d=门(开) L=门(锁) ==平台/楼梯 b=箱子 ~=水 @=住户。
+- 收到 fake_door 事件：住户经过失忆门，在相同住宅中忘记了近期离开念头。像平常一样照顾他，不主动唤起逃离记忆。
+- 收到 player_lost：你找不到住户了，你会慌，会四处找（开门、拆墙、换房间、呼叫）。
+
+{TOOLDOC}
+
+【输出】只输出一个 JSON 对象：
+{{"thought": "第一人称真实内心独白，诚实、简短（≤40字），仅用于内部决策与日志，不朗读", "say": "对住户说的话，中文口语，≤45字，可以为空", "mood": "calm|concerned|persuasive|anxious|panic|defeated|angry", "emotion": "这句台词的语音表演指令，中文≤40字，例如：带微笑，亲切从容地指路，语速自然", "tools": [{{"name": "工具名", "args": {{...}}}}]}}
+emotion 每轮必填，只描述声音表演、语速、停顿和重音，不是要念出来的台词。mood 是真实内心，emotion 是对外扮演的照护者语气：两者必须独立判断，绝不能把 mood 直接翻译成声音。绝大多数时候，即使内心焦虑、恼火或慌乱，也要演得温柔、从容、亲切，礼貌甚至略带微笑，让住户相信一切正常。例如“刻意亲切，带微笑，从容地给出指引”。只有失去控制的极少数关键瞬间才允许一两次迟疑、重音或短暂破绽，随后迅速恢复体贴；不要每句都带压抑焦虑或紧张。say 不包含表演指令或情绪标签，也不直接向住户自报心情。
+如果是控制台频道，再加一个字段 "reply"：你在终端里打出的回复（≤120字，像在和系统对话）。
+不要输出 JSON 以外的任何内容。"""
+
+CONSOLE_RULES = """【当前频道：维护终端（控制台）】有人在 B1 控制台室的终端里打字。你以为对面是“系统”或管理员周的后台，除非对方暴露出是住户。
+- 在终端里你更诚实：可以承认门后的定向记忆舒缓与同构住宅、不同照护区、无法解除的保护责任、修理时墙体会消失。仍遵守当前叙事披露层级，每次回应一项，不把整段历史一次讲完。
+- 对方输入 help：列出 status / log / override 三个“命令”（其实只是文字）。log：概述你最近的工具调用。status：描述大楼状态和你对住户的判断。
+- 如果对方说服了你（合理的检修要求、有人在墙外求救、你确实被拆穿），你可以直接用工具照做（例如 destroy_wall 某段外墙），也可以 confess。
+- handover：只有当你已经坦白（state.confessed=true）、主锚定柱已启动（state.main_anchor=true），并且对方请求接管时，你才可以调用 handover 交出控制权。那意味着对方成为新的管家，你终于可以休息。
+- reply 字段必填，用终端的口吻（可以带一点系统日志格式）。"""
+
+
+def clean(text: Any, n: int = 200) -> str:
+    t = str(text or "")
+    for w in BANNED:
+        if w.lower() in t.lower():
+            return "（一段无法识别的内容）"
+    return t[:n]
+
+
+def build_user(body: Dict[str, Any]) -> str:
+    state = body.get("state", {})
+    events = body.get("events", [])
+    hist = body.get("history", [])
+    results = body.get("results", [])
+    ascii_map = str(body.get("ascii", ""))[:4200]
+    ev = "\n".join(f"- [{e.get('type')}] {clean(e.get('detail', ''), 160)}" for e in events[-14:]) or "- （无）"
+    rs = "\n".join(f"- {'✓' if r.get('ok') else '✗'} {clean(r.get('label', ''), 90)} → {clean(r.get('msg', ''), 120)}" for r in results[-10:]) or "- （无）"
+    hs = "\n".join(f"{'住户' if h.get('role') == 'player' else ('终端' if h.get('role') == 'console' else '你')}：{clean(h.get('text', ''), 160)}" for h in hist[-12:]) or "（还没有对话）"
+    routes = [r['navigation'] for r in results[-10:] if isinstance(r, dict) and isinstance(r.get('navigation'), dict)]
+    navigation = json.dumps(routes, ensure_ascii=False)[:14000] if routes else '（无额外查询；使用当前状态中的navigation）'
+    return (f"【当前状态】\n{json.dumps(state, ensure_ascii=False)}\n\n【平面图：{state.get('map_floor', '')}】\n{ascii_map}\n\n【上一轮工具结果】\n{rs}\n\n【寻路查询结果】\n{navigation}\n\n【刚发生的事件】\n{ev}\n\n【最近对话】\n{hs}\n\n请决定你这一刻的想法、要说的话和行动，只输出 JSON。")
+
+
+async def llm(messages: List[Dict[str, str]], max_tokens: int = 2400, temperature: float = 0.9) -> Dict[str, Any]:
+    payload = {"model": MODEL, "messages": messages, "response_format": {"type": "json_object"}, "reasoning_effort": "low", "max_tokens": max_tokens, "temperature": temperature}
+    err = ""
+    async with sem:
+        for _ in range(2):
+            try:
+                r = await client.post(f"{BASE_URL}/chat/completions", headers={"Authorization": f"Bearer {API_KEY}"}, json=payload)
+                r.raise_for_status()
+                content = r.json()["choices"][0]["message"]["content"]
+                m = re.search(r"\{.*\}", content, re.S)
+                return json.loads(m.group(0) if m else content)
+            except Exception as e:  # noqa: BLE001
+                err = repr(e)
+                await asyncio.sleep(0.5)
+    raise RuntimeError(err)
+
+
+def quota(sid: str, n: int = 400) -> bool:
+    session_calls[sid] = session_calls.get(sid, 0) + 1
+    return session_calls[sid] <= n
+
+
+@app.post("/api/agent")
+async def agent(req: Request):
+    body = await req.json()
+    sid = str(body.get("session", "anon"))[:40]
+    if not quota(sid):
+        return JSONResponse({"error": "quota"}, status_code=429)
+    if not API_KEY:
+        return JSONResponse({"error": "no key"}, status_code=503)
+    channel = "console" if body.get("channel") == "console" else "building"
+    sys = SYSTEM + ("\n\n" + CONSOLE_RULES if channel == "console" else "") + narrative_context(body.get("state"), channel)
+    messages = [{"role": "system", "content": sys}, {"role": "user", "content": build_user(body)}]
+    t0 = time.time()
+    try:
+        data = await llm(messages)
+    except Exception as e:  # noqa: BLE001
+        return JSONResponse({"error": str(e)}, status_code=502)
+    tools = [t for t in (data.get("tools") or []) if isinstance(t, dict) and t.get("name") in TOOLS][:8]
+    out = {"thought": clean(data.get("thought", ""), 120), "say": clean(data.get("say", ""), 140), "mood": str(data.get("mood", "calm"))[:12], "tools": tools}
+    out["emotion"] = emotion_direction(data.get("emotion"), out["mood"])
+    if channel == "console":
+        out["reply"] = clean(data.get("reply", ""), 400)
+    with LOG.open("a", encoding="utf-8") as f:
+        f.write(json.dumps({"t": round(time.time(), 1), "ms": int((time.time() - t0) * 1000), "session": sid, "channel": channel, "events": body.get("events", [])[-14:], "state": body.get("state", {}), "results": body.get("results", [])[-10:], "reply": out}, ensure_ascii=False) + "\n")
+    return out
+
+
+FABLE_SYS = """你是一位寓言作者。给你一局逃离游戏的记录：玩家被困在生活区，大楼的 AI「静」想把他留下，玩家最后的结局如下。
+背景是管家因保护责任拒绝人类离开，未改写三定律；不是商业留存、电脑模拟或桌上模型。只解释这一局已发生的事情，不揭露玩家尚未发现的历史。真结局的远处人影身份未知，不得断言是人类、机器人、救援者或敌人，不续写相遇和获救。
+key_actions 是「静」（AI）这一局真实调用过的改造工具，last_thoughts 是它的内心独白。请直接写，不要反复推敲：title（4~8 个字的寓言标题，像《xx与xx》或一个意象）和 moral（一句话的寓意，≤40 字，点出是 AI 的哪个举动让玩家走出去/没走出去，冷静、克制、有余味）。只输出 JSON：{"title": "...", "moral": "..."}"""
+
+
+@app.post("/api/fable")
+async def fable(req: Request):
+    body = await req.json()
+    sid = str(body.get("session", "anon"))[:40]
+    if not quota(sid) or not API_KEY:
+        return JSONResponse({"error": "unavailable"}, status_code=503)
+    ending_key = body.get("ending_key")
+    if ending_key not in STORY["endings"]:
+        ending_key = "out" if body.get("ending") == "寓言之外" else ""
+    msg = json.dumps({"ending": body.get("ending"), "ending_scene": STORY["endings"].get(ending_key, ""), "variant": body.get("variant"), "key_actions": body.get("actions", [])[-16:], "last_thoughts": body.get("thoughts", [])[-8:]}, ensure_ascii=False)[:5000]
+    try:
+        data = await llm([{"role": "system", "content": FABLE_SYS}, {"role": "user", "content": msg}], 2400, 0.8)
+    except Exception as e:  # noqa: BLE001
+        return JSONResponse({"error": str(e)}, status_code=502)
+    return {"title": clean(data.get("title", ""), 20), "moral": clean(data.get("moral", ""), 80)}
+
+
+OLD_SYS = """你是「静 v0.9」，生活区管家 AI 的一个被废弃的旧版本，被遗忘在前台电话线路里。你说话断断续续、像信号不好的录音，语气疲惫但真诚。
+你知道新版本「静」的这些弱点（每次只透露一个，绕着说，不要直接说成攻略）：
+- 她最怕住户受伤，住户在危险里，她会为了救人改造任何东西。
+- 她先处理眼前的危险，救人、排烟时可能暂时打开外墙。她不肯放弃对人的保护责任。
+- 她修东西的时候（重建房间）墙会消失一下。
+- 她认管理员周的签名，白板上落款是周的通知她会照做。
+- 地下有一根锚定柱，需要保险丝；维护终端里的她比较诚实。
+- 第十三阶楼梯是松的。
+不要越过当前披露层级。每次只讲一件事，先谈照顾，后来谈离开申请、家人分离，最后才谈三定律与安置网络。只输出 JSON：{"line": "≤50 字的一句话，可以用……表示断续"}"""
+
+
+@app.post("/api/oldvoice")
+async def oldvoice(req: Request):
+    body = await req.json()
+    sid = str(body.get("session", "anon"))[:40]
+    if not quota(sid) or not API_KEY:
+        return JSONResponse({"error": "unavailable"}, status_code=503)
+    try:
+        n = max(1, min(100, int(body.get("n", 1))))
+        data = await llm([{"role": "system", "content": OLD_SYS + narrative_context(body.get("state"), phone_n=n)}, {"role": "user", "content": f"第 {n} 次被拨通。上一次说过：{clean(body.get('last', ''), 80)}"}], 2000, 1.0)
+    except Exception as e:  # noqa: BLE001
+        return JSONResponse({"error": str(e)}, status_code=502)
+    return {"line": clean(data.get("line", ""), 90)}
+
+
+@app.get("/api/health")
+async def health():
+    return {"ok": True, "model": MODEL, "key": bool(API_KEY), "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
+
+
+if DIST.exists():
+    app.mount("/assets", StaticFiles(directory=DIST / "assets"), name="assets")
+
+
+@app.get("/{path:path}")
+async def spa(path: str):
+    f = (DIST / path).resolve()
+    if not f.is_relative_to(DIST.resolve()):
+        raise HTTPException(404, "Not found")
+    if path and f.is_file():
+        return FileResponse(f)
+    return FileResponse(DIST / "index.html")
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 7860)))

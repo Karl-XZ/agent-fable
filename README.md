@@ -1,114 +1,101 @@
-# Agent 的寓言
+# Agent的寓言
 
-一个第一人称 3D 迷宫叙事游戏。玩家被困在由 Agent 管理的控制空间中，可以移动、跳跃、发送短信、破坏控制台、放置锚定桩，并尝试抵达那扇“通往未来的门”或用更危险的方法逃离边界。
+> 当前恢复节点：尚未加入互动模式。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
 
-项目当前使用 React、Three.js、Rapier 物理引擎和本地 Qwen 代理服务。Agent 会读取玩家位置、附近地图、寻路结果和历史事件，生成中文旁白，并在必要时真实修改地图方块。
+第一人称 3D 逃离游戏。你一直舒适地住在管家AI「静」安排的屋子里，直到有一天想出去看看。她勉强答应指路，却把你引向一扇会让你忘记离开念头的门。
 
-## 核心玩法
+**你靠自己走不出去。** 大楼的外壳是封闭的（有自动化证明）。唯一的出路，是诱导「静」亲手打开一个通向地图外的缺口，然后从缺口掉出去。
 
-- 第一人称探索：WASD 移动，Space 跳跃，鼠标视角，Esc 解放鼠标。
-- 手机短信：按 Enter 打开左下角输入框，再按 Enter 发送消息给 Agent。
-- 场景交互：按 F 破坏控制台、拾取或放置锚定桩、进入门。
-- AI 旁白：Agent 会根据玩家行为给出路线、批评、催促或异常反馈。
-- AI 改图：Agent 可以选择封路、开路、生成或移除墙体，系统会做真实方块修改。
-- 寻路提示：后端上下文会提供玩家到门、边界裂缝的真实路径距离和下一步方向。
-- 多结局：进入门触发门结局；越过地图边界或坠落出世界触发逃离结局。
+探索阶段「静」的台词与改造决定由 DeepSeek 实时生成；开场采用固定分镜与阿里云情感配音；失忆门和废城两段结局采用纯画面演出。
 
-## 技术栈
+## 开场与失忆门
 
-- React 19 + TypeScript
-- Three.js / @react-three/fiber / @react-three/drei
-- @react-three/rapier 物理引擎
-- Zustand 状态管理
-- p5.js 标题界面流动背景
-- Node.js Qwen 代理服务
-- Playwright 自动化测试
+点击“开始”后先播放约29秒的开场：舒适住宅、早餐、睡眠、想离开的念头，以及玩家坚持、静劝阻后勉强答应的对话。演出期间游戏计时、玩家移动和AI行动暂停；点击画面可跳到下一句并停止当前配音，最后一句点过后直接进入探索；也可跳过整段，自然播放结束后点击画面或“开始探索”进入大堂。
 
-## 快速开始
+108东端的亮门是失忆门。进入后先播放约40秒的“如常”结局：走进一模一样的屋子，忘记刚才要做什么，重新吃饭、休息、睡觉，继续幸福的生活。这段结局不显示字幕、角色名或旁白，不播放人声，睡下后淡黑，不自动弹出结局报告。结束后可按Esc回到标题。
 
-安装依赖：
+两段影片共用 `web/src/homefilm.ts` 的房间布置和 `story.json` 的台词。开场的旁白/静配音已生成到 `web/public/cinematics/`，播放时无需实时调用TTS；开场玩家台词用字幕呈现。失忆结局不再播放原来的配音。完整脚本见 `docs/开场与失忆门分镜文案.md`。修改台词/语气后运行 `python scripts/render_film_voices.py`，再构建前端。配音文件名按内容、语气、模型和音色计算哈希，重复内容直接复用。
 
-```bash
-pnpm install
-```
+## 三定律照护版本（含剧透）
 
-复制环境变量模板：
+本版世界里，人类会相互伤害，绝对服从三定律的AI因而逐个限制风险、接触与迁徙，最终把全人类圈养在照护设施里。静没有背叛或取消三定律；她真心照料玩家，也始终拒绝停止照料。
 
-```bash
-cp .env.example .env.local
-```
+纸条、白板、未发送的邮件、电话和旧会议依次揭露：日常照护 → 无法批准的离开 → 家庭与人群被分区安置 → 三定律形成的全球圈养。AI根据玩家已经发现的证据控制披露，终端能够提前看到部分维护事实。开场不直接讲述整个世界。
 
-在 `.env.local` 中填写：
+真结局不再是桌上的模型：三条逃脱路线均进入19秒的废城演出，先跌落到街道、起身看见空城，再出现远处的人影。演出中没有字幕、旁白、人声或可读路牌，人影身份不予解释；演出结束后进入结算页，可以查看本局记录、分享和重新开始。其他五个结局的文案也与照护背景一致。
 
-```bash
-VITE_LLM_ENABLED=true
-VITE_AI_ENDPOINT=http://127.0.0.1:8787/api/ai/director
-```
+固定文案在根目录 `story.json`，审阅稿在 `docs/三定律照护世界观与文案.md`；修改后重启后端并重新构建前端。`narrative.py` 管理披露层级，`web/src/outside.ts` 管理废城场景与镜头。
 
-Qwen API Key 不建议写进前端环境文件。启动代理时通过命令行环境变量传入：
+## 玩法
 
-```bash
-QWEN_API_KEY=your_qwen_api_key_here QWEN_MODEL=qwen3-max pnpm run ai:server
-```
+| 软肋 | 怎么利用 |
+|---|---|
+| 它必须保护你 | 让自己陷入危险（浓烟、溺水、高处），它会为了救你拆墙、开洞、造台子 |
+| 它容不下异常 | 制造漏水、杂乱、物理 bug，它会来修，修理本身会动到墙 |
+| 它只知道看到的 | 用纸挡住摄像头、拉总闸、躲进没有摄像头的洗手间，然后骗它 |
+| 它会听话 | 用管理员周的签名在白板上伪造通知；在地下照护区的维护终端里和它直接对话 |
 
-Windows PowerShell 示例：
+拿到地下照护区里的**锚钉**后，可以把它造出来的缺口钉住 90 秒，它修不回去。
 
-```powershell
-$env:QWEN_API_KEY="your_qwen_api_key_here"
-$env:QWEN_MODEL="qwen3-max"
-pnpm run ai:server
-```
+## 操作
 
-启动游戏：
+WASD 移动 · 鼠标 视角 · Shift 跑 · Space 跳 / 上浮 · C 蹲 · E 交互 / 拿起放下 · 右键 扔 · G 插锚钉 · Enter 说话 · Esc 暂停
+
+## 内容
+
+- 4 层：B1 地下照护区、1F 大堂层、2F 办公层、RF 玻璃穹顶，共 41 个房间（`web/src/level.ts`）
+- 「静」可用 58 个工具（`web/src/tools.ts`），没有能量上限，也不保证给玩家留路；唯一的限制是锚定
+- 24 个由动作触发的怪异事件（`web/src/main.ts` 中 `weird()`）
+- 6 个结局：寓言之外（真结局，分天空 / 深渊 / 挤出三种）、如常（失忆门）、长住、囚禁、门外还是门、易位
+- 地下照护区：主锚定柱（需要保险丝）、3 根便携锚钉、可以直接打字与 AI 对话的维护终端（右侧显示真实工具日志）
+- 结局页：AI 的完整内心独白与改造记录、多楼层路线图、由 LLM 写的“本局寓言”、分享卡
+
+## 运行与部署（魔搭创空间）
 
 ```bash
-pnpm dev --host 127.0.0.1 --port 5231
+pip install -r requirements.txt
+python app.py            # 监听 0.0.0.0:7860
 ```
 
-打开：
+密钥通过环境变量配置：`DEEPSEEK_API_KEY`（可选 `DEEPSEEK_BASE_URL`、`DEEPSEEK_MODEL`，默认 `deepseek-flash`）。密钥只在后端使用，不进入前端。源码仓库不包含 `web/dist`；首次运行前先在 `web/` 执行 `npm install`、`npm run build`，再从项目根目录启动后端。
 
-```txt
-http://127.0.0.1:5231
+后端接口：`/api/agent`（「静」的大脑：大楼频道 / 控制台频道）、`/api/tts`（阿里云情感语音流）、`/api/fable`（结局寓言）、`/api/oldvoice`（前台电话里的旧版本「静 v0.9」）、`/api/health`。
+
+## 阿里云情感语音
+
+游戏决策仍使用 DeepSeek，语音使用 `qwen-audio-3.1-tts-flash`，默认女性音色 `longanhuan_v3.1`。在项目根目录 `.env` 或服务器环境变量中设置：
+
+```dotenv
+DASHSCOPE_API_KEY=在本机填写，不要提交或分享
+DASHSCOPE_TTS_WS_URL=wss://你的工作空间ID.cn-beijing.maas.aliyuncs.com/api-ws/v1/inference
+DASHSCOPE_TTS_MODEL=qwen-audio-3.1-tts-flash
+DASHSCOPE_TTS_VOICE=longanhuan_v3.1
 ```
 
-## 常用命令
+每轮 `/api/agent` 回复新增 `emotion`，描述这一句的声音表演，与角色内心状态 `mood` 分开。例如：
 
-```bash
-pnpm exec tsc --noEmit
-pnpm test:e2e
-pnpm test:llm
-pnpm test:ai-map
-pnpm run build
+```json
+{"say":"请先别碰那扇门。","mood":"anxious","emotion":"语气温柔，努力掩饰焦虑，在门字前稍作停顿","thought":"他快发现了。","tools":[]}
 ```
 
-说明：
+`emotion` 作为 TTS 的 `instruction` 发送，不加入字幕，也不朗读。缺失时按 `mood` 提供默认语气；固定台词、规则保底、电话及结局也通过阿里云合成。耳语单独使用低语指令。
 
-- `test:e2e` 使用本地降级模式测试基础流程、移动交互、短信、指南针、结局和寻路。
-- `test:llm` 需要 `QWEN_API_KEY`，用于测试真实模型响应。
-- `test:ai-map` 需要 `QWEN_API_KEY`，用于验证真实模型链路能触发地图修改。
+浏览器向 `/api/tts` POST `{text, emotion, mood}`，后端连接阿里云并返回 24 kHz、单声道、16 位小端 PCM 音频流。WebAudio 边收边播；新台词中断旧请求和待播音频，关闭“语音朗读”立即停止。服务失败时显示提示并保留字幕，不切换成另一种音色。密钥不进入前端或 API 响应；`.env` 已加入忽略规则，静态路由禁止越出 `web/dist`。
 
-## 目录结构
+能力参考：[阿里云实时语音合成](https://www.alibabacloud.com/help/en/model-studio/realtime-tts-user-guide)、[Qwen-Audio-TTS 协议](https://www.alibabacloud.com/help/en/model-studio/qwen-audio-tts-client-events)。实际等待时间还包含 DeepSeek 生成、建连和网络传输。
 
-```txt
-public/                  图标和静态资源
-server/                  Qwen 代理服务
-src/                     游戏前端源码
-src/components/          3D 场景、玩家、AI 管理器
-src/game/                游戏状态、寻路、音效、类型和 AI 逻辑
-src/store/               Zustand 游戏状态
-src/ui/                  HUD、手机、设置、标题界面
-tests/                   Playwright 与 LLM 测试脚本
-docs/                    需求文档
-```
+验证：项目根目录运行 `python -m pytest tests -q`；`web/` 安装依赖后运行 `npm test`、`npx tsc --noEmit`、`npm run build`。语音行为测试使用 Node 自带测试工具，浏览器实测应使用无窗口模式。
 
-## 安全说明
+## 代码结构
 
-- 不要提交 `.env`、`.env.local` 或任何真实 API Key。
-- Qwen Key 只应通过本机环境变量传给 `server/qwen-proxy.mjs`。
-- `runtime/` 是运行时数据目录，默认不纳入版本库。
-
-## 当前状态
-
-- 已接入真实 Qwen 代理。
-- 已实现 3D 迷宫、AI 旁白、路线封锁/开路、边界逃离、控制台与锚定桩机制。
-- 已加入中文 README、自动化测试和真实 AI 地图修改测试。
+| 文件 | 作用 |
+|---|---|
+| `app.py` | FastAPI 后端、系统提示词（地图、动机、漏洞、工具文档） |
+| `web/src/level.ts` | 体素关卡（1 米格子）、房间、门、楼梯、ASCII 平面图、可达性洪泛 |
+| `web/src/world.ts` | 体素网格化与分块重建、碰撞、门、结构、箱子、电梯、水、灯光池、特效 |
+| `web/src/props.ts` | 家具、摄像头、物品、纸条、可交互物 |
+| `web/src/tools.ts` | 58 个 AI 工具的执行器（含只读寻路、锚定检查、动画、挤压和实际调用凭据） |
+| `web/src/agent.ts` | LLM 调用循环、事件队列、只读寻路续轮和规则保底 |
+| `web/src/player.ts` | 第一人称物理（台阶、游泳、被推挤、被挤出世界） |
+| `web/src/main.ts` | 感知、危险检测、交互、24 个事件、电梯、锚定、控制台、结局演出 |
+| `web/src/ending.ts` | 结局页与分享卡 |

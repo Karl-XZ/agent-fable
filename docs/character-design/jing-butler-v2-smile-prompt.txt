@@ -1,0 +1,12 @@
+Generated with the built-in image_gen tool.
+Edit target: jing-butler-v2.png.
+Expression reference: references/v2-smile-expression.png.
+Output: jing-butler-v2-smile.png.
+
+Create an EXPRESSION VARIANT of the approved game standing illustration in image 1. This is a precise identity-preserving image edit.
+
+Image 1 is the EDIT TARGET and fully controls everything: character identity, face shape, blue long wavy hair with light blue tips, blue bows and crown braid, ahoge, blue-and-white whale-fin ears, large whale tail, body proportions, white collared long-sleeved shirt, black buttoned waistcoat, deep red necktie, simple black below-knee skirt, white tights, dark Mary Jane shoes, hands overlapping in front of the lower abdomen, full-body pose, head angle, framing, refined soft anime linework and rendering, and existing transparency.
+
+Image 2 is a FACIAL-EXPRESSION REFERENCE ONLY. Change only the facial expression of image 1 to match its mood: eyes narrowed into small sly smiling slits rather than peacefully fully closed, a trace of the original BLUE irises visible under the lids (do not turn her eyes yellow), eyebrows relaxed with a very slight knowing lift, and a distinct small confident grin with a thin glimpse of white upper teeth, mouth corners raised, slightly asymmetric as in image 2. She looks amused, knowingly pleased with herself, subtly mischievous and composed. This should resemble the reference's sly tooth-showing smile, not a wide open laughing mouth, not a cute bashful crescent-eye smile, not sleepy or sad, not sinister horror. Keep all facial anatomy and the soft youthful-adult face of image 1; change the eyelids, brows and mouth, not the face shape.
+
+Do not copy the reference's silver hair, character, pose, costume differences, rendering style, camera crop or monitor-room background. Do not redesign the approved character or alter her body, hair, clothing, hands, tail, lighting, framing or art style. Render a single complete full-body standing illustration matching image 1's composition and scale. Preserve the actual transparent background and clean silhouette. No added background, aura, props, shadow, inset face, panels, lettering or watermark. Both shoes, all hair, ahoge and complete tail remain in frame.

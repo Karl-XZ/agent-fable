@@ -1,0 +1,87 @@
+{
+  "activities": [
+    {
+      "activity": "breakfast",
+      "position": [
+        35.233133333333335,
+        1.2048812228577892,
+        6.1668666666666665
+      ]
+    },
+    {
+      "activity": "walk",
+      "position": [
+        28.5,
+        1.5664661554086345,
+        9.28795833333334
+      ]
+    },
+    {
+      "activity": "atrium",
+      "position": [
+        23.46643,
+        1.5848706061633169,
+        17.42167
+      ]
+    },
+    {
+      "activity": "gallery",
+      "position": [
+        5.059150000000001,
+        1.5849429579678662,
+        25.6
+      ]
+    },
+    {
+      "activity": "rest",
+      "position": [
+        36.7,
+        1.1291428360140046,
+        9.3
+      ]
+    },
+    {
+      "activity": "sleep",
+      "position": [
+        32.9,
+        1.0249999855558949,
+        2.6
+      ]
+    }
+  ],
+  "home": {
+    "position": [
+      32.5,
+      0,
+      7.5
+    ],
+    "camera": [
+      32.5,
+      1.58,
+      7.5
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "lights": [],
+    "shells": [],
+    "sharedWood": true,
+    "sharedFabric": true,
+    "sharedMetal": true,
+    "room": "你的房间1F · 110"
+  },
+  "walked": {
+    "pos": [
+      27.444832520308733,
+      0,
+      7.5
+    ],
+    "room": "1F东走廊1F · 1E",
+    "mode": "play"
+  },
+  "noMenuSpeech": true,
+  "wordlessMemory": true,
+  "errors": []
+}

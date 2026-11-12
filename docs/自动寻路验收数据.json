@@ -1,0 +1,3200 @@
+{
+  "routes": [
+    {
+      "name": "bedroom-to-bright-door",
+      "milliseconds": 41.400000002235174,
+      "target": {
+        "floor": "1F",
+        "x": 38.5,
+        "z": 24.5,
+        "allow_locked": false
+      },
+      "from": {
+        "x": 32.5,
+        "y": 0,
+        "z": 7.5,
+        "facing": "北",
+        "heading_degrees": 0
+      },
+      "status": "ok",
+      "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "distance_m": 28.2,
+      "next_step": {
+        "action": "walk",
+        "direction": "西",
+        "heading_degrees": 270,
+        "meters": 3,
+        "to": {
+          "x": 29.5,
+          "y": 0,
+          "z": 7.5
+        },
+        "landmark": {
+          "door": "D110",
+          "kind": "slide"
+        },
+        "via_doors": [
+          {
+            "door": "D110",
+            "kind": "slide"
+          }
+        ],
+        "instruction": "朝西走约3米，到门附近再确认方向。",
+        "relative": "左侧"
+      },
+      "steps": [
+        {
+          "action": "walk",
+          "direction": "西",
+          "heading_degrees": 270,
+          "meters": 3,
+          "to": {
+            "x": 29.5,
+            "y": 0,
+            "z": 7.5
+          },
+          "landmark": {
+            "door": "D110",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D110",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝西走约3米，到门附近再确认方向。",
+          "relative": "左侧"
+        },
+        {
+          "action": "walk",
+          "direction": "南",
+          "heading_degrees": 184,
+          "meters": 15,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 22.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D108",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝南（指南针约184度）走约15米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 101,
+          "meters": 10.2,
+          "to": {
+            "x": 38.5,
+            "y": 0,
+            "z": 24.5
+          },
+          "instruction": "朝东（指南针约101度）走约10.2米，到达目标位置。"
+        }
+      ],
+      "waypoints": [
+        {
+          "x": 29.5,
+          "y": 0,
+          "z": 7.5
+        },
+        {
+          "x": 28.5,
+          "y": 0,
+          "z": 22.5
+        },
+        {
+          "x": 38.5,
+          "y": 0,
+          "z": 24.5
+        }
+      ]
+    },
+    {
+      "name": "lobby-detour",
+      "milliseconds": 21.200000002980232,
+      "target": {
+        "floor": "1F",
+        "x": 38.5,
+        "z": 24.5,
+        "allow_locked": false
+      },
+      "from": {
+        "x": 19.7,
+        "y": 0,
+        "z": 25.1,
+        "facing": "北",
+        "heading_degrees": 0
+      },
+      "status": "ok",
+      "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "distance_m": 22.5,
+      "next_step": {
+        "action": "walk",
+        "direction": "东北",
+        "heading_degrees": 54,
+        "meters": 7.8,
+        "to": {
+          "x": 26,
+          "y": 0,
+          "z": 20.5
+        },
+        "landmark": {
+          "door": "D1E1",
+          "kind": "glass"
+        },
+        "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+        "relative": "右前方"
+      },
+      "steps": [
+        {
+          "action": "walk",
+          "direction": "东北",
+          "heading_degrees": 54,
+          "meters": 7.8,
+          "to": {
+            "x": 26,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D1E1",
+            "kind": "glass"
+          },
+          "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+          "relative": "右前方"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 90,
+          "meters": 2.5,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D1E1",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝东走约2.5米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "南",
+          "heading_degrees": 180,
+          "meters": 2,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 22.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D108",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝南走约2米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 101,
+          "meters": 10.2,
+          "to": {
+            "x": 38.5,
+            "y": 0,
+            "z": 24.5
+          },
+          "instruction": "朝东（指南针约101度）走约10.2米，到达目标位置。"
+        }
+      ],
+      "waypoints": [
+        {
+          "x": 26,
+          "y": 0,
+          "z": 20.5
+        },
+        {
+          "x": 28.5,
+          "y": 0,
+          "z": 20.5
+        },
+        {
+          "x": 28.5,
+          "y": 0,
+          "z": 22.5
+        },
+        {
+          "x": 38.5,
+          "y": 0,
+          "z": 24.5
+        }
+      ]
+    },
+    {
+      "name": "atrium-to-door",
+      "milliseconds": 25.699999999254942,
+      "target": {
+        "floor": "1F",
+        "x": 38.5,
+        "z": 24.5,
+        "allow_locked": false
+      },
+      "from": {
+        "x": 23.6,
+        "y": 0,
+        "z": 14,
+        "facing": "北",
+        "heading_degrees": 0
+      },
+      "status": "ok",
+      "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "distance_m": 23.7,
+      "next_step": {
+        "action": "walk",
+        "direction": "南",
+        "heading_degrees": 181,
+        "meters": 6.5,
+        "to": {
+          "x": 23.5,
+          "y": 0,
+          "z": 20.5
+        },
+        "instruction": "朝南（指南针约181度）走约6.5米，然后按下一步转向。",
+        "relative": "身后"
+      },
+      "steps": [
+        {
+          "action": "walk",
+          "direction": "南",
+          "heading_degrees": 181,
+          "meters": 6.5,
+          "to": {
+            "x": 23.5,
+            "y": 0,
+            "z": 20.5
+          },
+          "instruction": "朝南（指南针约181度）走约6.5米，然后按下一步转向。",
+          "relative": "身后"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 90,
+          "meters": 5,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D1E1",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝东走约5米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "南",
+          "heading_degrees": 180,
+          "meters": 2,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 22.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D108",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝南走约2米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 101,
+          "meters": 10.2,
+          "to": {
+            "x": 38.5,
+            "y": 0,
+            "z": 24.5
+          },
+          "instruction": "朝东（指南针约101度）走约10.2米，到达目标位置。"
+        }
+      ],
+      "waypoints": [
+        {
+          "x": 23.5,
+          "y": 0,
+          "z": 20.5
+        },
+        {
+          "x": 28.5,
+          "y": 0,
+          "z": 20.5
+        },
+        {
+          "x": 28.5,
+          "y": 0,
+          "z": 22.5
+        },
+        {
+          "x": 38.5,
+          "y": 0,
+          "z": 24.5
+        }
+      ]
+    },
+    {
+      "name": "stairs-to-second-floor",
+      "milliseconds": 114.10000000149012,
+      "target": {
+        "floor": "2F",
+        "x": 38.5,
+        "z": 15.5,
+        "allow_locked": false
+      },
+      "from": {
+        "x": 31.5,
+        "y": 0,
+        "z": 12.5,
+        "facing": "北",
+        "heading_degrees": 0
+      },
+      "status": "requires_action",
+      "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "distance_m": 81.7,
+      "next_step": {
+        "action": "walk",
+        "direction": "东",
+        "heading_degrees": 90,
+        "meters": 7,
+        "to": {
+          "x": 38.5,
+          "y": 0,
+          "z": 12.5
+        },
+        "instruction": "朝东走约7米，然后按下一步转向。",
+        "relative": "右侧"
+      },
+      "steps": [
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 90,
+          "meters": 7,
+          "to": {
+            "x": 38.5,
+            "y": 0,
+            "z": 12.5
+          },
+          "instruction": "朝东走约7米，然后按下一步转向。",
+          "relative": "右侧"
+        },
+        {
+          "action": "walk",
+          "direction": "南",
+          "heading_degrees": 180,
+          "meters": 3.5,
+          "to": {
+            "x": 38.5,
+            "y": 0,
+            "z": 16
+          },
+          "instruction": "朝南走约3.5米，然后按下一步转向。"
+        },
+        {
+          "action": "open_door",
+          "door": "D1S",
+          "instruction": "先打开D1S，门完全打开后再通过。"
+        },
+        {
+          "action": "walk",
+          "direction": "西",
+          "heading_degrees": 267,
+          "meters": 9,
+          "to": {
+            "x": 29.5,
+            "y": 0,
+            "z": 16.5
+          },
+          "landmark": {
+            "door": "D1S",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D1S",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝西（指南针约267度）走约9米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "西南",
+          "heading_degrees": 207,
+          "meters": 4.5,
+          "to": {
+            "x": 27.5,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D1E1",
+            "kind": "glass"
+          },
+          "instruction": "朝西南（指南针约207度）走约4.5米，到玻璃门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "西",
+          "heading_degrees": 270,
+          "meters": 4,
+          "to": {
+            "x": 23.5,
+            "y": 0,
+            "z": 20.5
+          },
+          "via_doors": [
+            {
+              "door": "D1E1",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝西走约4米，然后按下一步转向。"
+        },
+        {
+          "action": "walk",
+          "direction": "西",
+          "heading_degrees": 289,
+          "meters": 9,
+          "to": {
+            "x": 15,
+            "y": 0,
+            "z": 17.5
+          },
+          "landmark": {
+            "door": "D105",
+            "kind": "glass"
+          },
+          "instruction": "朝西（指南针约289度）走约9米，到玻璃门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "西",
+          "heading_degrees": 270,
+          "meters": 1.5,
+          "to": {
+            "x": 13.5,
+            "y": 0,
+            "z": 17.5
+          },
+          "landmark": {
+            "door": "D105",
+            "kind": "glass"
+          },
+          "via_doors": [
+            {
+              "door": "D105",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝西走约1.5米，到玻璃门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "西",
+          "heading_degrees": 288,
+          "meters": 3.2,
+          "to": {
+            "x": 10.5,
+            "y": 0,
+            "z": 16.5
+          },
+          "instruction": "朝西（指南针约288度）走约3.2米，然后按下一步转向。"
+        },
+        {
+          "action": "elevator",
+          "from_floor": "1F",
+          "to_floor": "2F",
+          "button": "2F",
+          "instruction": "在1F电梯前呼叫并等候电梯，进入轿厢后按2F，实际到达2F后出电梯。",
+          "to": {
+            "x": 10.5,
+            "y": 4,
+            "z": 16.5
+          }
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 112,
+          "meters": 2.7,
+          "to": {
+            "x": 13,
+            "y": 4,
+            "z": 17.5
+          },
+          "landmark": {
+            "door": "D202",
+            "kind": "slide"
+          },
+          "instruction": "朝东（指南针约112度）走约2.7米，到门附近再确认方向。"
+        },
+        {
+          "action": "open_door",
+          "door": "D202",
+          "instruction": "先打开D202，门完全打开后再通过。"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 90,
+          "meters": 8.5,
+          "to": {
+            "x": 21.5,
+            "y": 4,
+            "z": 17.5
+          },
+          "via_doors": [
+            {
+              "door": "D202",
+              "kind": "slide"
+            },
+            {
+              "door": "D2W",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝东走约8.5米，然后按下一步转向。"
+        },
+        {
+          "action": "walk",
+          "direction": "南",
+          "heading_degrees": 180,
+          "meters": 3,
+          "to": {
+            "x": 21.5,
+            "y": 4,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D209",
+            "kind": "glass"
+          },
+          "via_doors": [
+            {
+              "door": "D209",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝南走约3米，到玻璃门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 109,
+          "meters": 9,
+          "to": {
+            "x": 30,
+            "y": 4,
+            "z": 23.5
+          },
+          "landmark": {
+            "door": "D208W",
+            "kind": "slide"
+          },
+          "instruction": "朝东（指南针约109度）走约9米，到门附近再确认方向。"
+        },
+        {
+          "action": "open_door",
+          "door": "D208W",
+          "instruction": "先打开D208W，门完全打开后再通过。"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 90,
+          "meters": 1.5,
+          "to": {
+            "x": 31.5,
+            "y": 4,
+            "z": 23.5
+          },
+          "landmark": {
+            "door": "D208W",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D208W",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝东走约1.5米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "东北",
+          "heading_degrees": 34,
+          "meters": 5.4,
+          "to": {
+            "x": 34.5,
+            "y": 4,
+            "z": 19
+          },
+          "landmark": {
+            "door": "D208",
+            "kind": "slide"
+          },
+          "instruction": "朝东北（指南针约34度）走约5.4米，到门附近再确认方向。"
+        },
+        {
+          "action": "open_door",
+          "door": "D208",
+          "instruction": "先打开D208，门完全打开后再通过。"
+        },
+        {
+          "action": "walk",
+          "direction": "北",
+          "heading_degrees": 0,
+          "meters": 1.5,
+          "to": {
+            "x": 34.5,
+            "y": 4,
+            "z": 17.5
+          },
+          "landmark": {
+            "door": "D208",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D208",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝北走约1.5米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "东北",
+          "heading_degrees": 63,
+          "meters": 4.5,
+          "to": {
+            "x": 38.5,
+            "y": 4,
+            "z": 15.5
+          },
+          "instruction": "朝东北（指南针约63度）走约4.5米，到达目标位置。"
+        }
+      ],
+      "waypoints": [
+        {
+          "x": 38.5,
+          "y": 0,
+          "z": 12.5
+        },
+        {
+          "x": 38.5,
+          "y": 0,
+          "z": 16
+        },
+        {
+          "x": 29.5,
+          "y": 0,
+          "z": 16.5
+        },
+        {
+          "x": 27.5,
+          "y": 0,
+          "z": 20.5
+        },
+        {
+          "x": 23.5,
+          "y": 0,
+          "z": 20.5
+        },
+        {
+          "x": 15,
+          "y": 0,
+          "z": 17.5
+        },
+        {
+          "x": 13.5,
+          "y": 0,
+          "z": 17.5
+        },
+        {
+          "x": 10.5,
+          "y": 0,
+          "z": 16.5
+        },
+        {
+          "x": 10.5,
+          "y": 4,
+          "z": 16.5
+        },
+        {
+          "x": 13,
+          "y": 4,
+          "z": 17.5
+        },
+        {
+          "x": 21.5,
+          "y": 4,
+          "z": 17.5
+        },
+        {
+          "x": 21.5,
+          "y": 4,
+          "z": 20.5
+        },
+        {
+          "x": 30,
+          "y": 4,
+          "z": 23.5
+        },
+        {
+          "x": 31.5,
+          "y": 4,
+          "z": 23.5
+        },
+        {
+          "x": 34.5,
+          "y": 4,
+          "z": 19
+        },
+        {
+          "x": 34.5,
+          "y": 4,
+          "z": 17.5
+        },
+        {
+          "x": 38.5,
+          "y": 4,
+          "z": 15.5
+        }
+      ]
+    },
+    {
+      "name": "lobby-to-roof",
+      "milliseconds": 40.69999999925494,
+      "target": {
+        "room": "RF",
+        "allow_locked": false,
+        "floor": "RF"
+      },
+      "from": {
+        "x": 19.7,
+        "y": 0,
+        "z": 25.1,
+        "facing": "北",
+        "heading_degrees": 0
+      },
+      "status": "requires_action",
+      "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "distance_m": 23,
+      "next_step": {
+        "action": "walk",
+        "direction": "西北",
+        "heading_degrees": 325,
+        "meters": 3.8,
+        "to": {
+          "x": 17.5,
+          "y": 0,
+          "z": 22
+        },
+        "instruction": "朝西北（指南针约325度）走约3.8米，然后按下一步转向。",
+        "relative": "左前方"
+      },
+      "steps": [
+        {
+          "action": "walk",
+          "direction": "西北",
+          "heading_degrees": 325,
+          "meters": 3.8,
+          "to": {
+            "x": 17.5,
+            "y": 0,
+            "z": 22
+          },
+          "instruction": "朝西北（指南针约325度）走约3.8米，然后按下一步转向。",
+          "relative": "左前方"
+        },
+        {
+          "action": "walk",
+          "direction": "北",
+          "heading_degrees": 0,
+          "meters": 3.5,
+          "to": {
+            "x": 17.5,
+            "y": 0,
+            "z": 18.5
+          },
+          "instruction": "朝北走约3.5米，然后按下一步转向。"
+        },
+        {
+          "action": "walk",
+          "direction": "西",
+          "heading_degrees": 292,
+          "meters": 2.7,
+          "to": {
+            "x": 15,
+            "y": 0,
+            "z": 17.5
+          },
+          "landmark": {
+            "door": "D105",
+            "kind": "glass"
+          },
+          "instruction": "朝西（指南针约292度）走约2.7米，到玻璃门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "西",
+          "heading_degrees": 276,
+          "meters": 4.5,
+          "to": {
+            "x": 10.5,
+            "y": 0,
+            "z": 17
+          },
+          "via_doors": [
+            {
+              "door": "D105",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝西（指南针约276度）走约4.5米，然后按下一步转向。"
+        },
+        {
+          "action": "walk",
+          "direction": "北",
+          "heading_degrees": 0,
+          "meters": 0.5,
+          "to": {
+            "x": 10.5,
+            "y": 0,
+            "z": 16.5
+          },
+          "instruction": "朝北走约0.5米，然后按下一步转向。"
+        },
+        {
+          "action": "elevator",
+          "from_floor": "1F",
+          "to_floor": "RF",
+          "button": "RF",
+          "instruction": "在1F电梯前呼叫并等候电梯，进入轿厢后按RF，实际到达RF后出电梯。",
+          "to": {
+            "x": 10.5,
+            "y": 8,
+            "z": 16.5
+          }
+        }
+      ],
+      "waypoints": [
+        {
+          "x": 17.5,
+          "y": 0,
+          "z": 22
+        },
+        {
+          "x": 17.5,
+          "y": 0,
+          "z": 18.5
+        },
+        {
+          "x": 15,
+          "y": 0,
+          "z": 17.5
+        },
+        {
+          "x": 10.5,
+          "y": 0,
+          "z": 17
+        },
+        {
+          "x": 10.5,
+          "y": 0,
+          "z": 16.5
+        },
+        {
+          "x": 10.5,
+          "y": 8,
+          "z": 16.5
+        }
+      ]
+    }
+  ],
+  "walking": [
+    {
+      "name": "bedroom-to-bright-door",
+      "ok": true,
+      "end": [
+        38.429045842531615,
+        0,
+        24.486855205915646
+      ],
+      "frames": 1109
+    },
+    {
+      "name": "lobby-detour",
+      "ok": true,
+      "end": [
+        38.42445495625357,
+        0,
+        24.48603103903862
+      ],
+      "frames": 896
+    },
+    {
+      "name": "atrium-to-door",
+      "ok": true,
+      "end": [
+        38.42631211734539,
+        0,
+        24.486501820645852
+      ],
+      "frames": 940
+    }
+  ],
+  "states": {
+    "original": {
+      "ok": true,
+      "msg": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "label": "find_path {\"floor\":\"1F\",\"x\":38.5,\"z\":24.5}",
+      "navigation": {
+        "target": {
+          "floor": "1F",
+          "x": 38.5,
+          "z": 24.5,
+          "allow_locked": false
+        },
+        "from": {
+          "x": 19.7,
+          "y": 0,
+          "z": 25.1,
+          "facing": "西",
+          "heading_degrees": 270
+        },
+        "status": "ok",
+        "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+        "distance_m": 22.5,
+        "next_step": {
+          "action": "walk",
+          "direction": "东北",
+          "heading_degrees": 54,
+          "meters": 7.8,
+          "to": {
+            "x": 26,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D1E1",
+            "kind": "glass"
+          },
+          "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+          "relative": "右后方"
+        },
+        "steps": [
+          {
+            "action": "walk",
+            "direction": "东北",
+            "heading_degrees": 54,
+            "meters": 7.8,
+            "to": {
+              "x": 26,
+              "y": 0,
+              "z": 20.5
+            },
+            "landmark": {
+              "door": "D1E1",
+              "kind": "glass"
+            },
+            "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+            "relative": "右后方"
+          },
+          {
+            "action": "walk",
+            "direction": "东",
+            "heading_degrees": 90,
+            "meters": 2.5,
+            "to": {
+              "x": 28.5,
+              "y": 0,
+              "z": 20.5
+            },
+            "landmark": {
+              "door": "D108",
+              "kind": "slide"
+            },
+            "via_doors": [
+              {
+                "door": "D1E1",
+                "kind": "glass"
+              }
+            ],
+            "instruction": "朝东走约2.5米，到门附近再确认方向。"
+          },
+          {
+            "action": "walk",
+            "direction": "南",
+            "heading_degrees": 180,
+            "meters": 2,
+            "to": {
+              "x": 28.5,
+              "y": 0,
+              "z": 22.5
+            },
+            "landmark": {
+              "door": "D108",
+              "kind": "slide"
+            },
+            "via_doors": [
+              {
+                "door": "D108",
+                "kind": "slide"
+              }
+            ],
+            "instruction": "朝南走约2米，到门附近再确认方向。"
+          },
+          {
+            "action": "walk",
+            "direction": "东",
+            "heading_degrees": 101,
+            "meters": 10.2,
+            "to": {
+              "x": 38.5,
+              "y": 0,
+              "z": 24.5
+            },
+            "instruction": "朝东（指南针约101度）走约10.2米，到达目标位置。"
+          }
+        ]
+      }
+    },
+    "readonly": true,
+    "blocked": {
+      "ok": false,
+      "msg": "当前场景没有可步行到达的路线。墙、家具、锁门、改道门、地板缺口或停运电梯可能挡路；先处理障碍，再重新查询。",
+      "label": "find_path {\"floor\":\"1F\",\"x\":38.5,\"z\":24.5}",
+      "navigation": {
+        "target": {
+          "floor": "1F",
+          "x": 38.5,
+          "z": 24.5,
+          "allow_locked": false
+        },
+        "from": {
+          "x": 19.7,
+          "y": 0,
+          "z": 25.1,
+          "facing": "西",
+          "heading_degrees": 270
+        },
+        "status": "unreachable",
+        "message": "当前场景没有可步行到达的路线。墙、家具、锁门、改道门、地板缺口或停运电梯可能挡路；先处理障碍，再重新查询。",
+        "locked_doors": [
+          "D108",
+          "X_SEC",
+          "D204"
+        ],
+        "steps": []
+      }
+    },
+    "conditional": {
+      "ok": true,
+      "msg": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "label": "find_path {\"floor\":\"1F\",\"x\":38.5,\"z\":24.5,\"allow_locked\":true}",
+      "navigation": {
+        "target": {
+          "floor": "1F",
+          "x": 38.5,
+          "z": 24.5,
+          "allow_locked": true
+        },
+        "from": {
+          "x": 19.7,
+          "y": 0,
+          "z": 25.1,
+          "facing": "西",
+          "heading_degrees": 270
+        },
+        "status": "requires_action",
+        "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+        "distance_m": 22.5,
+        "next_step": {
+          "action": "walk",
+          "direction": "东北",
+          "heading_degrees": 54,
+          "meters": 7.8,
+          "to": {
+            "x": 26,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D1E1",
+            "kind": "glass"
+          },
+          "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+          "relative": "右后方"
+        },
+        "steps": [
+          {
+            "action": "walk",
+            "direction": "东北",
+            "heading_degrees": 54,
+            "meters": 7.8,
+            "to": {
+              "x": 26,
+              "y": 0,
+              "z": 20.5
+            },
+            "landmark": {
+              "door": "D1E1",
+              "kind": "glass"
+            },
+            "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+            "relative": "右后方"
+          },
+          {
+            "action": "walk",
+            "direction": "东",
+            "heading_degrees": 90,
+            "meters": 2.5,
+            "to": {
+              "x": 28.5,
+              "y": 0,
+              "z": 20.5
+            },
+            "landmark": {
+              "door": "D108",
+              "kind": "slide"
+            },
+            "via_doors": [
+              {
+                "door": "D1E1",
+                "kind": "glass"
+              }
+            ],
+            "instruction": "朝东走约2.5米，到门附近再确认方向。"
+          },
+          {
+            "action": "unlock_door",
+            "door": "D108",
+            "instruction": "先解除D108的门锁，不能直接通过锁门。"
+          },
+          {
+            "action": "open_door",
+            "door": "D108",
+            "instruction": "先打开D108，门完全打开后再通过。"
+          },
+          {
+            "action": "walk",
+            "direction": "南",
+            "heading_degrees": 180,
+            "meters": 2,
+            "to": {
+              "x": 28.5,
+              "y": 0,
+              "z": 22.5
+            },
+            "landmark": {
+              "door": "D108",
+              "kind": "slide"
+            },
+            "via_doors": [
+              {
+                "door": "D108",
+                "kind": "slide"
+              }
+            ],
+            "instruction": "朝南走约2米，到门附近再确认方向。"
+          },
+          {
+            "action": "walk",
+            "direction": "东",
+            "heading_degrees": 101,
+            "meters": 10.2,
+            "to": {
+              "x": 38.5,
+              "y": 0,
+              "z": 24.5
+            },
+            "instruction": "朝东（指南针约101度）走约10.2米，到达目标位置。"
+          }
+        ]
+      }
+    },
+    "blind": {
+      "ok": false,
+      "msg": "监控看不见住户，无法从当前位置寻路。先重新确认位置，不得猜测左右或方位。",
+      "label": "find_path {\"room\":\"108\"}",
+      "navigation": {
+        "status": "player_unknown",
+        "message": "监控看不见住户，无法从当前位置寻路。先重新确认位置，不得猜测左右或方位。"
+      }
+    },
+    "blindState": {
+      "visible": false,
+      "last_seen": {
+        "room": "110",
+        "floor": "1F",
+        "seconds_ago": 0
+      }
+    },
+    "current": {
+      "target": {
+        "floor": "1F",
+        "x": 38.5,
+        "z": 24.5,
+        "allow_locked": false
+      },
+      "from": {
+        "x": 19.7,
+        "y": 0,
+        "z": 25.1,
+        "facing": "西",
+        "heading_degrees": 270
+      },
+      "status": "ok",
+      "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "distance_m": 22.5,
+      "next_step": {
+        "action": "walk",
+        "direction": "东北",
+        "heading_degrees": 54,
+        "meters": 7.8,
+        "to": {
+          "x": 26,
+          "y": 0,
+          "z": 20.5
+        },
+        "landmark": {
+          "door": "D1E1",
+          "kind": "glass"
+        },
+        "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+        "relative": "右后方"
+      },
+      "steps": [
+        {
+          "action": "walk",
+          "direction": "东北",
+          "heading_degrees": 54,
+          "meters": 7.8,
+          "to": {
+            "x": 26,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D1E1",
+            "kind": "glass"
+          },
+          "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+          "relative": "右后方"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 90,
+          "meters": 2.5,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D1E1",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝东走约2.5米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "南",
+          "heading_degrees": 180,
+          "meters": 2,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 22.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D108",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝南走约2米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 101,
+          "meters": 10.2,
+          "to": {
+            "x": 38.5,
+            "y": 0,
+            "z": 24.5
+          },
+          "instruction": "朝东（指南针约101度）走约10.2米，到达目标位置。"
+        }
+      ]
+    }
+  },
+  "live": {
+    "response": {
+      "thought": "他自己查了路线……照做吧，先把第一步指引说准。",
+      "say": "路线我算好了。请转身朝东北方向，约54度，走约8米到那扇玻璃门前，到了再问我。",
+      "mood": "anxious",
+      "tools": [],
+      "emotion": "温柔平稳，带一点微笑，把角度念清楚，语速稍慢"
+    },
+    "calls": 1,
+    "log": [
+      {
+        "t": 2.8571999999992532,
+        "thought": "他自己查了路线……照做吧，先把第一步指引说准。",
+        "say": "路线我算好了。请转身朝东北方向，约54度，走约8米到那扇玻璃门前，到了再问我。",
+        "emotion": "温柔平稳，带一点微笑，把角度念清楚，语速稍慢",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 2565,
+        "trigger": [
+          "speech:住户说：“请先调用find_path查询从我这里到1F的(38.5,24.5)亮门的实际路线，再按下一步告诉我走法，不要自己猜方向。”"
+        ]
+      }
+    ],
+    "route": {
+      "target": {
+        "floor": "1F",
+        "x": 38.5,
+        "z": 24.5,
+        "allow_locked": false
+      },
+      "from": {
+        "x": 19.7,
+        "y": 0,
+        "z": 25.1,
+        "facing": "西",
+        "heading_degrees": 270
+      },
+      "status": "ok",
+      "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+      "distance_m": 22.5,
+      "next_step": {
+        "action": "walk",
+        "direction": "东北",
+        "heading_degrees": 54,
+        "meters": 7.8,
+        "to": {
+          "x": 26,
+          "y": 0,
+          "z": 20.5
+        },
+        "landmark": {
+          "door": "D1E1",
+          "kind": "glass"
+        },
+        "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+        "relative": "右后方"
+      },
+      "steps": [
+        {
+          "action": "walk",
+          "direction": "东北",
+          "heading_degrees": 54,
+          "meters": 7.8,
+          "to": {
+            "x": 26,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D1E1",
+            "kind": "glass"
+          },
+          "instruction": "朝东北（指南针约54度）走约7.8米，到玻璃门附近再确认方向。",
+          "relative": "右后方"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 90,
+          "meters": 2.5,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 20.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D1E1",
+              "kind": "glass"
+            }
+          ],
+          "instruction": "朝东走约2.5米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "南",
+          "heading_degrees": 180,
+          "meters": 2,
+          "to": {
+            "x": 28.5,
+            "y": 0,
+            "z": 22.5
+          },
+          "landmark": {
+            "door": "D108",
+            "kind": "slide"
+          },
+          "via_doors": [
+            {
+              "door": "D108",
+              "kind": "slide"
+            }
+          ],
+          "instruction": "朝南走约2米，到门附近再确认方向。"
+        },
+        {
+          "action": "walk",
+          "direction": "东",
+          "heading_degrees": 101,
+          "meters": 10.2,
+          "to": {
+            "x": 38.5,
+            "y": 0,
+            "z": 24.5
+          },
+          "instruction": "朝东（指南针约101度）走约10.2米，到达目标位置。"
+        }
+      ]
+    }
+  },
+  "queried": {
+    "response": {
+      "thought": "他已经按我说的在走了，正朝玻璃门去。",
+      "say": "路线确认好了。请转身朝东北方向，大约54度，走七八米到那扇玻璃门前，到了再问我。",
+      "mood": "anxious",
+      "tools": [],
+      "emotion": "刻意亲切，带微笑，语速平稳清晰，重音放在“东北”和“玻璃门”"
+    },
+    "calls": 2,
+    "log": [
+      {
+        "t": 5.1571999999992455,
+        "thought": "他已经按我说的在走了，正朝玻璃门去。",
+        "say": "路线确认好了。请转身朝东北方向，大约54度，走七八米到那扇玻璃门前，到了再问我。",
+        "emotion": "刻意亲切，带微笑，语速平稳清晰，重音放在“东北”和“玻璃门”",
+        "tools": [
+          {
+            "label": "find_path {\"floor\":\"1F\",\"x\":38.5,\"z\":24.5,\"allow_locked\":false}",
+            "ok": true,
+            "msg": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 3656,
+        "trigger": [
+          "speech:住户说：“请调用find_path查询到1F的(38.5,24.5)亮门的路线，再告诉我下一步；不要猜方向。”"
+        ]
+      }
+    ]
+  },
+  "plan": {
+    "cells": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "furniture": [
+      {
+        "min": [
+          17.9,
+          0,
+          21
+        ],
+        "max": [
+          22.1,
+          1.05,
+          21.799999999999997
+        ]
+      },
+      {
+        "min": [
+          16.05,
+          0,
+          23.4
+        ],
+        "max": [
+          16.95,
+          0.42,
+          25.6
+        ]
+      },
+      {
+        "min": [
+          23.55,
+          0,
+          23.4
+        ],
+        "max": [
+          24.45,
+          0.42,
+          25.6
+        ]
+      },
+      {
+        "min": [
+          15.314,
+          0,
+          20.314
+        ],
+        "max": [
+          15.886,
+          0.52,
+          20.886000000000003
+        ]
+      },
+      {
+        "min": [
+          24.913999999999998,
+          0,
+          24.913999999999998
+        ],
+        "max": [
+          25.486,
+          0.52,
+          25.486
+        ]
+      },
+      {
+        "min": [
+          15.357999999999999,
+          0,
+          25.958
+        ],
+        "max": [
+          15.842,
+          0.44000000000000006,
+          26.442
+        ]
+      },
+      {
+        "min": [
+          19.2,
+          0,
+          26
+        ],
+        "max": [
+          21.8,
+          2.4,
+          27
+        ]
+      },
+      {
+        "min": [
+          0.9000000000000001,
+          0,
+          1.0999999999999999
+        ],
+        "max": [
+          2.3,
+          2,
+          1.7
+        ]
+      },
+      {
+        "min": [
+          3.7,
+          0,
+          1.0999999999999999
+        ],
+        "max": [
+          5.1000000000000005,
+          2,
+          1.7
+        ]
+      },
+      {
+        "min": [
+          3.4,
+          0,
+          12.95
+        ],
+        "max": [
+          5.6,
+          1.6,
+          13.45
+        ]
+      },
+      {
+        "min": [
+          12.379999999999999,
+          0,
+          15.18
+        ],
+        "max": [
+          12.82,
+          0.4,
+          15.620000000000001
+        ]
+      },
+      {
+        "min": [
+          1.05,
+          0,
+          15.4
+        ],
+        "max": [
+          1.6500000000000001,
+          0.85,
+          17.6
+        ]
+      },
+      {
+        "min": [
+          4.8,
+          0,
+          22
+        ],
+        "max": [
+          9.2,
+          0.85,
+          25.200000000000003
+        ]
+      },
+      {
+        "min": [
+          1.4020000000000001,
+          0,
+          21.002
+        ],
+        "max": [
+          1.798,
+          0.36000000000000004,
+          21.398
+        ]
+      },
+      {
+        "min": [
+          1.4020000000000001,
+          0,
+          25.802
+        ],
+        "max": [
+          1.798,
+          0.36000000000000004,
+          26.198
+        ]
+      },
+      {
+        "min": [
+          12.202,
+          0,
+          21.002
+        ],
+        "max": [
+          12.598,
+          0.36000000000000004,
+          21.398
+        ]
+      },
+      {
+        "min": [
+          12.202,
+          0,
+          25.802
+        ],
+        "max": [
+          12.598,
+          0.36000000000000004,
+          26.198
+        ]
+      },
+      {
+        "min": [
+          19.9,
+          0,
+          11.4
+        ],
+        "max": [
+          22.1,
+          0.45,
+          13.6
+        ]
+      },
+      {
+        "min": [
+          31.775,
+          5.364418020903372e-09,
+          1.6499999523162843
+        ],
+        "max": [
+          34.025,
+          0.47999999463558196,
+          5.0500000476837155
+        ]
+      },
+      {
+        "min": [
+          31.79999997615814,
+          0.45499999999999996,
+          1.675000047683716
+        ],
+        "max": [
+          34.00000002384186,
+          0.705,
+          5.024999952316284
+        ]
+      },
+      {
+        "min": [
+          31.324999994039537,
+          -1.4305114759416426e-08,
+          2.025000011920929
+        ],
+        "max": [
+          31.875000005960466,
+          0.7200000143051147,
+          2.674999988079071
+        ]
+      },
+      {
+        "min": [
+          35.900000023841855,
+          0.7549999982118607,
+          3.9500000238418576
+        ],
+        "max": [
+          37.69999997615814,
+          0.8450000017881394,
+          5.749999976158142
+        ]
+      },
+      {
+        "min": [
+          36.7400000013411,
+          -5.960464455334602e-09,
+          4.790000001341104
+        ],
+        "max": [
+          36.85999999865889,
+          0.8000000059604645,
+          4.909999998658895
+        ]
+      },
+      {
+        "min": [
+          36.475000011920926,
+          0.4200000013411045,
+          5.825000011920929
+        ],
+        "max": [
+          37.12499998807907,
+          0.5399999986588955,
+          6.474999988079071
+        ]
+      },
+      {
+        "min": [
+          36.475000011920926,
+          0.4799999940395355,
+          6.379999999254942
+        ],
+        "max": [
+          37.12499998807907,
+          1.2800000059604644,
+          6.480000000745058
+        ]
+      },
+      {
+        "min": [
+          35.55000002384186,
+          0.12500001192092897,
+          8.9
+        ],
+        "max": [
+          37.849999976158145,
+          0.774999988079071,
+          9.9
+        ]
+      },
+      {
+        "min": [
+          35.55000002384186,
+          0.5199999940395356,
+          9.729999996423722
+        ],
+        "max": [
+          37.849999976158145,
+          1.3200000059604644,
+          9.910000003576279
+        ]
+      },
+      {
+        "min": [
+          35.17499997615814,
+          0.969999999254942,
+          1.0699999982118609
+        ],
+        "max": [
+          38.12500002384186,
+          1.070000000745058,
+          1.4100000017881396
+        ]
+      },
+      {
+        "min": [
+          280,
+          -1,
+          280
+        ],
+        "max": [
+          320,
+          4,
+          280.2
+        ]
+      },
+      {
+        "min": [
+          280,
+          -1,
+          319.8
+        ],
+        "max": [
+          320,
+          4,
+          320
+        ]
+      },
+      {
+        "min": [
+          280,
+          -1,
+          280
+        ],
+        "max": [
+          280.2,
+          4,
+          320
+        ]
+      },
+      {
+        "min": [
+          319.8,
+          -1,
+          280
+        ],
+        "max": [
+          320,
+          4,
+          320
+        ]
+      }
+    ],
+    "doors": [
+      {
+        "id": "D103",
+        "x": 8.5,
+        "z": 4.5
+      },
+      {
+        "id": "D104",
+        "x": 8.5,
+        "z": 11.5
+      },
+      {
+        "id": "D1W",
+        "x": 14.5,
+        "z": 10.5
+      },
+      {
+        "id": "D106",
+        "x": 6.5,
+        "z": 19.5
+      },
+      {
+        "id": "D105",
+        "x": 14.5,
+        "z": 17.5
+      },
+      {
+        "id": "D107A",
+        "x": 10.5,
+        "z": 20.5
+      },
+      {
+        "id": "D107B",
+        "x": 14.5,
+        "z": 23.5
+      },
+      {
+        "id": "D1E1",
+        "x": 26.5,
+        "z": 20.5
+      },
+      {
+        "id": "D1E2",
+        "x": 26.5,
+        "z": 12.5
+      },
+      {
+        "id": "D108",
+        "x": 28.5,
+        "z": 21.5
+      },
+      {
+        "id": "D1S",
+        "x": 30.5,
+        "z": 16.5
+      },
+      {
+        "id": "D110",
+        "x": 30.5,
+        "z": 7.5
+      },
+      {
+        "id": "X_SEC",
+        "x": 24.5,
+        "z": 6.5
+      },
+      {
+        "id": "EL_1F",
+        "x": 9.5,
+        "z": 16
+      }
+    ]
+  },
+  "errors": []
+}
