@@ -1,0 +1,20 @@
+{
+  "stage": "04-character-card",
+  "label": "角色卡初版，尚未加入最新响应修复",
+  "original_remote_commit": "7754911837483d81ed722d1027db1f656636a3cb",
+  "reconstruction": {
+    "source": "05-responsive-care",
+    "overlays": [
+      "character.py",
+      "character_card.json",
+      "tests/agent-behavior.test.cjs",
+      "tests/interaction.test.cjs",
+      "tests/verify-speech-wait.cjs",
+      "web/src/agent.ts",
+      "web/src/interaction.ts",
+      "web/src/main.ts"
+    ]
+  },
+  "shared_files": "Unchanged files inherit from the next newer snapshot; this is not an exact whole-directory historical archive.",
+  "test_adjustments": []
+}

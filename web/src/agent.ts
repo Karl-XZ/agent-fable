@@ -1,5 +1,6 @@
 import { ToolCall, ToolResult } from './tools';
 import { InteractionMemory, InteractionDecision } from './interaction';
+import type { CharacterCard } from './character-card';
 
 export interface AgentReply { thought: string; say: string; mood: string; emotion?: string; tools: ToolCall[]; reply?: string; interaction?: InteractionDecision }
 export interface AgentEvent { id?: string; type: string; detail: string; t: number; urgent?: boolean }
@@ -15,6 +16,8 @@ export class Agent {
   log: LogEntry[] = []; lastCall = -99; calls = 0; fails = 0; llmOk = 0; heartbeat = 12; enabled = true;
   canSpeak: () => boolean = () => true;
   canInterrupt: () => boolean = () => true;
+  characterCard?: () => CharacterCard | undefined;
+  private privateCharacterSession = false;
   query?: (call: ToolCall) => ToolResult;
   interaction: InteractionMemory;
   constructor(public perceive: () => Perception, public apply: (r: AgentReply, channel: string) => Promise<ToolResult[] | AppliedReply>, public now: () => number, public fallback: (events: AgentEvent[]) => AgentReply) { this.interaction = new InteractionMemory(now); }
@@ -44,11 +47,13 @@ export class Agent {
     try {
       for (let round = 0; round < 3; round++) {
         const p = this.perceive(); this.calls++;
+        const card = this.characterCard?.();
+        this.privateCharacterSession ||= !!card;
         p.state = { ...p.state, interaction: this.interaction.context(p.state) };
         requestRevision = p.state.interaction.revision;
         const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 26000);
         try {
-          const res = await fetch('/api/agent', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal, body: JSON.stringify({ session: this.session, channel, state: p.state, ascii: p.ascii, events: evs.map(e => ({ id: e.id, type: e.type, detail: e.detail })), history: this.history.slice(-12), results: [...this.results, ...queries].slice(-10) }) });
+          const res = await fetch('/api/agent', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal, body: JSON.stringify({ session: this.session, channel, character_card: card, private_character_session: this.privateCharacterSession, state: p.state, ascii: p.ascii, events: evs.map(e => ({ id: e.id, type: e.type, detail: e.detail })), history: this.history.slice(-12), results: [...this.results, ...queries].slice(-10) }) });
           if (!res.ok) throw new Error(String(res.status));
           reply = await res.json(); if (!reply || typeof reply !== 'object' || (reply as any).error) throw new Error('bad');
         } finally { clearTimeout(to); }
@@ -71,7 +76,7 @@ export class Agent {
     const results = [...queries, ...(Array.isArray(applied) ? applied : applied.results)];
     if (!Array.isArray(applied)) reply = { ...reply, say: applied.deliveredSay };
     if (reply.say) this.history.push({ role: 'ai', text: reply.say });
-    if (channel === 'console' && reply.reply) this.history.push({ role: 'ai', text: `（终端）${reply.reply}` });
+    if (channel === 'console' && reply.reply) this.history.push({ role: 'console_ai', text: reply.reply });
     this.interaction.recordResults(results, channel);
     this.results = results;
     this.log.push({ t: this.now(), thought: reply.thought, say: reply.say, emotion: reply.emotion, tools: results.map(r => ({ label: r.label, ok: r.ok, msg: r.msg })), source, channel, ms, trigger: evs.map(e => `${e.type}:${e.detail}`.slice(0, 80)), interaction: this.interaction.context(this.perceive().state) });

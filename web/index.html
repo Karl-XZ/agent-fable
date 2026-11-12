@@ -134,9 +134,20 @@
     <div class="set-row"><span>故障特效</span><input type="checkbox" id="fx" checked /></div>
     <div class="set-row"><span>字幕大小</span><input type="range" id="subsize" min="18" max="34" step="1" value="24" /></div>
     <div class="set-row"><span>鼠标灵敏度</span><input type="range" id="sens" min="0.0008" max="0.005" step="0.0002" value="0.0022" /></div>
+    <div class="set-row character-setting"><span>静的角色卡<small id="characterSummary" class="mono dim">第一次逃离之后，可以改写她的性格。</small></span><button id="btnCharacter" class="mono ghost" disabled>逃离后解锁</button></div>
     <p class="mono small dim">WASD 移动 · Shift 跑 · Space 跳 · C 蹲 · E 交互 · 右键 扔 · G 锚钉 · Enter 说话</p>
     <div class="row"><button id="btnTitle" class="mono ghost">回到标题</button><span class="grow"></span><button id="btnResume" class="serif solid">继续</button></div>
   </div>
+</div>
+
+<div id="characterEditor" class="screen hidden modal-wrap character-screen" role="dialog" aria-modal="true" aria-labelledby="characterHeading">
+  <form id="characterForm" class="card character-card">
+    <h2 id="characterHeading" class="serif">静的角色卡</h2>
+    <p class="mono small character-explanation">只保存在此浏览器，随对话临时发送给模型，不保存到游戏服务器。留空使用默认；修改从下一次对话生效。</p>
+    <div id="characterFields"></div>
+    <p id="characterStatus" class="mono small" role="status"></p>
+    <div class="row character-actions"><button id="characterReset" type="button" class="mono ghost">恢复默认</button><span class="grow"></span><button id="characterCancel" type="button" class="mono ghost">取消</button><button type="submit" class="serif solid">保存</button></div>
+  </form>
 </div>
 
 <div id="cine" class="hidden">
@@ -150,6 +161,7 @@
       <div class="mono small end-kicker">结局 <span id="endIdx"></span> / 6 · 生活记录</div>
       <h1 id="endName" class="serif"></h1>
       <p id="endLine" class="serif end-line"></p>
+      <p id="characterUnlockNotice" class="mono small hidden">已解锁「静的角色卡」 · 可在设置中调整</p>
       <div id="fable" class="fable"><div class="mono small">本局的寓言</div><h2 id="fableTitle" class="serif">……</h2><p id="fableMoral" class="serif"></p></div>
       <div id="endStats" class="mono end-stats"></div>
     </header>

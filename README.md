@@ -1,6 +1,6 @@
 # Agent的寓言
 
-> 当前恢复节点：语音队列与持续等待修复，尚未加入角色卡。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
+> 当前恢复节点：角色卡初版。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
 
 第一人称 3D 逃离游戏。你一直舒适地住在管家AI「静」安排的屋子里，直到有一天想出去看看。她勉强答应指路，却把你引向一扇会让你忘记离开念头的门。
 
@@ -111,3 +111,14 @@ DASHSCOPE_TTS_VOICE=longanhuan_v3.1
 明确要求休息或不要打扰时，`wait_request` 保存持续等待约定；换房间、关灯失去画面和工具回执不会自动取消它。新问题只回应一次，明确恢复行程才解除等待。普通事件须等实际语音播放完成，只有眼前真实危险可以打断；请求中的 `state.speech` 记录最近六句的实际开始、结束和完成状态。临时 `find_path` 仅查询，不覆盖出行目标；持续走离原路线会暂停引导。正常楼梯和电梯轿厢的支撑不作为高处危险。最新针对性验收见 `docs/静的互动修复验收.html`。
 
 新增行为回归：`node tests/run-interaction-tests.cjs`。后台浏览器脚本为 `tests/verify-interaction-browser.cjs`，真实模型脚本为 `tests/verify-interaction-live.py`，实际阿里云音频验证为 `tests/verify-interaction-audio.cjs`；浏览器脚本需要设置 `FABLE_PLAYWRIGHT` 与 `FABLE_CHROMIUM`，默认使用独立的本地测试端口 7862。真实寻路续轮可以先运行 `node tests/behavior-navigation-bridge.cjs`，再运行 `python tests/verify-interaction-live.py --navigation-bridge http://127.0.0.1:7962`。详细场景、截图与测试边界见 `docs/静的情境互动验收.html`。
+
+
+## 静的角色卡
+
+默认角色卡在 `character_card.json`，包含性格、内在动机、喜好与小习惯、说话方式、相处方式和对话范例。`character.py` 组织角色资料与简短场景提示；真实最近对话保持 user/assistant 角色，维护终端另行标记。范例不是本局经历，观察记忆、三定律、感知与叙事披露仍优先。
+
+首次完成逃离（out）结局、进入结算页后，在“设置 → 静的角色卡”解锁编辑。下坠和无字废城演出期间不解锁、不弹新文字；其他结局不解锁。个人覆盖只保存在当前浏览器、当前站点的 localStorage：`agent-fable.jing-card.v1`；解锁记录为 `agent-fable.jing-card-unlocked.v1`。保存、取消和恢复默认不访问网络，下一次推理才带上个人覆盖。恢复默认保留解锁记录；清除站点数据或换浏览器会丢失这些本地记录。解锁记录从本版开始保存。
+
+用户已确认允许将个人卡随推理临时发送。后端不建立个人角色卡文件、数据库或会话配置。启用个人卡后，本局请求使用 metadata-only 日志；即使恢复默认，也不把可能回显个人卡的对话、状态、工具参数等写进 agent_calls.log。模型服务仍需接收这些推理内容。
+
+修改浏览器个人卡立即用于下一次对话；修改默认 JSON 后需重新构建前端并重启后端。`/api/health` 的 `character_card_protocol` 为 1。新增验收入口为 `tests/test_character.py`、`tests/character-card.test.cjs`、`tests/verify-character-card.cjs`、`tests/verify-character-live.cjs`；截图和真实回答见 `docs/静的角色卡验收.html`。

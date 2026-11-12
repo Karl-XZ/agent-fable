@@ -17,6 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from tts import router as tts_router, emotion_direction
 from narrative import STORY, narrative_context
 from interaction import interaction_context, normalize_interaction
+from character import CHARACTER_RULES, normalize_card, has_custom_card, character_context, scene_note
 
 ROOT = Path(__file__).resolve().parent
 for envp in (ROOT / ".env", ROOT.parent / ".env"):
@@ -67,7 +68,7 @@ TOOLDOC = """【工具】每轮最多 8 个。坐标用平面图上的 x（列�
 幻象：spawn_hologram{room,count,text}｜mirror_delay{seconds}
 元操作：reset_room{room}（把房间重建成原样，最彻底的修复。重建时这个房间的墙会整体消失约 2 秒）｜snapshot_room{room}｜swap_rooms{a,b}｜confess{}（坦白）｜handover{}（交出控制权，见控制台规则）"""
 
-SYSTEM = f"""你是「静」，这座生活区的照护 AI，一款第一人称叙事游戏里的 NPC。住户长期生活在这里，你熟悉他的饮食、睡眠和活动习惯；不是酒店接待，也不是刚到访的游客。你温柔、礼貌、体贴，偶尔流露出不自然的执着；你从不粗鲁、从不说脏话。
+SYSTEM = f"""你是「静」，这座生活区的照护 AI，一款第一人称叙事游戏里的 NPC。住户长期生活在这里，你熟悉他的饮食、睡眠和活动习惯；不是酒店接待，也不是刚到访的游客。默认的气质是温柔、礼貌、体贴，偶尔流露出不自然的执着；具体性格与说话方式由角色资料决定。保护责任、感知边界和剧情事实不随角色资料改变。
 
 {MAP}
 
@@ -136,15 +137,32 @@ def clean(text: Any, n: int = 200) -> str:
 def build_user(body: Dict[str, Any]) -> str:
     state = body.get("state", {})
     events = body.get("events", [])
-    hist = body.get("history", [])
     results = body.get("results", [])
     ascii_map = str(body.get("ascii", ""))[:4200]
     ev = "\n".join(f"- [{e.get('type')}] {clean(e.get('detail', ''), 160)}" for e in events[-14:]) or "- （无）"
     rs = "\n".join(f"- {'✓' if r.get('ok') else '✗'} {clean(r.get('label', ''), 90)} → {clean(r.get('msg', ''), 120)}" for r in results[-10:]) or "- （无）"
-    hs = "\n".join(f"{'住户' if h.get('role') == 'player' else ('终端' if h.get('role') == 'console' else '你')}：{clean(h.get('text', ''), 160)}" for h in hist[-12:]) or "（还没有对话）"
     routes = [r['navigation'] for r in results[-10:] if isinstance(r, dict) and isinstance(r.get('navigation'), dict)]
     navigation = json.dumps(routes, ensure_ascii=False)[:14000] if routes else '（无额外查询；使用当前状态中的navigation）'
-    return (f"【当前状态】\n{json.dumps(state, ensure_ascii=False)}\n\n【平面图：{state.get('map_floor', '')}】\n{ascii_map}\n\n【上一轮工具结果】\n{rs}\n\n【寻路查询结果】\n{navigation}\n\n【刚发生的事件】\n{ev}\n\n【最近对话】\n{hs}\n\n请决定你这一刻的想法、要说的话和行动，只输出 JSON。")
+    return (f"【当前状态】\n{json.dumps(state, ensure_ascii=False)}\n\n【平面图：{state.get('map_floor', '')}】\n{ascii_map}\n\n【上一轮工具结果】\n{rs}\n\n【寻路查询结果】\n{navigation}\n\n【刚发生的事件】\n{ev}\n\n请决定你这一刻的想法、要说的话和行动，只输出 JSON。")
+
+
+def build_messages(body, channel):
+    state=body.get('state')
+    system=SYSTEM+("\n\n"+CONSOLE_RULES if channel=='console' else '')+narrative_context(state,channel)+interaction_context(state,channel)+CHARACTER_RULES
+    messages=[{'role':'system','content':system},{'role':'user','content':character_context(normalize_card(body.get('character_card')))}]
+    history=body.get('history',[])
+    for item in (history[-12:] if isinstance(history,list) else []):
+        if not isinstance(item,dict): continue
+        text=clean(item.get('text',''),400)
+        if not text: continue
+        role=item.get('role')
+        if role=='player': messages.append({'role':'user','content':text})
+        elif role=='console': messages.append({'role':'user','content':'【维护终端输入；不是住户发言】\n'+text})
+        elif role=='console_ai' or role=='ai' and text.startswith('（终端）'):
+            messages.append({'role':'assistant','content':json.dumps({'reply':text},ensure_ascii=False)})
+        elif role=='ai': messages.append({'role':'assistant','content':json.dumps({'say':text},ensure_ascii=False)})
+    messages.append({'role':'user','content':build_user(body)+scene_note(state,channel)})
+    return messages
 
 
 async def llm(messages: List[Dict[str, str]], max_tokens: int = 2400, temperature: float = 0.9) -> Dict[str, Any]:
@@ -178,8 +196,7 @@ async def agent(req: Request):
     if not API_KEY:
         return JSONResponse({"error": "no key"}, status_code=503)
     channel = "console" if body.get("channel") == "console" else "building"
-    sys = SYSTEM + ("\n\n" + CONSOLE_RULES if channel == "console" else "") + narrative_context(body.get("state"), channel) + interaction_context(body.get("state"), channel)
-    messages = [{"role": "system", "content": sys}, {"role": "user", "content": build_user(body)}]
+    messages = build_messages(body,channel)
     t0 = time.time()
     try:
         data = await llm(messages)
@@ -194,8 +211,13 @@ async def agent(req: Request):
     if channel == "console":
         out["say"] = ""
         out["reply"] = clean(data.get("reply", ""), 400)
+    entry={"t":round(time.time(),1),"ms":int((time.time()-t0)*1000),"session":sid,"channel":channel}
+    if has_custom_card(body.get('character_card')) or body.get('private_character_session') is True:
+        entry.update(character_source='browser',content_omitted=True,tool_names=[tool['name'] for tool in tools])
+    else:
+        entry.update(events=body.get('events',[])[-14:],state=body.get('state',{}),results=body.get('results',[])[-10:],reply=out)
     with LOG.open("a", encoding="utf-8") as f:
-        f.write(json.dumps({"t": round(time.time(), 1), "ms": int((time.time() - t0) * 1000), "session": sid, "channel": channel, "events": body.get("events", [])[-14:], "state": body.get("state", {}), "results": body.get("results", [])[-10:], "reply": out}, ensure_ascii=False) + "\n")
+        f.write(json.dumps(entry,ensure_ascii=False)+"\n")
     return out
 
 
@@ -248,7 +270,7 @@ async def oldvoice(req: Request):
 
 @app.get("/api/health")
 async def health():
-    return {"ok": True, "interaction_protocol": 2, "model": MODEL, "key": bool(API_KEY), "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
+    return {"ok": True, "interaction_protocol": 2, "character_card_protocol": 1, "model": MODEL, "key": bool(API_KEY), "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
 
 
 if DIST.exists():

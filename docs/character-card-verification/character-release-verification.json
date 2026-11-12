@@ -1,0 +1,9 @@
+{
+  "url": "http://127.0.0.1:7864/",
+  "pid": 73992,
+  "interaction_protocol": 2,
+  "character_card_protocol": 1,
+  "build_match": true,
+  "asset_sha256": "c5ff1179663d9c0423cc36d62072bd2d22807b4f02be1f3e99f12c7beef72deb",
+  "verified_at": "2026-11-12T23:01:51.105252+08:00"
+}

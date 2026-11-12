@@ -47,3 +47,10 @@ test('speech cancelled during tool application is not recorded as delivered dial
   const out=await a.run('building'); assert.equal(out.say,''); assert.equal(a.history.length,0); assert.equal(a.log[0].say,'');
 });
 
+test('a browser card is transient request metadata, separate from sensed state',async()=>{
+ const requests=[];global.fetch=async(_url,options)=>{requests.push(JSON.parse(options.body));return Response.json({say:'',tools:[]})};
+ const a=new Agent(()=>({state:{player:{visible:true}},ascii:''}),async()=>[],()=>0,()=>({say:'',tools:[]}));
+ a.characterCard=()=>({schema_version:1,fields:{speech_style:'PRIVATE-LOCAL-STYLE'}});
+ await a.run('building');assert.equal(requests[0].character_card.fields.speech_style,'PRIVATE-LOCAL-STYLE');assert.ok(!JSON.stringify(requests[0].state).includes('PRIVATE-LOCAL-STYLE'));
+ a.characterCard=()=>undefined;await a.run('building');assert.equal(requests[1].character_card,undefined);assert.equal(requests[1].private_character_session,true);
+});

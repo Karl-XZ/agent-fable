@@ -19,6 +19,8 @@ import { buildCareHome, placePlayableHome, homeColliders, poseCareHome, homeFilm
 import { compassHeading } from './compass';
 import { buildSandboxModel, refreshSandboxModel } from './sandbox';
 import { findPath, navigationSummary, NavigationTarget } from './navigation';
+import { CharacterCardStore } from './character-card';
+import { mountCharacterEditor } from './character-editor';
 
 const $ = (id: string) => document.getElementById(id)!;
 const show = (id: string, on = true) => $(id).classList.toggle('hidden', !on);
@@ -35,6 +37,8 @@ const camera = new THREE.PerspectiveCamera(72, innerWidth / innerHeight, 0.05, 4
 let grid: Grid, world: World, player: Player, post: Post, agent: Agent, cams: CamDef[] = [], graffiti: THREE.Mesh[] = [];
 let playableHome: THREE.Group;
 const audio = new Audio();
+const characterCard = new CharacterCardStore();
+let characterEditor: ReturnType<typeof mountCharacterEditor> | undefined;
 audio.onSpeechError = message => toast(message, 4500);
 let voiceMood = 'calm';
 const navigationTarget: NavigationTarget = { floor: '1F', x: 38.5, z: 24.5 };
@@ -77,7 +81,7 @@ async function boot() {
   if (isMobile) { show('loading', false); show('mobile'); return; }
   try {
     const health = await fetch('/api/health', { cache: 'no-store' }).then(r => r.json());
-    if (health.interaction_protocol !== 2) {
+    if (health.interaction_protocol !== 2 || health.character_card_protocol !== 1) {
       if (['localhost', '127.0.0.1'].includes(location.hostname) && location.port !== '7864') { location.replace('http://127.0.0.1:7864/'); return; }
       throw new Error('旧版服务');
     }
@@ -97,6 +101,7 @@ async function boot() {
   post = new Post(renderer, world.scene, camera); setLoad(82); await nextFrame();
   buildMirror(); buildMonitors(); buildSandbox(); buildZeroFloor();
   agent = new Agent(perceive, applyReply, now, fallback);
+  agent.characterCard = () => characterCard.payload();
   agent.canSpeak = () => !audio.speechBusy && mode !== 'chat';
   agent.canInterrupt = () => G.visible && G.activeDanger.length > 0;
   agent.query = call => { const result = execTool(call, ctx); termLogAdd(result); return result; };
@@ -876,6 +881,8 @@ function finishVisualEnding(data: EndData) {
 
 function showEnding(d: EndData) {
   mode = 'ending'; show('hud', false); renderEnding(grid, d); show('ending'); $('ending').scrollTop = 0;
+  show('characterUnlockNotice', characterCard.unlock(d.key));
+  characterEditor?.refresh();
   show('btnLoop', d.key === 'fake'); show('btnAgain', d.key !== 'fake');
 }
 
@@ -928,6 +935,7 @@ function wireUI() {
   $('btnStart').onclick = () => startGame();
   $('btnAbout').onclick = () => show('about');
   $('btnSettings').onclick = () => { mode = 'pause'; show('pause'); show('title', false); };
+  characterEditor = mountCharacterEditor(characterCard, () => { player.clearInput(); keysE = false; document.exitPointerLock?.(); }, text => toast(text, 4200));
   document.querySelectorAll('[data-close]').forEach(b => ((b as HTMLElement).onclick = () => show((b as HTMLElement).dataset.close!, false)));
   $('gl').addEventListener('click', () => { if (mode === 'play') lock(); });
   $('gl').addEventListener('contextmenu', e => e.preventDefault());

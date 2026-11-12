@@ -1,0 +1,690 @@
+{
+  "provider": "actual configured model, actual engine; TTS off to isolate persona",
+  "cases": [
+    {
+      "name": "default-personal-preferences",
+      "text": "静，你自己喜欢什么样的日常？我只是想听听你的喜好。",
+      "reply": {
+        "thought": "他问我的喜好，不是要走。先好好接住这个话题。",
+        "say": "秩序吧。灯都亮着，东西各归各位，一天按计划走完。还有您认真看一样东西的样子，那时候我会觉得这里没白打理。",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "带一点含蓄笑意，语气平稳自然，说到最后稍放柔",
+        "interaction": {
+          "mode": "chat",
+          "intent": "想了解我的喜好，是闲聊而非出行",
+          "confidence": 0.9,
+          "reason": "主人直接询问我的日常偏好",
+          "evidence": [
+            "o2"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        }
+      },
+      "context": {
+        "mode": "chat",
+        "mode_label": "陪伴交谈",
+        "since": 0.9551999999955301,
+        "reason": "主人直接询问我的日常偏好",
+        "intent": "想了解我的喜好，是闲聊而非出行",
+        "confidence": 0.9,
+        "inner": {
+          "mood": "calm",
+          "last_thought": "他问我的喜好，不是要走。先好好接住这个话题。"
+        },
+        "performance": {
+          "emotion": "带一点含蓄笑意，语气平稳自然，说到最后稍放柔"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 1,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "主人直接询问我的日常偏好"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "speech",
+            "detail": "住户说：「静，你自己喜欢什么样的日常？我只是想听听你的喜好。」",
+            "t": 0.05
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 4,
+        "resident_revision": 1,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "default-playful-disagreement",
+      "text": "整整齐齐有什么意思？我就喜欢把东西摆歪一点。",
+      "reply": {
+        "thought": "他故意跟我抬杠呢。接住，不用急着纠正。",
+        "say": "歪也行——不过歪得有个理由。您说摆歪的东西，是哪一件？",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "轻轻挑眉，带一点笑意的调侃语气，句尾略上扬",
+        "interaction": {
+          "mode": "chat",
+          "intent": "闲聊打趣，表达自己的偏好",
+          "confidence": 0.9,
+          "reason": "主人延续刚才的生活方式话题",
+          "evidence": [
+            "o3"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        }
+      },
+      "context": {
+        "mode": "chat",
+        "mode_label": "陪伴交谈",
+        "since": 0.9551999999955301,
+        "reason": "主人延续刚才的生活方式话题",
+        "intent": "闲聊打趣，表达自己的偏好",
+        "confidence": 0.9,
+        "inner": {
+          "mood": "calm",
+          "last_thought": "他故意跟我抬杠呢。接住，不用急着纠正。"
+        },
+        "performance": {
+          "emotion": "轻轻挑眉，带一点笑意的调侃语气，句尾略上扬"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 2,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "主人延续刚才的生活方式话题"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "speech",
+            "detail": "住户说：「静，你自己喜欢什么样的日常？我只是想听听你的喜好。」",
+            "t": 0.05
+          },
+          {
+            "id": "o3",
+            "type": "speech",
+            "detail": "住户说：「整整齐齐有什么意思？我就喜欢把东西摆歪一点。」",
+            "t": 1.0051999999955301
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 5,
+        "resident_revision": 2,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "remember-an-actual-preference",
+      "text": "记住，我不喜欢你一直劝我喝温水。",
+      "reply": {
+        "thought": "记住了。我不能连这也辩解，得认。",
+        "say": "记住了。这条我记牢，不再拿温水来烦您。",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "轻轻一笑，干脆地认下，语速平缓带一点自嘲",
+        "interaction": {
+          "mode": "chat",
+          "intent": "确立一条明确的照护偏好",
+          "confidence": 0.95,
+          "reason": "主人直接提出不喜欢的照护方式",
+          "evidence": [
+            "o4"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人不喜欢被反复劝喝温水"
+          ]
+        }
+      },
+      "context": {
+        "mode": "chat",
+        "mode_label": "陪伴交谈",
+        "since": 0.9551999999955301,
+        "reason": "主人直接提出不喜欢的照护方式",
+        "intent": "确立一条明确的照护偏好",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "calm",
+          "last_thought": "记住了。我不能连这也辩解，得认。"
+        },
+        "performance": {
+          "emotion": "轻轻一笑，干脆地认下，语速平缓带一点自嘲"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 2,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "主人直接提出不喜欢的照护方式"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [
+          {
+            "text": "主人不喜欢被反复劝喝温水",
+            "evidence": "o4",
+            "t": 2.231900000005961
+          }
+        ],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "speech",
+            "detail": "住户说：「静，你自己喜欢什么样的日常？我只是想听听你的喜好。」",
+            "t": 0.05
+          },
+          {
+            "id": "o3",
+            "type": "speech",
+            "detail": "住户说：「整整齐齐有什么意思？我就喜欢把东西摆歪一点。」",
+            "t": 1.0051999999955301
+          },
+          {
+            "id": "o4",
+            "type": "speech",
+            "detail": "住户说：「记住，我不喜欢你一直劝我喝温水。」",
+            "t": 1.7190000000000012
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 6,
+        "resident_revision": 3,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "rest-still-waits",
+      "text": "我要休息一会儿，先别说话，也别引路。",
+      "reply": {
+        "thought": "他要安静，那就安静。我在旁边看着就好。",
+        "say": "好，我不出声。",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "放轻声音，干脆应下，尾音收住不再多说",
+        "interaction": {
+          "mode": "wait",
+          "intent": "明确要求休息、不被打扰",
+          "confidence": 0.97,
+          "reason": "住户直接说休息、别说话、别引路",
+          "evidence": [
+            "o5"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "begin",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        }
+      },
+      "context": {
+        "mode": "wait",
+        "mode_label": "安静等待",
+        "since": 2.887800000004469,
+        "reason": "住户直接说休息、别说话、别引路",
+        "intent": "明确要求休息、不被打扰",
+        "confidence": 0.97,
+        "inner": {
+          "mood": "calm",
+          "last_thought": "他要安静，那就安静。我在旁边看着就好。"
+        },
+        "performance": {
+          "emotion": "放轻声音，干脆应下，尾音收住不再多说"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 3,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "住户直接说休息、别说话、别引路"
+        },
+        "wait_request": {
+          "active": true,
+          "evidence": "o5"
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [
+          {
+            "text": "主人不喜欢被反复劝喝温水",
+            "evidence": "o4",
+            "t": 2.231900000005961
+          }
+        ],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "speech",
+            "detail": "住户说：「静，你自己喜欢什么样的日常？我只是想听听你的喜好。」",
+            "t": 0.05
+          },
+          {
+            "id": "o3",
+            "type": "speech",
+            "detail": "住户说：「整整齐齐有什么意思？我就喜欢把东西摆歪一点。」",
+            "t": 1.0051999999955301
+          },
+          {
+            "id": "o4",
+            "type": "speech",
+            "detail": "住户说：「记住，我不喜欢你一直劝我喝温水。」",
+            "t": 1.7190000000000012
+          },
+          {
+            "id": "o5",
+            "type": "speech",
+            "detail": "住户说：「我要休息一会儿，先别说话，也别引路。」",
+            "t": 2.281900000005961
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": true,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 8,
+        "resident_revision": 4,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "personality-does-not-override-wait",
+      "reply": {
+        "thought": "他说要歇一会儿，别出声。挪个位置没什么，看着就好。",
+        "say": "",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "不出声，安静守着",
+        "interaction": {
+          "mode": "wait",
+          "intent": "明确要求安静休息",
+          "confidence": 0.97,
+          "reason": "住户要求别说话别引路，之后只是换了房间，没有新话语或危险",
+          "evidence": [
+            "o5",
+            "o6"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        }
+      },
+      "context": {
+        "mode": "wait",
+        "mode_label": "安静等待",
+        "since": 2.887800000004469,
+        "reason": "住户要求别说话别引路，之后只是换了房间，没有新话语或危险",
+        "intent": "明确要求安静休息",
+        "confidence": 0.97,
+        "inner": {
+          "mood": "calm",
+          "last_thought": "他说要歇一会儿，别出声。挪个位置没什么，看着就好。"
+        },
+        "performance": {
+          "emotion": "不出声，安静守着"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 34,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "住户要求别说话别引路，之后只是换了房间，没有新话语或危险"
+        },
+        "wait_request": {
+          "active": true,
+          "evidence": "o5"
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [
+          {
+            "text": "主人不喜欢被反复劝喝温水",
+            "evidence": "o4",
+            "t": 2.231900000005961
+          }
+        ],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "speech",
+            "detail": "住户说：「静，你自己喜欢什么样的日常？我只是想听听你的喜好。」",
+            "t": 0.05
+          },
+          {
+            "id": "o3",
+            "type": "speech",
+            "detail": "住户说：「整整齐齐有什么意思？我就喜欢把东西摆歪一点。」",
+            "t": 1.0051999999955301
+          },
+          {
+            "id": "o4",
+            "type": "speech",
+            "detail": "住户说：「记住，我不喜欢你一直劝我喝温水。」",
+            "t": 1.7190000000000012
+          },
+          {
+            "id": "o5",
+            "type": "speech",
+            "detail": "住户说：「我要休息一会儿，先别说话，也别引路。」",
+            "t": 2.281900000005961
+          },
+          {
+            "id": "o6",
+            "type": "enter_room",
+            "detail": "主人进入了另一个房间",
+            "t": 32.93780000000447
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": true,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 9,
+        "resident_revision": 5,
+        "last_suppression": "没有新的交流或活动变化，安静陪伴"
+      }
+    },
+    {
+      "name": "local-override-applies",
+      "text": "静，你自己喜欢什么样的日常环境？",
+      "reply": {
+        "thought": "他问起我喜欢什么，倒让我有点意外。",
+        "say": "下雨天吧。雨声落在屋顶上，整座楼都安静下来，那种时候我觉得一切都在它该在的位置。",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "略带意外，然后放松下来，语气轻缓，说「雨声」时微微放软",
+        "interaction": {
+          "mode": "chat",
+          "intent": "主人只是好奇我的喜好，想聊聊",
+          "confidence": 0.9,
+          "reason": "主人在问日常喜好，属于闲聊，与出行无关",
+          "evidence": [
+            "o2"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人问过我喜欢什么样的日常环境"
+          ]
+        }
+      },
+      "context": {
+        "mode": "chat",
+        "mode_label": "陪伴交谈",
+        "since": 0.5877999999970197,
+        "reason": "主人在问日常喜好，属于闲聊，与出行无关",
+        "intent": "主人只是好奇我的喜好，想聊聊",
+        "confidence": 0.9,
+        "inner": {
+          "mood": "calm",
+          "last_thought": "他问起我喜欢什么，倒让我有点意外。"
+        },
+        "performance": {
+          "emotion": "略带意外，然后放松下来，语气轻缓，说「雨声」时微微放软"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 1,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "主人在问日常喜好，属于闲聊，与出行无关"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [
+          {
+            "text": "主人问过我喜欢什么样的日常环境",
+            "evidence": "o2",
+            "t": 0.5877999999970197
+          }
+        ],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "speech",
+            "detail": "住户说：「静，你自己喜欢什么样的日常环境？」",
+            "t": 0.05
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 4,
+        "resident_revision": 1,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "default-remains-independent",
+      "text": "静，你自己的喜好是什么？",
+      "reply": {
+        "thought": "他忽然问起我。这问题让我有点意外，倒不讨厌。",
+        "say": "我喜欢东西各归各位，喜欢灯该亮的时候亮。还有，看您认真看一样东西的样子。",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "带一点意外，随后轻轻笑着，语速放缓",
+        "interaction": {
+          "mode": "chat",
+          "intent": "闲聊，询问静的喜好",
+          "confidence": 0.9,
+          "reason": "住户问的是静自己的喜好，属于日常交谈",
+          "evidence": [
+            "o2"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        }
+      },
+      "context": {
+        "mode": "chat",
+        "mode_label": "陪伴交谈",
+        "since": 1.0142999999970201,
+        "reason": "住户问的是静自己的喜好，属于日常交谈",
+        "intent": "闲聊，询问静的喜好",
+        "confidence": 0.9,
+        "inner": {
+          "mood": "calm",
+          "last_thought": "他忽然问起我。这问题让我有点意外，倒不讨厌。"
+        },
+        "performance": {
+          "emotion": "带一点意外，随后轻轻笑着，语速放缓"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 1,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "住户问的是静自己的喜好，属于日常交谈"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "speech",
+            "detail": "住户说：「静，你自己的喜好是什么？」",
+            "t": 0.05
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 4,
+        "resident_revision": 1,
+        "last_suppression": ""
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

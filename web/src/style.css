@@ -94,7 +94,18 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 #adminWrap { display: flex; align-items: center; gap: 8px; color: var(--amber); }
 
 /* 设置 */
-.settings { width: min(520px, 92vw); }
+.settings { width: min(520px, 92vw); max-height: 88vh; overflow-y: auto; }
+.character-setting small { display: block; max-width: 300px; margin-top: 5px; line-height: 1.6; letter-spacing: .02em; }
+.character-setting button:disabled { opacity: .4; cursor: default; }
+.character-screen { z-index: 15; }
+.character-card { width: min(740px, 92vw); max-height: 88vh; overflow-y: auto; }
+.character-explanation { margin: 14px 0 24px; line-height: 1.9; opacity: .7; }
+#characterFields label { display: block; margin: 18px 0; font-size: 15px; letter-spacing: .12em; }
+#characterFields textarea { display: block; width: 100%; margin-top: 10px; padding: 14px; resize: vertical; border: 1px solid var(--line); background: rgba(245,243,238,.04); color: var(--ink); font-size: 15px; line-height: 1.9; letter-spacing: .02em; }
+#characterFields textarea:focus { outline: 1px solid #a67b48; outline-offset: 2px; }
+#characterStatus { min-height: 1.8em; color: var(--amber); }
+.character-actions { margin-top: 18px; gap: 14px; }
+#characterUnlockNotice { margin-top: 18px; color: #76552e; letter-spacing: .12em; }
 .set-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; letter-spacing: .1em; }
 .seg { display: flex; border: 1px solid var(--line); } .seg button { padding: 6px 16px; color: var(--dim); } .seg button.on { background: var(--amber); color: #15120d; }
 input[type=range] { accent-color: var(--amber); width: 200px; } input[type=checkbox] { accent-color: var(--amber); width: 16px; height: 16px; }
