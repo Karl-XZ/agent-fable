@@ -1,5 +1,6 @@
 // 程序化音频：环境低鸣、脚步、闷响、故障声、语音朗读
 export interface SpeechEvents { onStart?: () => void; onEnd?: (complete: boolean) => void }
+interface SpeechRecord { text: string; requested_at: number; started_at: number | null; finished_at: number | null; complete: boolean | null }
 export class Audio {
   ctx?: AudioContext; master?: GainNode; volume = 0.8;
   private noiseBuf?: AudioBuffer;
@@ -12,7 +13,10 @@ export class Audio {
   private speechTimeout?: ReturnType<typeof setTimeout>;
   private speechPending = false;
   private speechEvents?: SpeechEvents;
+  private speechRecords: SpeechRecord[] = [];
+  private currentSpeech?: SpeechRecord;
   get speechBusy() { return this.speechPending || this.speechSources.size > 0; }
+  get speechState() { return { busy: this.speechBusy, recent: this.speechRecords.slice(-6).map(r => ({ ...r })) }; }
   onSpeakPulse: () => void = () => {};
   onSpeechError: (message: string) => void = () => {};
   get speak() { return this.speechEnabled; }
@@ -81,9 +85,14 @@ export class Audio {
     const events = this.speechEvents; this.speechEvents = undefined; events?.onEnd?.(false);
     clearInterval(this.speechPulse); this.speechPulse = undefined;
     this.speechNextTime = 0;
+    this.recordSpeechEnd(false);
+  }
+  private recordSpeechEnd(complete: boolean) {
+    if (this.currentSpeech) { this.currentSpeech.finished_at = Date.now(); this.currentSpeech.complete = complete; this.currentSpeech = undefined; }
   }
   private finishSpeech() {
     if (this.speechBusy) return;
+    this.recordSpeechEnd(true);
     const events = this.speechEvents; this.speechEvents = undefined; events?.onEnd?.(true);
   }
   async playClip(url: string) {
@@ -108,6 +117,8 @@ export class Audio {
   async say(text: string, emotion = '', mood = 'calm', events?: SpeechEvents) {
     if (!this.speak || !text.trim() || !this.ctx || !this.master) return;
     this.stopSpeech();
+    const record: SpeechRecord = { text, requested_at: Date.now(), started_at: null, finished_at: null, complete: null };
+    this.currentSpeech = record; this.speechRecords.push(record); this.speechRecords = this.speechRecords.slice(-6);
     const sequence = this.speechSequence, ctx = this.ctx;
     this.speechPending = true; this.speechEvents = events;
     let started = false;
@@ -146,7 +157,7 @@ export class Audio {
         this.speechSources.add(source);
         const at = Math.max(ctx.currentTime + 0.04, this.speechNextTime);
         source.start(at); this.speechNextTime = at + buffer.duration;
-        if (!started) { started = true; events?.onStart?.(); }
+        if (!started) { started = true; record.started_at = Date.now(); events?.onStart?.(); }
         this.onSpeakPulse();
         this.speechPulse ??= setInterval(() => this.onSpeakPulse(), 120);
       }

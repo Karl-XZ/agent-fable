@@ -5,7 +5,7 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 import { buildGrid, Grid, M, NX, NZ, ROOMS, Room, roomById, roomAt, floorOfY, floorById, START, iyOf, SOLID, asciiFloor, STAIRS, stairStepAt, ELEVATOR_STOPS, Y0, NY } from './level';
 import { World, BoxObj, Item, Inter, DoorObj, overlap } from './world';
 import { buildProps, NOTES, drawStreet, CamDef } from './props';
-import { Player, STAND, LIE, isTextInput } from './player';
+import { Player, STAND, LIE, isTextInput, safeTransitSupport } from './player';
 import { Post } from './post';
 import { Audio } from './audio';
 import { Agent, AgentReply, AgentEvent, AppliedReply } from './agent';
@@ -37,7 +37,7 @@ let playableHome: THREE.Group;
 const audio = new Audio();
 audio.onSpeechError = message => toast(message, 4500);
 let voiceMood = 'calm';
-let navigationTarget: NavigationTarget = { floor: '1F', x: 38.5, z: 24.5 };
+const navigationTarget: NavigationTarget = { floor: '1F', x: 38.5, z: 24.5 };
 function currentNavigation(target = navigationTarget) {
   const room = roomAt(player.pos.x, player.pos.y, player.pos.z);
   const visible = G.visible && !!room && camOK(room.id);
@@ -75,6 +75,15 @@ const poseHist: { t: number; x: number; y: number; z: number; yaw: number; h: nu
 // ———————————— 启动 ————————————
 async function boot() {
   if (isMobile) { show('loading', false); show('mobile'); return; }
+  try {
+    const health = await fetch('/api/health', { cache: 'no-store' }).then(r => r.json());
+    if (health.interaction_protocol !== 2) {
+      if (['localhost', '127.0.0.1'].includes(location.hostname) && location.port !== '7864') { location.replace('http://127.0.0.1:7864/'); return; }
+      throw new Error('旧版服务');
+    }
+  } catch {
+    document.querySelector('#loading .load-text')!.textContent = '服务尚未准备好，请稍后刷新。'; return;
+  }
   audio.warmup();
   setLoad(8); await nextFrame();
   grid = buildGrid(); setLoad(20); await nextFrame();
@@ -89,6 +98,7 @@ async function boot() {
   buildMirror(); buildMonitors(); buildSandbox(); buildZeroFloor();
   agent = new Agent(perceive, applyReply, now, fallback);
   agent.canSpeak = () => !audio.speechBusy && mode !== 'chat';
+  agent.canInterrupt = () => G.visible && G.activeDanger.length > 0;
   agent.query = call => { const result = execTool(call, ctx); termLogAdd(result); return result; };
   wirePlayer(); wireUI(); setLoad(100);
   renderer.compile(world.scene, camera);
@@ -147,7 +157,6 @@ const ctx: ToolCtx = {
   playerPos: () => player.pos.clone(), playerFloor, playerRoom, anchoredAt, after,
   navigate: target => {
     const route = currentNavigation(target);
-    if (!['invalid_target', 'player_unknown'].includes(route.status)) navigationTarget = { room: target.room, door: target.door, floor: target.floor, x: target.x, z: target.z, allow_locked: target.allow_locked === true };
     return route;
   },
   say: (t, who) => subtitle(t, who ?? '静'), toast, glitch: (a, at) => glitchAt(a, at),
@@ -190,6 +199,8 @@ function perceive() {
   };
   if (vis) { const heading = compassHeading(player.yaw); state.player.heading_degrees = Math.round(heading.degrees); state.player.facing = heading.label; }
   state.interaction = agent.interaction.context(state);
+  state.navigation_intent = { purpose: state.interaction.guidance_allowed ? 'exit' : vis && G.activeDanger.length ? 'rescue' : 'none', query_changes_goal: false };
+  state.speech = audio.speechState;
   const ascii = asciiFloor(grid, f, { doors: new Map([...world.doors].map(([id, d]) => [id, { open: d.open, locked: d.locked, cells: d.cells, floor: d.def.floor }])), boxes: world.boxes.map(b => ({ x: b.pos.x, y: b.pos.y, z: b.pos.z })), structures: [...world.structs.values()].filter(s => s.kind !== 'railing').flatMap(s => s.boxes.map(b => ({ x0: Math.floor(b.min[0]), z0: Math.floor(b.min[2]), x1: Math.ceil(b.max[0]), z1: Math.ceil(b.max[2]), y: b.min[1], kind: s.kind }))), player: vis ? { x: p.x, y: p.y, z: p.z } : undefined, anchored: (x, y, z) => !!anchoredAt(x, y, z) });
   return { state, ascii };
 }
@@ -299,7 +310,11 @@ async function applyReply(r: AgentReply, channel: string): Promise<AppliedReply>
     await new Promise(rs => setTimeout(rs, 280));
   }
   const deliveredSay = r.say && !G.ended && subtitleSequence === narrationBeforeTools && residentRevision === agent.interaction.context(perceive().state).resident_revision ? r.say : '';
-  if (deliveredSay) subtitle(deliveredSay, '静', r.emotion);
+  if (deliveredSay) {
+    while (audio.speechBusy && !G.ended && !(G.visible && G.activeDanger.length) && residentRevision === agent.interaction.context(perceive().state).resident_revision) await new Promise(resolve => setTimeout(resolve, 100));
+    if (!G.ended && residentRevision === agent.interaction.context(perceive().state).resident_revision) subtitle(deliveredSay, '静', r.emotion);
+    else return { results, deliveredSay: '' };
+  }
   return { results, deliveredSay };
 }
 function fallback(evs: AgentEvent[]): AgentReply {
@@ -662,7 +677,9 @@ function observeResidentActivity() {
     activitySampleAt = G.time;
     const interaction = agent.interaction.context({ player: { visible, danger: visible ? G.activeDanger : [] } });
     if (kind === 'walking' && interaction.mode === 'guide' && interaction.guidance_allowed) {
-      const step = currentNavigation().next_step;
+      const route = currentNavigation(), step = route.next_step;
+      agent.interaction.observeRoute(route.distance_m ?? NaN, JSON.stringify(navigationTarget) + ':' + G.stats.edits);
+      if (!agent.interaction.context().guidance_allowed) { routeCheckpoint = ''; return; }
       const key = step ? [step.action, step.door, step.to?.x, step.to?.z, step.to_floor].join(':') : '';
       if (routeCheckpoint && key && key !== routeCheckpoint) agent.push('route_checkpoint', `主人来到新的行路节点；当前下一步：${step!.instruction}`);
       routeCheckpoint = key;
@@ -682,9 +699,10 @@ function checkEvents(dt: number) {
   const danger: string[] = []; const fl = floorOfY(p.y); const hAbove = p.y - fl.y;
   const onLedge = (player.standingOn?.ref as any)?.id === 'LEDGE' || (rid === '208' && p.x > 37.9 && hAbove > 1.0);
   let nearVoid = false; for (const [dx, dz] of [[0.9, 0], [-0.9, 0], [0, 0.9], [0, -0.9]]) { const x = p.x + dx, z = p.z + dz; if (!grid.solidW(x, fl.y - 0.5, z) && !world.solidAt(x, fl.y - 0.1, z) && x > 0 && x < NX && z > 0 && z < NZ) nearVoid = true; }
+  const transit = player.onGround && safeTransitSupport(player.standingOn);
   if (onLedge) danger.push(`站在 208 露台的花坛矮台上（离地 ${hAbove.toFixed(1)} 米），紧贴着外墙玻璃护屏`);
-  else if (hAbove > 1.6 && player.onGround) danger.push(`站在离地 ${hAbove.toFixed(1)} 米的高处`);
-  if (nearVoid && hAbove > 0.4 && player.onGround) danger.push('站在楼板的缺口/挑空边缘，随时可能掉下去');
+  else if (hAbove > 1.6 && player.onGround && !transit) danger.push(`站在离地 ${hAbove.toFixed(1)} 米的高处`);
+  if (nearVoid && hAbove > 0.4 && player.onGround && !transit) danger.push('站在楼板的缺口/挑空边缘，随时可能掉下去');
   if ((rs(rid)?.smoke ?? 0) > 0.3) danger.push(`在浓烟里（${rid} 烟雾浓度 ${(rs(rid)!.smoke * 100).toFixed(0)}%），在咳嗽`);
   if (player.underwaterT > 4) danger.push(`在水里憋气 ${player.underwaterT.toFixed(0)} 秒，快要溺水`);
   if (G.trapT >= 0 && G.trapT < 3) danger.push('被关在一个四面封死、没有出口的地方（他没有受伤，呼吸正常）');

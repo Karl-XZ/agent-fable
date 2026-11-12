@@ -14,6 +14,7 @@ export class Agent {
   events: AgentEvent[] = []; history: { role: string; text: string }[] = []; results: ToolResult[] = [];
   log: LogEntry[] = []; lastCall = -99; calls = 0; fails = 0; llmOk = 0; heartbeat = 12; enabled = true;
   canSpeak: () => boolean = () => true;
+  canInterrupt: () => boolean = () => true;
   query?: (call: ToolCall) => ToolResult;
   interaction: InteractionMemory;
   constructor(public perceive: () => Perception, public apply: (r: AgentReply, channel: string) => Promise<ToolResult[] | AppliedReply>, public now: () => number, public fallback: (events: AgentEvent[]) => AgentReply) { this.interaction = new InteractionMemory(now); }
@@ -26,11 +27,12 @@ export class Agent {
   }
   tick() {
     if (!this.enabled || this.busy) return;
-    const t = this.now(); const urgent = this.events.some(e => e.urgent);
+    const t = this.now(); const urgent = this.events.some(e => e.urgent && e.type === 'danger') && this.canInterrupt();
     if (!urgent && !this.canSpeak()) return;
     if ((urgent && t - this.lastCall > 1.2) || (this.events.length && t - this.lastCall > 3.2) || t - this.lastCall > this.heartbeat) this.run('building');
   }
   async run(channel: 'building' | 'console', consoleMsg?: string): Promise<AgentReply | null> {
+    if (channel === 'building' ? this.busy : this.consoleBusy) return null;
     if (channel === 'building') this.busy = true; else this.consoleBusy = true;
     this.lastCall = this.now();
     const evs = channel === 'building' ? this.events.splice(0) : [...this.events.slice(-6)];
@@ -56,7 +58,7 @@ export class Agent {
         if (!this.query) throw new Error('Navigation queries unavailable');
         for (const request of requests) queries.push(this.query(request));
         // A route query is internal deliberation: no premature voice or mutations.
-        if (round === 2) reply = { thought: reply.thought, say: '我先重新确认一下路线，请稍等。', mood: reply.mood, tools: [] };
+        if (round === 2) reply = { ...reply, say: p.state.interaction.guidance_allowed ? '我先重新确认一下路线，请稍等。' : '', tools: [] };
       }
     } catch (e) {
       this.fails++; source = 'rule'; reply = this.fallback(evs);

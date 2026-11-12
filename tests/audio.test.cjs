@@ -51,6 +51,13 @@ test('speech remains busy through playback, with captions notified only once aud
   assert.equal(audio.speechBusy, false); assert.deepEqual(events, ['start', 'end']);
 });
 
+test('playback telemetry distinguishes completion from replacement', async () => {
+  const {audio,sources}=setup(async()=>new Response(Uint8Array.from([0,64]),{headers:{'X-Audio-Sample-Rate':'24000'}}));
+  await audio.say('完整的一句');sources[0].onended();
+  await audio.say('会被打断的一句');await audio.say('紧急提醒');
+  const recent=audio.speechState.recent;assert.equal(recent[0].complete,true);assert.equal(recent[1].complete,false);assert.ok(recent[0].started_at<=recent[0].finished_at);assert.equal(audio.speechState.busy,true);
+});
+
 test('new utterance aborts the old fetch and stops already scheduled speech', async () => {
   const signals = [];
   const { audio, sources } = setup(async (_url, options) => {

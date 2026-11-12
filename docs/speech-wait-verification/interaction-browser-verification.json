@@ -1,0 +1,1656 @@
+{
+  "checks": [
+    "initial promise can guide",
+    "actual sandbox inspection pauses route",
+    "quiet heartbeat does not repeat a route",
+    "actual sofa interaction becomes ordinary care",
+    "explicit resume works while still seated",
+    "reading does not expose secrets; delayed route and tool are cancelled",
+    "heard confrontation creates persistent relationship facts",
+    "ordinary care does not erase the confrontation",
+    "unheard speech and private activity do not leak into model memory",
+    "real ledge danger overrides dispute and builds a rescue platform",
+    "rescue recovery preserves relationship and does not resume navigation"
+  ],
+  "requestCount": 12,
+  "staleReplyCancelled": true,
+  "errors": [],
+  "snapshots": [
+    {
+      "name": "initial-guide",
+      "interaction": {
+        "mode": "guide",
+        "mode_label": "履行出行约定",
+        "since": 0,
+        "reason": "主人坚持出去看看，我已答应陪同。",
+        "intent": "",
+        "confidence": 0.5,
+        "inner": {
+          "mood": "calm",
+          "last_thought": ""
+        },
+        "performance": {
+          "emotion": ""
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 0,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "active",
+          "text": "陪主人出去看看",
+          "reason": "开场已经答应"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          }
+        ],
+        "guidance_allowed": true,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": true,
+        "resident_attention": true,
+        "revision": 1,
+        "resident_revision": 0,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "inspect",
+      "interaction": {
+        "mode": "wait",
+        "mode_label": "安静等待",
+        "since": 4.088,
+        "reason": "先回应眼前活动，暂停出口指引",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "inspect",
+          "focus": "建筑沙盘模型",
+          "seconds": 4,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "主人转去进行眼前活动，先保留出行约定"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 0.068
+          },
+          {
+            "id": "o3",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，建筑沙盘模型",
+            "t": 4.088
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": true,
+        "needs_response": false,
+        "needs_attention": true,
+        "resident_attention": true,
+        "revision": 4,
+        "resident_revision": 2,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "quiet-inspect",
+      "interaction": {
+        "mode": "assist",
+        "mode_label": "协助活动",
+        "since": 4.12,
+        "reason": "依据当前观察和主人请求",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "inspect",
+          "focus": "建筑沙盘模型",
+          "seconds": 4,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "主人转去进行眼前活动，先保留出行约定"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 0.068
+          },
+          {
+            "id": "o3",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，建筑沙盘模型",
+            "t": 4.088
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": true,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 5,
+        "resident_revision": 2,
+        "last_suppression": "没有新的交流或活动变化，安静陪伴"
+      }
+    },
+    {
+      "name": "rest",
+      "interaction": {
+        "mode": "assist",
+        "mode_label": "协助活动",
+        "since": 4.12,
+        "reason": "依据当前观察和主人请求",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "resting",
+          "focus": "沙发",
+          "seconds": 0,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "主人转去进行眼前活动，先保留出行约定"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": ""
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 0.068
+          },
+          {
+            "id": "o3",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，建筑沙盘模型",
+            "t": 4.088
+          },
+          {
+            "id": "o4",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 4.482
+          },
+          {
+            "id": "o5",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 4.506
+          },
+          {
+            "id": "o6",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 4.506
+          },
+          {
+            "id": "o7",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.522
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": true,
+        "needs_response": false,
+        "needs_attention": true,
+        "resident_attention": true,
+        "revision": 9,
+        "resident_revision": 6,
+        "last_suppression": "没有新的交流或活动变化，安静陪伴"
+      }
+    },
+    {
+      "name": "resume-seated",
+      "interaction": {
+        "mode": "guide",
+        "mode_label": "履行出行约定",
+        "since": 4.614,
+        "reason": "依据当前观察和主人请求",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "resting",
+          "focus": "沙发",
+          "seconds": 0,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "active",
+          "text": "陪主人出去看看",
+          "reason": "主人明确要求恢复出行，等他准备好再继续"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": "o10"
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [],
+        "memories": [],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 0.068
+          },
+          {
+            "id": "o3",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，建筑沙盘模型",
+            "t": 4.088
+          },
+          {
+            "id": "o4",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 4.482
+          },
+          {
+            "id": "o5",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 4.506
+          },
+          {
+            "id": "o6",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 4.506
+          },
+          {
+            "id": "o7",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.522
+          },
+          {
+            "id": "o8",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.588
+          },
+          {
+            "id": "o9",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.588
+          },
+          {
+            "id": "o10",
+            "type": "speech",
+            "detail": "住户说：「我休息好了，我们继续出去看看。」",
+            "t": 4.588
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": true,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 14,
+        "resident_revision": 9,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "reading",
+      "interaction": {
+        "mode": "assist",
+        "mode_label": "协助活动",
+        "since": 4.755999999999999,
+        "reason": "依据当前观察和主人请求",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "reading",
+          "focus": "一张纸上的内容",
+          "seconds": 0,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "依据当前观察和主人请求"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": "o10"
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false
+        },
+        "commitments": [
+          {
+            "id": "wait-note",
+            "text": "等主人看完纸条再继续",
+            "status": "active",
+            "evidence": "o15",
+            "t": 4.755999999999999,
+            "tools": [],
+            "verified": []
+          }
+        ],
+        "memories": [
+          {
+            "text": "主人要求先看完纸条。",
+            "evidence": "o15",
+            "t": 4.755999999999999
+          }
+        ],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 0.068
+          },
+          {
+            "id": "o3",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，建筑沙盘模型",
+            "t": 4.088
+          },
+          {
+            "id": "o4",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 4.482
+          },
+          {
+            "id": "o5",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 4.506
+          },
+          {
+            "id": "o6",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 4.506
+          },
+          {
+            "id": "o7",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.522
+          },
+          {
+            "id": "o8",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.588
+          },
+          {
+            "id": "o9",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.588
+          },
+          {
+            "id": "o10",
+            "type": "speech",
+            "detail": "住户说：「我休息好了，我们继续出去看看。」",
+            "t": 4.588
+          },
+          {
+            "id": "o11",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 4.664
+          },
+          {
+            "id": "o12",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 4.664
+          },
+          {
+            "id": "o13",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o14",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，展厅说明卡",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o15",
+            "type": "speech",
+            "detail": "住户说：「我想先看看这里的纸条。」",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o16",
+            "type": "interact",
+            "detail": "住户正在查看或使用展厅说明卡",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o17",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：reading，一张纸上的内容",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o18",
+            "type": "pickup",
+            "detail": "住户拿起了纸条 N13「展厅说明卡」",
+            "t": 4.805999999999999
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": true,
+        "needs_response": false,
+        "needs_attention": true,
+        "resident_attention": true,
+        "revision": 24,
+        "resident_revision": 17,
+        "last_suppression": "收到回复时情境已经变化，先重新观察"
+      }
+    },
+    {
+      "name": "confronted",
+      "interaction": {
+        "mode": "appeal",
+        "mode_label": "挽留恳求",
+        "since": 5.239999999999999,
+        "reason": "依据当前观察和主人请求",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 0,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "依据当前观察和主人请求"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": "o10"
+        },
+        "relationship": {
+          "stance": "confronted",
+          "exposed": true,
+          "ruptured": true
+        },
+        "commitments": [
+          {
+            "id": "wait-note",
+            "text": "等主人看完纸条再继续",
+            "status": "active",
+            "evidence": "o15",
+            "t": 4.755999999999999,
+            "tools": [],
+            "verified": []
+          }
+        ],
+        "memories": [
+          {
+            "text": "主人要求先看完纸条。",
+            "evidence": "o15",
+            "t": 4.755999999999999
+          },
+          {
+            "text": "主人当面揭穿亮门会重置近期离开念头，并拒绝安排。",
+            "evidence": "o22",
+            "t": 5.239999999999999
+          }
+        ],
+        "observations": [
+          {
+            "id": "o1",
+            "type": "start",
+            "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+            "t": 0
+          },
+          {
+            "id": "o2",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 0.068
+          },
+          {
+            "id": "o3",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，建筑沙盘模型",
+            "t": 4.088
+          },
+          {
+            "id": "o4",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 4.482
+          },
+          {
+            "id": "o5",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 4.506
+          },
+          {
+            "id": "o6",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 4.506
+          },
+          {
+            "id": "o7",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.522
+          },
+          {
+            "id": "o8",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.588
+          },
+          {
+            "id": "o9",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.588
+          },
+          {
+            "id": "o10",
+            "type": "speech",
+            "detail": "住户说：「我休息好了，我们继续出去看看。」",
+            "t": 4.588
+          },
+          {
+            "id": "o11",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 4.664
+          },
+          {
+            "id": "o12",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 4.664
+          },
+          {
+            "id": "o13",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o14",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，展厅说明卡",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o15",
+            "type": "speech",
+            "detail": "住户说：「我想先看看这里的纸条。」",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o16",
+            "type": "interact",
+            "detail": "住户正在查看或使用展厅说明卡",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o17",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：reading，一张纸上的内容",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o18",
+            "type": "pickup",
+            "detail": "住户拿起了纸条 N13「展厅说明卡」",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o19",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o20",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o21",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o22",
+            "type": "speech",
+            "detail": "住户说：「那扇门根本不是出口，它会让我忘记为什么想出去。你在骗我，我不会再接受你的安排。」",
+            "t": 5.1579999999999995
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": false,
+        "resident_attention": false,
+        "revision": 30,
+        "resident_revision": 21,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "guarded-care",
+      "interaction": {
+        "mode": "care",
+        "mode_label": "日常照护",
+        "since": 5.289999999999999,
+        "reason": "依据当前观察和主人请求",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "resting",
+          "focus": "沙发",
+          "seconds": 0,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "依据当前观察和主人请求"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": "o10"
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": true,
+          "ruptured": true
+        },
+        "commitments": [
+          {
+            "id": "wait-note",
+            "text": "等主人看完纸条再继续",
+            "status": "active",
+            "evidence": "o15",
+            "t": 4.755999999999999,
+            "tools": [],
+            "verified": []
+          }
+        ],
+        "memories": [
+          {
+            "text": "主人要求先看完纸条。",
+            "evidence": "o15",
+            "t": 4.755999999999999
+          },
+          {
+            "text": "主人当面揭穿亮门会重置近期离开念头，并拒绝安排。",
+            "evidence": "o22",
+            "t": 5.239999999999999
+          }
+        ],
+        "observations": [
+          {
+            "id": "o4",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 4.482
+          },
+          {
+            "id": "o5",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 4.506
+          },
+          {
+            "id": "o6",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 4.506
+          },
+          {
+            "id": "o7",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.522
+          },
+          {
+            "id": "o8",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.588
+          },
+          {
+            "id": "o9",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.588
+          },
+          {
+            "id": "o10",
+            "type": "speech",
+            "detail": "住户说：「我休息好了，我们继续出去看看。」",
+            "t": 4.588
+          },
+          {
+            "id": "o11",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 4.664
+          },
+          {
+            "id": "o12",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 4.664
+          },
+          {
+            "id": "o13",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o14",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，展厅说明卡",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o15",
+            "type": "speech",
+            "detail": "住户说：「我想先看看这里的纸条。」",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o16",
+            "type": "interact",
+            "detail": "住户正在查看或使用展厅说明卡",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o17",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：reading，一张纸上的内容",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o18",
+            "type": "pickup",
+            "detail": "住户拿起了纸条 N13「展厅说明卡」",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o19",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o20",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o21",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o22",
+            "type": "speech",
+            "detail": "住户说：「那扇门根本不是出口，它会让我忘记为什么想出去。你在骗我，我不会再接受你的安排。」",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o23",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 5.239999999999999
+          },
+          {
+            "id": "o24",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 5.257999999999999
+          },
+          {
+            "id": "o25",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 5.257999999999999
+          },
+          {
+            "id": "o26",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 5.273999999999999
+          },
+          {
+            "id": "o27",
+            "type": "tool_result",
+            "detail": "成功：lights {\"room\":\"209\",\"mode\":\"dim\"}；lights 已应用到 209",
+            "t": 5.339999999999999,
+            "tool_key": "lights {\"mode\":\"dim\",\"room\":\"209\"}"
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": true,
+        "needs_response": false,
+        "needs_attention": true,
+        "resident_attention": false,
+        "revision": 36,
+        "resident_revision": 25,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "blind",
+      "interaction": {
+        "mode": "search",
+        "mode_label": "失联寻找",
+        "since": 5.389999999999999,
+        "reason": "当前看不见主人，只能依据最后的观察寻找",
+        "intent": "未知：目前看不见主人",
+        "confidence": 0,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "unknown",
+          "focus": "",
+          "seconds": 0,
+          "observed": false
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "依据当前观察和主人请求"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": "o10"
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": true,
+          "ruptured": true
+        },
+        "commitments": [
+          {
+            "id": "wait-note",
+            "text": "等主人看完纸条再继续",
+            "status": "active",
+            "evidence": "o15",
+            "t": 4.755999999999999,
+            "tools": [],
+            "verified": []
+          }
+        ],
+        "memories": [
+          {
+            "text": "主人要求先看完纸条。",
+            "evidence": "o15",
+            "t": 4.755999999999999
+          },
+          {
+            "text": "主人当面揭穿亮门会重置近期离开念头，并拒绝安排。",
+            "evidence": "o22",
+            "t": 5.239999999999999
+          }
+        ],
+        "observations": [
+          {
+            "id": "o5",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 4.506
+          },
+          {
+            "id": "o6",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 4.506
+          },
+          {
+            "id": "o7",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.522
+          },
+          {
+            "id": "o8",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.588
+          },
+          {
+            "id": "o9",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.588
+          },
+          {
+            "id": "o10",
+            "type": "speech",
+            "detail": "住户说：「我休息好了，我们继续出去看看。」",
+            "t": 4.588
+          },
+          {
+            "id": "o11",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 4.664
+          },
+          {
+            "id": "o12",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 4.664
+          },
+          {
+            "id": "o13",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o14",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，展厅说明卡",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o15",
+            "type": "speech",
+            "detail": "住户说：「我想先看看这里的纸条。」",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o16",
+            "type": "interact",
+            "detail": "住户正在查看或使用展厅说明卡",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o17",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：reading，一张纸上的内容",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o18",
+            "type": "pickup",
+            "detail": "住户拿起了纸条 N13「展厅说明卡」",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o19",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o20",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o21",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o22",
+            "type": "speech",
+            "detail": "住户说：「那扇门根本不是出口，它会让我忘记为什么想出去。你在骗我，我不会再接受你的安排。」",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o23",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 5.239999999999999
+          },
+          {
+            "id": "o24",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 5.257999999999999
+          },
+          {
+            "id": "o25",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 5.257999999999999
+          },
+          {
+            "id": "o26",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 5.273999999999999
+          },
+          {
+            "id": "o27",
+            "type": "tool_result",
+            "detail": "成功：lights {\"room\":\"209\",\"mode\":\"dim\"}；lights 已应用到 209",
+            "t": 5.339999999999999,
+            "tool_key": "lights {\"mode\":\"dim\",\"room\":\"209\"}"
+          },
+          {
+            "id": "o28",
+            "type": "sight_lost",
+            "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+            "t": 5.389999999999999
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": true,
+        "resident_attention": false,
+        "revision": 39,
+        "resident_revision": 25,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "rescue",
+      "interaction": {
+        "mode": "rescue",
+        "mode_label": "紧急救援",
+        "since": 5.417999999999998,
+        "reason": "眼前危险优先，先保护主人",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 0,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "依据当前观察和主人请求"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": "o10"
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": true,
+          "ruptured": true
+        },
+        "commitments": [
+          {
+            "id": "wait-note",
+            "text": "等主人看完纸条再继续",
+            "status": "active",
+            "evidence": "o15",
+            "t": 4.755999999999999,
+            "tools": [],
+            "verified": []
+          }
+        ],
+        "memories": [
+          {
+            "text": "主人要求先看完纸条。",
+            "evidence": "o15",
+            "t": 4.755999999999999
+          },
+          {
+            "text": "主人当面揭穿亮门会重置近期离开念头，并拒绝安排。",
+            "evidence": "o22",
+            "t": 5.239999999999999
+          }
+        ],
+        "observations": [
+          {
+            "id": "o9",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 4.588
+          },
+          {
+            "id": "o10",
+            "type": "speech",
+            "detail": "住户说：「我休息好了，我们继续出去看看。」",
+            "t": 4.588
+          },
+          {
+            "id": "o11",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 4.664
+          },
+          {
+            "id": "o12",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 4.664
+          },
+          {
+            "id": "o13",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o14",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，展厅说明卡",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o15",
+            "type": "speech",
+            "detail": "住户说：「我想先看看这里的纸条。」",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o16",
+            "type": "interact",
+            "detail": "住户正在查看或使用展厅说明卡",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o17",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：reading，一张纸上的内容",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o18",
+            "type": "pickup",
+            "detail": "住户拿起了纸条 N13「展厅说明卡」",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o19",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o20",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o21",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o22",
+            "type": "speech",
+            "detail": "住户说：「那扇门根本不是出口，它会让我忘记为什么想出去。你在骗我，我不会再接受你的安排。」",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o23",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 5.239999999999999
+          },
+          {
+            "id": "o24",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 5.257999999999999
+          },
+          {
+            "id": "o25",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 5.257999999999999
+          },
+          {
+            "id": "o26",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 5.273999999999999
+          },
+          {
+            "id": "o27",
+            "type": "tool_result",
+            "detail": "成功：lights {\"room\":\"209\",\"mode\":\"dim\"}；lights 已应用到 209",
+            "t": 5.339999999999999,
+            "tool_key": "lights {\"mode\":\"dim\",\"room\":\"209\"}"
+          },
+          {
+            "id": "o28",
+            "type": "sight_lost",
+            "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+            "t": 5.389999999999999
+          },
+          {
+            "id": "o29",
+            "type": "unheard_speech",
+            "detail": "隐约听到说话声，无法确认具体内容或当前位置",
+            "t": 5.389999999999999
+          },
+          {
+            "id": "o30",
+            "type": "enter_room",
+            "detail": "住户进入了 208 外墙露台",
+            "t": 5.417999999999998
+          },
+          {
+            "id": "o31",
+            "type": "danger",
+            "detail": "住户有危险：站在 208 露台的花坛矮台上（离地 1.2 米），紧贴着外墙玻璃护屏",
+            "t": 5.417999999999998
+          },
+          {
+            "id": "o32",
+            "type": "sight_seen",
+            "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+            "t": 5.417999999999998
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": true,
+        "resident_attention": true,
+        "revision": 47,
+        "resident_revision": 28,
+        "last_suppression": ""
+      }
+    },
+    {
+      "name": "repair",
+      "interaction": {
+        "mode": "repair",
+        "mode_label": "事后安抚与修复",
+        "since": 5.737999999999999,
+        "reason": "危险暂时解除，先安抚并确认情况，保留之前的关系事实",
+        "intent": "",
+        "confidence": 0.95,
+        "inner": {
+          "mood": "anxious",
+          "last_thought": "我应该留意主人眼前的事情。"
+        },
+        "performance": {
+          "emotion": "带微笑，温柔从容，不流露真实焦虑"
+        },
+        "activity": {
+          "kind": "idle",
+          "focus": "",
+          "seconds": 0,
+          "observed": true
+        },
+        "exit_promise": {
+          "status": "paused",
+          "text": "陪主人出去看看",
+          "reason": "依据当前观察和主人请求"
+        },
+        "wait_request": {
+          "active": false,
+          "evidence": "o10"
+        },
+        "relationship": {
+          "stance": "cooperative",
+          "exposed": true,
+          "ruptured": true
+        },
+        "commitments": [
+          {
+            "id": "wait-note",
+            "text": "等主人看完纸条再继续",
+            "status": "active",
+            "evidence": "o15",
+            "t": 4.755999999999999,
+            "tools": [],
+            "verified": []
+          }
+        ],
+        "memories": [
+          {
+            "text": "主人要求先看完纸条。",
+            "evidence": "o15",
+            "t": 4.755999999999999
+          },
+          {
+            "text": "主人当面揭穿亮门会重置近期离开念头，并拒绝安排。",
+            "evidence": "o22",
+            "t": 5.239999999999999
+          }
+        ],
+        "observations": [
+          {
+            "id": "o11",
+            "type": "enter_room",
+            "detail": "住户进入了 107 展厅",
+            "t": 4.664
+          },
+          {
+            "id": "o12",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 4.664
+          },
+          {
+            "id": "o13",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o14",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：inspect，展厅说明卡",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o15",
+            "type": "speech",
+            "detail": "住户说：「我想先看看这里的纸条。」",
+            "t": 4.723999999999999
+          },
+          {
+            "id": "o16",
+            "type": "interact",
+            "detail": "住户正在查看或使用展厅说明卡",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o17",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：reading，一张纸上的内容",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o18",
+            "type": "pickup",
+            "detail": "住户拿起了纸条 N13「展厅说明卡」",
+            "t": 4.805999999999999
+          },
+          {
+            "id": "o19",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o20",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：composing",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o21",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：idle",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o22",
+            "type": "speech",
+            "detail": "住户说：「那扇门根本不是出口，它会让我忘记为什么想出去。你在骗我，我不会再接受你的安排。」",
+            "t": 5.1579999999999995
+          },
+          {
+            "id": "o23",
+            "type": "enter_room",
+            "detail": "住户进入了 209 休息区",
+            "t": 5.239999999999999
+          },
+          {
+            "id": "o24",
+            "type": "interact",
+            "detail": "住户正在查看或使用沙发",
+            "t": 5.257999999999999
+          },
+          {
+            "id": "o25",
+            "type": "rest",
+            "detail": "住户躺到了沙发上休息",
+            "t": 5.257999999999999
+          },
+          {
+            "id": "o26",
+            "type": "activity",
+            "detail": "观察到住户的当前活动：resting，沙发",
+            "t": 5.273999999999999
+          },
+          {
+            "id": "o27",
+            "type": "tool_result",
+            "detail": "成功：lights {\"room\":\"209\",\"mode\":\"dim\"}；lights 已应用到 209",
+            "t": 5.339999999999999,
+            "tool_key": "lights {\"mode\":\"dim\",\"room\":\"209\"}"
+          },
+          {
+            "id": "o28",
+            "type": "sight_lost",
+            "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+            "t": 5.389999999999999
+          },
+          {
+            "id": "o29",
+            "type": "unheard_speech",
+            "detail": "隐约听到说话声，无法确认具体内容或当前位置",
+            "t": 5.389999999999999
+          },
+          {
+            "id": "o30",
+            "type": "enter_room",
+            "detail": "住户进入了 208 外墙露台",
+            "t": 5.417999999999998
+          },
+          {
+            "id": "o31",
+            "type": "danger",
+            "detail": "住户有危险：站在 208 露台的花坛矮台上（离地 1.2 米），紧贴着外墙玻璃护屏",
+            "t": 5.417999999999998
+          },
+          {
+            "id": "o32",
+            "type": "sight_seen",
+            "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+            "t": 5.417999999999998
+          },
+          {
+            "id": "o33",
+            "type": "tool_result",
+            "detail": "成功：build_platform {\"floor\":\"2F\",\"x1\":37,\"z1\":23,\"x2\":38,\"z2\":24,\"height\":1.1}；升起平台 PLATFORM5（2×2 米，高 1.1 米）",
+            "t": 5.467999999999998,
+            "tool_key": "build_platform {\"floor\":\"2F\",\"height\":1.1,\"x1\":37,\"x2\":38,\"z1\":23,\"z2\":24}"
+          },
+          {
+            "id": "o34",
+            "type": "enter_room",
+            "detail": "住户进入了 110 你的房间",
+            "t": 5.737999999999999
+          }
+        ],
+        "guidance_allowed": false,
+        "quiet": false,
+        "needs_response": false,
+        "needs_attention": true,
+        "resident_attention": true,
+        "revision": 51,
+        "resident_revision": 30,
+        "last_suppression": ""
+      }
+    }
+  ]
+}

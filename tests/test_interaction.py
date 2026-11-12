@@ -101,3 +101,30 @@ def test_current_sight_loss_overrides_old_sofa_history_in_prompt():
     assert '【这一轮的感知事实】' in prompt
     assert '本轮选择search' in prompt
     assert '不得断言主人仍躺着' in prompt
+
+
+def test_waiting_is_a_grounded_durable_request_and_darkness_does_not_cancel_it():
+    from interaction import normalize_interaction, interaction_context
+    state = context(wait_request={'active': True})
+    state['player'] = {'visible': False}
+    prompt = interaction_context(state)
+    assert 'wait_request' in prompt and '关灯' in prompt
+    assert '本轮选择search' not in prompt
+    decision = {'mode':'wait','wait_request':'begin','confidence':.9,'evidence':['e1']}
+    assert normalize_interaction(decision, context())['wait_request'] == 'begin'
+    assert normalize_interaction(decision, context(), 'console')['wait_request'] == 'keep'
+    decision['evidence']=['invented']
+    assert normalize_interaction(decision, context())['wait_request'] == 'keep'
+
+
+def test_health_identifies_the_current_interaction_protocol():
+    import asyncio
+    assert asyncio.run(game.health())['interaction_protocol'] == 2
+
+
+def test_jing_addresses_objections_without_a_body_or_turning_every_answer_into_a_route():
+    from interaction import interaction_context
+    prompt=interaction_context(context())
+    assert '没有可供主人定位的身体' in prompt
+    assert '具体异议' in prompt
+    assert '临时查询' in prompt

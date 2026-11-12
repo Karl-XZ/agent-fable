@@ -1,0 +1,22 @@
+{
+  "stage": "03-pre-character-card",
+  "label": "语音队列与持续等待修复，尚未加入角色卡",
+  "original_remote_commit": "7754911837483d81ed722d1027db1f656636a3cb",
+  "reconstruction": {
+    "source": "04-character-card",
+    "overlays": [
+      "app.py",
+      "README.md",
+      "tests/run-interaction-tests.cjs",
+      "web/index.html",
+      "web/package.json",
+      "web/src/agent.ts",
+      "web/src/main.ts",
+      "web/src/style.css"
+    ]
+  },
+  "shared_files": "Unchanged files inherit from the next newer snapshot; this is not an exact whole-directory historical archive.",
+  "test_adjustments": [
+    "Removed the browser-card inference-metadata test, introduced after this checkpoint."
+  ]
+}

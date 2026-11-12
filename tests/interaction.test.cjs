@@ -12,6 +12,65 @@ const reply = (interaction, say = '我在这里。', tools = []) => ({ thought: 
 test('catalog covers all fifteen approved modes', () => {
   assert.deepEqual([...INTERACTION_MODES].sort(), ['care','chat','assist','guide','wait','clarify','probe','conceal','negotiate','guard','restrain','appeal','search','rescue','repair'].sort());
 });
+
+test('a heard conversation pauses ongoing exit guidance before its intent is classified', () => {
+  const f=fixture();f.memory.recordEvent('speech','住户说：我想先做点别的事情');
+  assert.equal(f.view().guidance_allowed,false);assert.equal(f.view().exit_promise.status,'paused');
+});
+
+test('a requested quiet rest survives walking, room events and deliberate darkness', () => {
+  const f=fixture();const e=f.memory.recordEvent('speech','住户说：我休息一会儿，别吵我，关灯');let c=f.view();
+  const ack=f.memory.reconcile(reply({mode:'care',wait_request:'begin',evidence:[e.id],confidence:.95},'好的，您安心休息。',[{name:'lights',args:{room:'110',mode:'off'}}]),c.revision);
+  assert.ok(ack.say);assert.equal(f.view().mode,'wait');assert.equal(f.view().wait_request.active,true);
+  f.memory.recordResults([{ok:true,label:'lights',msg:'灯已关',call:{name:'lights',args:{room:'110',mode:'off'}}}]);
+  f.state.player={visible:false,last_seen:{room:'110'}};f.time(30);f.memory.recordEvent('player_lost','已经25秒没有画面');c=f.view();
+  const repeat=f.memory.reconcile(reply({mode:'search'},'我给您开灯看看。',[{name:'lights',args:{room:'110',mode:'on'}}]),c.revision);
+  assert.equal(repeat.say,'');assert.deepEqual(repeat.tools,[]);assert.equal(f.view().mode,'wait');
+  assert.equal(f.view().activity.kind,'unknown');
+  f.state.player={visible:true,danger:[]};f.memory.observeActivity('walking','',true);f.time(40);f.memory.observeActivity('walking','',true);f.memory.recordEvent('enter_room','主人进入了别的房间');c=f.view();
+  const next=f.memory.reconcile(reply({mode:'care'},'累了吗？我陪您休息。'),c.revision);assert.equal(next.say,'');
+});
+
+test('a new question gets one answer without silently ending the quiet request; genuine danger still overrides', () => {
+  const f=fixture();let e=f.memory.recordEvent('speech','我想休息，别吵');let c=f.view();
+  f.memory.reconcile(reply({mode:'wait',wait_request:'begin',evidence:[e.id],confidence:.95},'好的。'),c.revision);
+  e=f.memory.recordEvent('speech','现在几点了？');c=f.view();
+  const answer=f.memory.reconcile(reply({mode:'chat',evidence:[e.id]},'现在是下午。'),c.revision);assert.ok(answer.say);assert.equal(f.view().wait_request.active,true);
+  f.time(20);c=f.view();assert.equal(f.memory.reconcile(reply({mode:'care'},'我还在这里。'),c.revision).say,'');
+  f.state.player.danger=['在水里憋气 5 秒，快要溺水'];c=f.view();
+  assert.ok(f.memory.reconcile(reply({mode:'rescue'},'别动，我把水排掉。',[{name:'water_level',args:{level:0}}]),c.revision).tools.length);
+  f.state.player.danger=[];f.view();assert.equal(f.view().wait_request.active,true);
+  e=f.memory.recordEvent('speech','休息好了，我们继续出去看看');c=f.view();
+  f.memory.reconcile(reply({mode:'guide',exit_promise:'resume',wait_request:'end',evidence:[e.id],confidence:.95},'好的。'),c.revision);assert.equal(f.view().wait_request.active,false);
+});
+
+test('only a current heard request can begin or end durable waiting', () => {
+  const f=fixture();let c=f.view();f.memory.reconcile(reply({mode:'wait',wait_request:'begin',evidence:['invented'],confidence:1}),c.revision);assert.equal(f.view().wait_request.active,false);
+  const e=f.memory.recordEvent('speech','我休息一下');c=f.view();f.memory.reconcile(reply({mode:'wait',wait_request:'begin',evidence:[e.id],confidence:.95}),c.revision);
+  f.memory.recordEvent('enter_room','走到另一个房间');c=f.view();f.memory.reconcile(reply({mode:'guide',wait_request:'end',evidence:[e.id],confidence:1}),c.revision);assert.equal(f.view().wait_request.active,true);
+});
+
+test('sustained movement away pauses the trip without treating it as hostility', () => {
+  const f=fixture();f.memory.observeRoute(10,'exit');f.time(1);f.memory.observeRoute(11,'exit');assert.equal(f.view().exit_promise.status,'active');
+  f.time(4);f.memory.observeRoute(15,'exit');const c=f.view();assert.equal(c.exit_promise.status,'paused');assert.equal(c.guidance_allowed,false);assert.equal(c.relationship.ruptured,false);
+});
+
+test('a changed navigation goal or geometry is not mistaken for movement away', () => {
+  const f=fixture();f.memory.observeRoute(5,'exit:geometry1');f.time(5);f.memory.observeRoute(20,'exit:geometry2');assert.equal(f.view().exit_promise.status,'active');
+});
+
+test('successful tool receipts do not produce a second spoken answer to the same request',()=>{
+  const f=fixture();const e=f.memory.recordEvent('speech','帮我把灯调暗');let c=f.view();
+  f.memory.reconcile(reply({mode:'assist',evidence:[e.id]},'好的，灯给您调暗。',[{name:'lights',args:{room:'110',mode:'dim'}}]),c.revision);
+  f.memory.recordResults([{ok:true,label:'lights',msg:'已调暗',call:{name:'lights',args:{room:'110',mode:'dim'}}}]);c=f.view();
+  const duplicate=f.memory.reconcile(reply({mode:'care'},'好的，已经调暗了。'),c.revision);assert.equal(duplicate.say,'');
+});
+
+test('an expired danger event cannot keep speaking or building after the actual danger clears',()=>{
+  const f=fixture();f.memory.recordEvent('danger','较早经过高处，当前已经站稳');const c=f.view();
+  const out=f.memory.reconcile(reply({mode:'rescue'},'别动，我给您铺台子。',[{name:'build_platform',args:{height:2}}]),c.revision);
+  assert.equal(out.say,'');assert.deepEqual(out.tools,[]);assert.notEqual(out.interaction.mode,'rescue');
+});
 test('a brief glance does not churn modes; sustained inspection pauses the promise', () => {
   const f = fixture(); assert.equal(f.view().exit_promise.status, 'active');
   f.memory.observeActivity('inspect', '建筑沙盘', true); f.time(1); f.memory.observeActivity('walking', '', true);

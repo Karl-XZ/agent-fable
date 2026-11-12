@@ -1,0 +1,51 @@
+{
+  "targetBefore": {
+    "floor": "1F",
+    "x": 38.5,
+    "z": 24.5,
+    "allow_locked": false
+  },
+  "targetAfter": {
+    "floor": "1F",
+    "x": 38.5,
+    "z": 24.5,
+    "allow_locked": false
+  },
+  "queryTarget": {
+    "door": "D208W",
+    "allow_locked": false,
+    "floor": "2F"
+  },
+  "stair": {
+    "position": [
+      34.1,
+      2,
+      14.5
+    ],
+    "onGround": true,
+    "tag": "struct",
+    "id": "ST_MAIN",
+    "kind": "stairs",
+    "visible": true,
+    "room": "1S 楼梯间",
+    "floor": "1F",
+    "x": 34.1,
+    "z": 14.5,
+    "height_above_floor": 2,
+    "posture": "stand",
+    "holding": null,
+    "danger": [],
+    "injured": false,
+    "underwater_s": 0,
+    "swimming": false,
+    "heading_degrees": 270,
+    "facing": "西"
+  },
+  "dangerWhileTyping": {
+    "mode": "chat",
+    "danger": [
+      "站在 208 露台的花坛矮台上（离地 1.2 米），紧贴着外墙玻璃护屏"
+    ],
+    "canInterrupt": true
+  }
+}

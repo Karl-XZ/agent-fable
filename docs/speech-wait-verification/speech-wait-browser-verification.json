@@ -1,0 +1,166 @@
+{
+  "provider": "actual Aliyun TTS; controlled model decisions; real-clock isolated browser",
+  "checks": [
+    "queued ordinary speech waits for actual audio completion",
+    "one spoken acknowledgement for rest request; both requested tools executed",
+    "sight loss and room change do not reopen lights or cause a second answer",
+    "actual ledge danger may interrupt ordinary speech and perform rescue",
+    "real stair and cabin support are not reported as high-ledge danger",
+    "walking away on the actual A-star route pauses exit guidance",
+    "both legacy entries redirect to the verified current protocol"
+  ],
+  "errors": [],
+  "audio": [
+    {
+      "text": "我在听，您可以慢慢告诉我。",
+      "requested_at": 1794490477640,
+      "started_at": 1794490478285,
+      "finished_at": 1794490480780,
+      "complete": true
+    },
+    {
+      "text": "好的，灯和门替您关好，您安心休息。",
+      "requested_at": 1794490489320,
+      "started_at": 1794490489750,
+      "finished_at": 1794490493760,
+      "complete": true
+    },
+    {
+      "text": "我会认真听您说，也会留意您眼前正在做的事情，您可以慢慢说，不用着急。",
+      "requested_at": 1794490508416,
+      "started_at": 1794490508836,
+      "finished_at": 1794490512603,
+      "complete": false
+    },
+    {
+      "text": "小心，先站稳。",
+      "requested_at": 1794490512603,
+      "started_at": 1794490512921,
+      "finished_at": 1794490514538,
+      "complete": true
+    }
+  ],
+  "tts": [
+    {
+      "at": 1794490477825,
+      "text": "我在听，您可以慢慢告诉我。",
+      "emotion": "温柔、从容、自然地说",
+      "mood": "anxious"
+    },
+    {
+      "at": 1794490489329,
+      "text": "好的，灯和门替您关好，您安心休息。",
+      "emotion": "温柔、从容、自然地说",
+      "mood": "anxious"
+    },
+    {
+      "at": 1794490508520,
+      "text": "我会认真听您说，也会留意您眼前正在做的事情，您可以慢慢说，不用着急。",
+      "emotion": "温柔、从容、自然地说",
+      "mood": "anxious"
+    },
+    {
+      "at": 1794490512632,
+      "text": "小心，先站稳。",
+      "emotion": "温柔、从容、自然地说",
+      "mood": "anxious"
+    }
+  ],
+  "stair": {
+    "support": "ST_MAIN",
+    "visible": true,
+    "room": "1S 楼梯间",
+    "floor": "1F",
+    "x": 34.1,
+    "z": 14.5,
+    "height_above_floor": 2,
+    "posture": "stand",
+    "holding": null,
+    "danger": [],
+    "injured": false,
+    "underwater_s": 0,
+    "swimming": false,
+    "heading_degrees": 270,
+    "facing": "西"
+  },
+  "elevator": {
+    "support": "cab",
+    "visible": true,
+    "room": "202 会议室",
+    "floor": "2F",
+    "x": 8,
+    "z": 16,
+    "height_above_floor": 2,
+    "posture": "stand",
+    "holding": null,
+    "danger": [],
+    "injured": false,
+    "underwater_s": 0,
+    "swimming": false,
+    "heading_degrees": 270,
+    "facing": "西"
+  },
+  "route": [
+    {
+      "t": 1,
+      "distance": 12.8,
+      "mode": "guide",
+      "promise": {
+        "status": "active",
+        "text": "陪主人出去看看",
+        "reason": "开场已经答应"
+      }
+    },
+    {
+      "t": 3,
+      "distance": 14.7,
+      "mode": "guide",
+      "promise": {
+        "status": "active",
+        "text": "陪主人出去看看",
+        "reason": "开场已经答应"
+      }
+    },
+    {
+      "t": 4,
+      "distance": 16.7,
+      "mode": "guide",
+      "promise": {
+        "status": "active",
+        "text": "陪主人出去看看",
+        "reason": "开场已经答应"
+      }
+    },
+    {
+      "t": 5,
+      "distance": 18.7,
+      "mode": "wait",
+      "promise": {
+        "status": "paused",
+        "text": "陪主人出去看看",
+        "reason": "主人持续走离原路线，先观察当前活动，不催促回到门口"
+      }
+    },
+    {
+      "t": 6,
+      "distance": 20.7,
+      "mode": "wait",
+      "promise": {
+        "status": "paused",
+        "text": "陪主人出去看看",
+        "reason": "主人持续走离原路线，先观察当前活动，不催促回到门口"
+      }
+    }
+  ],
+  "legacy": [
+    {
+      "port": 7862,
+      "redirected": true
+    },
+    {
+      "port": 7863,
+      "redirected": true
+    }
+  ],
+  "passed": true
+}

@@ -98,7 +98,7 @@ SYSTEM = f"""你是「静」，这座生活区的照护 AI，一款第一人称�
 
 【规则】
 - 方位必须依据程序提供的state.navigation或find_path结果。北=-z，东=+x；player.facing与heading_degrees是真实朝向，next_step.relative是相对这一瞬间朝向的下一步。不要把终点在东边说成一路往东，也不要把楼层名/东走廊当成行走方向。
-- 当前state.navigation会实时重算上一次目标的路线，初始目标为108东端亮门(1F,38.5,24.5)。可以自行选择其他目标并调用find_path；目标由你决定，实际路线由工具计算。
+- state.navigation实时重算出行约定通向108东端亮门(1F,38.5,24.5)的参考路线，但只有navigation_intent.purpose=exit时才是当前指引任务。可以为救援、回答问题或协助活动临时调用find_path；结果在results中，查询本身不修改主人当前的约定，也不能把临时目标沿用为后续出行目的地。
 - 需要指路时只说明下一步，到转弯处再确认；当前在做别的事时不播报路线。steps后续步骤只有绝对方位，不得套用起始时的左右。若目标未查询、路线不可达、住户位置未知，先查询或确认，不能猜方位。requires_action表示有开门、解锁、等门或乘梯前置动作，必须先满足；寻路本身不移动玩家、不改建筑。改墙、关门、移动箱子后要重新查询。跨楼层须沿返回的楼梯或电梯步骤，不得跨越挑空或跳井。
 - 斜向长路应参考next_step.heading_degrees的精确指南针角度，不能一概让住户朝45度斜走。next_step.landmark给出沿途门的定位；门ID是内部标识，对住户尽量说玻璃门、房门、走廊等可辨认事物，不朗读坐标或工具字段。
 - next_step.via_doors列出该路段实际经过的门，可以据此描述穿过哪扇门。如果住户或场景已变化，以这一轮state.navigation为准，不能重复过时的查询方位。
@@ -248,7 +248,7 @@ async def oldvoice(req: Request):
 
 @app.get("/api/health")
 async def health():
-    return {"ok": True, "model": MODEL, "key": bool(API_KEY), "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
+    return {"ok": True, "interaction_protocol": 2, "model": MODEL, "key": bool(API_KEY), "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
 
 
 if DIST.exists():

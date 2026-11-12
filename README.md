@@ -1,6 +1,6 @@
 # Agent的寓言
 
-> 当前恢复节点：15 种互动模式初版。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
+> 当前恢复节点：语音队列与持续等待修复，尚未加入角色卡。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
 
 第一人称 3D 逃离游戏。你一直舒适地住在管家AI「静」安排的屋子里，直到有一天想出去看看。她勉强答应指路，却把你引向一扇会让你忘记离开念头的门。
 
@@ -105,5 +105,9 @@ DASHSCOPE_TTS_VOICE=longanhuan_v3.1
 静根据当前活动决定陪伴、协助、等待、试探、掩饰、协商、阻拦或救援。看展品、阅读、休息等会暂停出行；明确请求可以恢复约定。线索披露进度不等于静知道玩家已经识破；已经发生的摊牌不会因为恢复照护而消失。失联时只保留最后已知线索，实际危险优先于争执。坐着或躺着时，寻路先返回 `stand_up` 前置条件。
 
 空台词是有效的安静陪伴决策。旧回复和尚未执行的动作会在玩家活动变化后停止，未送达的台词不写成已说过；物理承诺须有匹配操作及目标的成功结果才能记为完成。上述内部状态不显示为 HUD 心情标签。
+
+本地当前版本入口为 `http://127.0.0.1:7864/`；旧的 7862/7863 页面刷新后会检查交互协议并跳转。运行中的旧页面需要刷新一次，才能加载新脚本。`/api/health` 的 `interaction_protocol` 应为 `2`。
+
+明确要求休息或不要打扰时，`wait_request` 保存持续等待约定；换房间、关灯失去画面和工具回执不会自动取消它。新问题只回应一次，明确恢复行程才解除等待。普通事件须等实际语音播放完成，只有眼前真实危险可以打断；请求中的 `state.speech` 记录最近六句的实际开始、结束和完成状态。临时 `find_path` 仅查询，不覆盖出行目标；持续走离原路线会暂停引导。正常楼梯和电梯轿厢的支撑不作为高处危险。最新针对性验收见 `docs/静的互动修复验收.html`。
 
 新增行为回归：`node tests/run-interaction-tests.cjs`。后台浏览器脚本为 `tests/verify-interaction-browser.cjs`，真实模型脚本为 `tests/verify-interaction-live.py`，实际阿里云音频验证为 `tests/verify-interaction-audio.cjs`；浏览器脚本需要设置 `FABLE_PLAYWRIGHT` 与 `FABLE_CHROMIUM`，默认使用独立的本地测试端口 7862。真实寻路续轮可以先运行 `node tests/behavior-navigation-bridge.cjs`，再运行 `python tests/verify-interaction-live.py --navigation-bridge http://127.0.0.1:7962`。详细场景、截图与测试边界见 `docs/静的情境互动验收.html`。
