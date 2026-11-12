@@ -1,0 +1,11 @@
+{
+  "stage": "05-responsive-care",
+  "label": "最新人设、响应和照护修复",
+  "original_remote_commit": "7754911837483d81ed722d1027db1f656636a3cb",
+  "reconstruction": {
+    "source": "current local project",
+    "overlays": []
+  },
+  "shared_files": "Unchanged files inherit from the next newer snapshot; this is not an exact whole-directory historical archive.",
+  "test_adjustments": []
+}

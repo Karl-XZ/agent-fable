@@ -2,8 +2,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { Agent } = require('../.runtime/agent-behavior-test.cjs');
 
-test('heard speech and sight loss wait for the current voice instead of interrupting it', () => {
-  for(const type of ['speech','player_lost','board']){
+test('ambient observations wait for the current voice', () => {
+  for(const type of ['player_lost','board']){
     let calls=0;
     const a=new Agent(()=>({state:{player:{visible:true,danger:[]}},ascii:''}),async()=>[],()=>20,()=>({say:'',tools:[]}));
     a.canSpeak=()=>false;a.run=async()=>{calls++;};a.push(type,'需要回应的新事件',true);a.tick();

@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "editor locked before the first escape",
+    "another ending does not unlock character editing",
+    "escape unlocks at settlement only, with a settlement notice",
+    "typing is isolated; Escape cancels drafts; saving uses only localStorage",
+    "personal fields are sent only with subsequent inference, outside sensed state",
+    "refresh retains the card; cancelled reset preserves it; saved reset retains unlock",
+    "another isolated browser profile has neither unlock nor overrides"
+  ],
+  "errors": [],
+  "passed": true
+}

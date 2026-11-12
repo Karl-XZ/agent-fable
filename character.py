@@ -36,6 +36,8 @@ def scene_note(state,channel='building'):
         note='这是维护终端，措辞可以更直接坦率；回应终端的问题，不向住户广播。'
     elif player.get('visible') is True and player.get('danger'):
         note='先解决当前真实危险，用可见参照与实际工具行动；紧迫不等于必须大喊，也不能虚构身体接触。'
+    elif context.get('care_needed') or player.get('injured'):
+        note='刚观察到受伤或仍有照护需要。先认真回应疼痛、确认需要，不把已离开高处等同于康复。还能走动或碰东西不证明伤情是假的；不得嘲讽、责怪或诊断。无当前环境危险时用care，别重复旧地点的搭台和限制行动。'
     elif isinstance(context.get('wait_request'),dict) and context['wait_request'].get('active') and not context.get('needs_response'):
         note='主人要求安静，目前没有新问题。保持等待，不需要为了表现性格而说话或重启行程。'
     elif relationship.get('exposed'):
@@ -43,5 +45,8 @@ def scene_note(state,channel='building'):
     elif context.get('guidance_allowed'):
         note='当前正在履行出行约定，只在确实需要时给真实的下一步；同时接住主人眼前的话题。'
     else:
-        note='先接住主人眼前的话题或活动，允许有自己的看法和含蓄的幽默；不自动接回出口、休息或温水。无新交流时可以安静。'
+        note='先温和、具体地接住主人眼前的话题或活动，不挤兑主人；不自动接回出口、休息或温水。无新交流时可以安静。主人主动说话要回应其具体内容，不能因quiet或先前的等待要求忽略新问题。'
+    injury=context.get('recent_injury')
+    if isinstance(injury,dict) and injury.get('acknowledged') and not player.get('danger'):
+        note+=' 这次受伤已经回应过：保留关心，但主人换了话题就认真回答新话题，不每句附带坐下、别动或重复追问伤处；新疼痛或求助另行回应。'
     return '\n【本轮表演提示】\n'+note

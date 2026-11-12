@@ -5,6 +5,12 @@ import app as game
 from test_narrative import request
 
 
+def test_injury_performance_prioritizes_care_without_inventing_recovery_from_movement():
+    from character import scene_note, DEFAULT_CARD
+    note=scene_note({'player':{'visible':True,'injured':False},'interaction':{'care_needed':True}})
+    assert '受伤' in note and '走动' in note and '嘲讽' in note
+    assert '温柔' in DEFAULT_CARD['fields']['personality']
+    assert '带一点自负' not in DEFAULT_CARD['fields']['personality']
 
 
 def test_default_card_is_complete_and_overrides_cannot_change_identity_or_other_requests():

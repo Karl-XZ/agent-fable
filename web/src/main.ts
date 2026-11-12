@@ -103,6 +103,7 @@ async function boot() {
   agent = new Agent(perceive, applyReply, now, fallback);
   agent.characterCard = () => characterCard.payload();
   agent.canSpeak = () => !audio.speechBusy && mode !== 'chat';
+  agent.canDecide = () => mode !== 'chat' && !G.ended;
   agent.canInterrupt = () => G.visible && G.activeDanger.length > 0;
   agent.query = call => { const result = execTool(call, ctx); termLogAdd(result); return result; };
   wirePlayer(); wireUI(); setLoad(100);
@@ -200,11 +201,11 @@ function perceive() {
     doors_locked: [...world.doors.values()].filter(d => d.locked).map(d => d.id), cameras_covered: ROOMS.filter(x => world.rooms.get(x.id)!.camCovered).map(x => x.id),
     console_in_use: mode === 'console', fake_door_returns: G.fakeLoops, notes_left: world.items.filter(i => i.kind === 'note' && !i.taken && !i.hidden).map(i => i.id),
     story: { clues: [...G.storyClues] },
-    navigation: currentNavigation(),
   };
   if (vis) { const heading = compassHeading(player.yaw); state.player.heading_degrees = Math.round(heading.degrees); state.player.facing = heading.label; }
   state.interaction = agent.interaction.context(state);
   state.navigation_intent = { purpose: state.interaction.guidance_allowed ? 'exit' : vis && G.activeDanger.length ? 'rescue' : 'none', query_changes_goal: false };
+  state.navigation = state.interaction.guidance_allowed ? currentNavigation() : { status: 'paused', message: '当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。' };
   state.speech = audio.speechState;
   const ascii = asciiFloor(grid, f, { doors: new Map([...world.doors].map(([id, d]) => [id, { open: d.open, locked: d.locked, cells: d.cells, floor: d.def.floor }])), boxes: world.boxes.map(b => ({ x: b.pos.x, y: b.pos.y, z: b.pos.z })), structures: [...world.structs.values()].filter(s => s.kind !== 'railing').flatMap(s => s.boxes.map(b => ({ x0: Math.floor(b.min[0]), z0: Math.floor(b.min[2]), x1: Math.ceil(b.max[0]), z1: Math.ceil(b.max[2]), y: b.min[1], kind: s.kind }))), player: vis ? { x: p.x, y: p.y, z: p.z } : undefined, anchored: (x, y, z) => !!anchoredAt(x, y, z) });
   return { state, ascii };
@@ -299,25 +300,31 @@ function freeSpot(x: number, y: number, z: number) {
 async function applyReply(r: AgentReply, channel: string): Promise<AppliedReply> {
   if (G.ended) return { results: [], deliveredSay: '' };
   const narrationBeforeTools = subtitleSequence;
-  const residentRevision = agent.interaction.context(perceive().state).resident_revision;
+  const turn = r.turn ?? agent.interaction.captureTurn();
+  const current = () => { agent.interaction.context(perceive().state); return channel === 'console' || agent.interaction.isCurrentReply(r, turn); };
   voiceMood = r.mood || 'calm';
   // Keep Jing's reassuring presentation independent of her private mood.
   if (channel === 'console' && r.reply) termPrint(r.reply, 'ai');
   const results: ToolResult[] = []; (ctx as any).channel = channel;
   for (const t of (r.tools ?? []).slice(0, 8)) {
     if (G.ended) break;
-    if (channel === 'building' && residentRevision !== agent.interaction.context(perceive().state).resident_revision) {
+    if (!current()) {
       results.push({ ok: false, label: t.name, msg: '主人的活动或处境已变化，停止剩余操作并重新观察。' }); break;
     }
     const res = execTool(t as ToolCall, ctx); results.push(res);
+    // The requested light switch may itself remove the camera image. That is an
+    // expected effect, so finish this request (including its other tools and acknowledgement).
+    if (res.ok && t.name === 'lights' && turn.needsResponse) {
+      agent.interaction.context(perceive().state); turn.visible = agent.interaction.captureTurn().visible;
+    }
     if (!res.ok && res.anchored) { G.stats.anchoredBlocked++; if (mode === 'play') toast(`锚定生效：「静」的 ${t.name} 被拒绝`, 2600); }
     termLogAdd(res);
     await new Promise(rs => setTimeout(rs, 280));
   }
-  const deliveredSay = r.say && !G.ended && subtitleSequence === narrationBeforeTools && residentRevision === agent.interaction.context(perceive().state).resident_revision ? r.say : '';
+  const deliveredSay = r.say && !G.ended && subtitleSequence === narrationBeforeTools && current() ? r.say : '';
   if (deliveredSay) {
-    while (audio.speechBusy && !G.ended && !(G.visible && G.activeDanger.length) && residentRevision === agent.interaction.context(perceive().state).resident_revision) await new Promise(resolve => setTimeout(resolve, 100));
-    if (!G.ended && residentRevision === agent.interaction.context(perceive().state).resident_revision) subtitle(deliveredSay, '静', r.emotion);
+    while (audio.speechBusy && !G.ended && !(G.visible && G.activeDanger.length) && current()) await new Promise(resolve => setTimeout(resolve, 100));
+    if (!G.ended && current()) subtitle(deliveredSay, '静', r.emotion);
     else return { results, deliveredSay: '' };
   }
   return { results, deliveredSay };
@@ -326,6 +333,7 @@ function fallback(evs: AgentEvent[]): AgentReply {
   const has = (t: string, d = '') => evs.some(e => e.type === t && e.detail.includes(d)) || t === 'danger' && (perception.player.danger ?? []).some((value: string) => value.includes(d));
   const perception = perceive().state, interaction = perception.interaction;
   if (!perception.player.visible) return { thought: '我现在看不见主人，不能猜他在哪里。', say: has('speech') || has('player_lost') ? '我暂时看不到您。您能告诉我身边有什么吗？' : '', mood: 'concerned', tools: [], interaction: { mode: 'search', reason: '当前没有可靠的视觉信息' } };
+  if (interaction.care_needed && !perception.player.danger?.length) return { thought: '刚才观察到主人摔伤，先认真关心，不重复高处救援。', say: '摔疼了吗？先别勉强自己走动，告诉我哪里不舒服。', mood: 'concerned', emotion: '温柔关切，认真而不责怪', tools: [], interaction: { mode: 'care', reason: '回应已经观察到的受伤' } };
   if (has('danger', '烟')) { const r = roomById(playerRoom()); return { thought: '烟太大了，先排烟。', say: '别怕，我马上把烟排出去。', mood: 'anxious', interaction: { mode: 'rescue' }, tools: r ? [{ name: 'destroy_wall', args: { room: r.id, side: 'N', len: 2 } }, { name: 'sprinkler', args: { room: r.id, on: true } }] : [] }; }
   if (has('danger', '溺') || has('danger', '水')) return { thought: '他在水里待太久了。', say: '我把水放掉，抓住栏杆。', mood: 'panic', interaction: { mode: 'rescue' }, tools: [{ name: 'water_level', args: { level: 0 } }] };
   if (has('danger', '高')) { const p = player.pos; return { thought: '他站得太高了。', say: '小心！我给您搭个台子。', mood: 'anxious', interaction: { mode: 'rescue' }, tools: [{ name: 'build_platform', args: { floor: playerFloor(), x1: Math.floor(p.x) - 1, z1: Math.floor(p.z) - 1, x2: Math.floor(p.x) + 1, z2: Math.floor(p.z) + 1, height: Math.max(0.5, p.y - floorOfY(p.y).y) } }] }; }
@@ -911,7 +919,7 @@ function toggleControls() {
 }
 function wirePlayer() {
   player.onStep = () => audio.step(player.height < 1.3);
-  player.onLand = h => { if (h > 3.2) { player.injuredT = 12; G.injuries++; flags.glitch = 0.3; audio.thud(1); toast(h > 7 ? '你重重地摔在地上。腿很疼。' : '你摔了一跤。', 3000); agent.push('danger', `住户从 ${h.toFixed(1)} 米高处摔下来，受伤了`, true); } };
+  player.onLand = h => { if (h > 3.2) { player.injuredT = 12; G.injuries++; flags.glitch = 0.3; audio.thud(1); toast(h > 7 ? '你重重地摔在地上。腿很疼。' : '你摔了一跤。', 3000); if (camOK(playerRoom()) && G.zeroFloorT < 0) agent.push('injury', `住户从 ${h.toFixed(1)} 米高处摔下来，受伤了`, true); } };
   player.onSqueeze = cause => {
     if (G.ended) return;
     if (cause === 'vox' || cause === 'prop' || cause === 'zero') { const p = freeSpot(player.pos.x, floorOfY(player.pos.y + 0.3).y, player.pos.z); player.pos.copy(p); return; }

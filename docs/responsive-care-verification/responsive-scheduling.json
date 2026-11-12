@@ -1,0 +1,11 @@
+{
+  "provider": "controlled slow/error decisions, actual engine and real-clock scheduler",
+  "checks": [
+    "new heard request aborts pending ambient fetch and starts inference promptly, without a spoken fallback",
+    "observed fall receives a caring acknowledgement even if model endpoint fails",
+    "an unseen bathroom fall is not magically reported as a new camera observation"
+  ],
+  "errors": [],
+  "preemption_ms": 23,
+  "passed": true
+}

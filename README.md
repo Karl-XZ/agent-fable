@@ -1,6 +1,6 @@
 # Agent的寓言
 
-> 当前恢复节点：角色卡初版。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
+> 当前恢复节点：最新人设与响应修复。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
 
 第一人称 3D 逃离游戏。你一直舒适地住在管家AI「静」安排的屋子里，直到有一天想出去看看。她勉强答应指路，却把你引向一扇会让你忘记离开念头的门。
 
@@ -122,3 +122,9 @@ DASHSCOPE_TTS_VOICE=longanhuan_v3.1
 用户已确认允许将个人卡随推理临时发送。后端不建立个人角色卡文件、数据库或会话配置。启用个人卡后，本局请求使用 metadata-only 日志；即使恢复默认，也不把可能回显个人卡的对话、状态、工具参数等写进 agent_calls.log。模型服务仍需接收这些推理内容。
 
 修改浏览器个人卡立即用于下一次对话；修改默认 JSON 后需重新构建前端并重启后端。`/api/health` 的 `character_card_protocol` 为 1。新增验收入口为 `tests/test_character.py`、`tests/character-card.test.cjs`、`tests/verify-character-card.cjs`、`tests/verify-character-live.cjs`；截图和真实回答见 `docs/静的角色卡验收.html`。
+
+## 最新响应修复
+
+新问题会取消尚未完成的旧推理，允许在上一句播放时提前计算回答，正常语音仍按实际结束时间依次播放。一般对话不会仅因走动、换房间而失效；导航、感知和真实危险仍要校验。已观察到的受伤会保留一次照护需要，不以离开危险地点或仍能走动否定疼痛。没有有效出行约定时不再附带默认出口路线。
+
+最新验证见 `docs/静的人设与响应修复验收.html`。本次仓库整理与 old 的比较见 `docs/OLD_COMPARISON.md`。

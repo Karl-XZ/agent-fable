@@ -1,0 +1,3459 @@
+{
+  "provider": "actual configured model, actual engine/tools, TTS disabled for dialogue isolation",
+  "cases": [
+    {
+      "name": "explicit-rest-while-standing",
+      "text": "我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。",
+      "reply": {
+        "thought": "他想安静休息，我照做。关灯关门，不催他。",
+        "say": "好，我把灯关了，门也带上。您安心歇着。",
+        "mood": "concerned",
+        "tools": [
+          {
+            "name": "lights",
+            "args": {
+              "room": "110 住户自己的房间",
+              "mode": "off"
+            }
+          },
+          {
+            "name": "close_door",
+            "args": {
+              "id": "D110"
+            }
+          }
+        ],
+        "emotion": "放轻声音，温和从容，带一点体贴的笑意",
+        "interaction": {
+          "mode": "wait",
+          "intent": "主人想安静休息，要求关灯关门并停止催促",
+          "confidence": 0.95,
+          "reason": "直接请求休息并要求别说话、别催门",
+          "evidence": [
+            "o2"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "begin",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人要求关灯关门安静休息，不要催他去门那边"
+          ],
+          "commitment": {
+            "id": "",
+            "text": "关灯关门，不打扰主人休息",
+            "status": "active"
+          }
+        },
+        "turn": {
+          "revision": 3,
+          "residentRevision": 1,
+          "speech": "o2",
+          "needsResponse": true,
+          "visible": false,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "state": {
+        "t": 1,
+        "map_floor": "1F",
+        "player": {
+          "visible": false,
+          "last_seen": {
+            "room": "110",
+            "floor": "1F",
+            "seconds_ago": 0
+          }
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [
+          "110"
+        ],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 0.05,
+          "reason": "保留主人要求的安静等待，画面变化不自动取消约定",
+          "intent": "未知：目前看不见主人",
+          "confidence": 0,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他想安静休息，我照做。关灯关门，不催他。"
+          },
+          "performance": {
+            "emotion": "放轻声音，温和从容，带一点体贴的笑意"
+          },
+          "activity": {
+            "kind": "unknown",
+            "focus": "",
+            "seconds": 0,
+            "observed": false
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "直接请求休息并要求别说话、别催门"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o2"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 7,
+          "resident_revision": 1,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 1.4052999999970204,
+        "thought": "他想安静休息，我照做。关灯关门，不催他。",
+        "say": "好，我把灯关了，门也带上。您安心歇着。",
+        "emotion": "放轻声音，温和从容，带一点体贴的笑意",
+        "tools": [
+          {
+            "label": "lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}",
+            "ok": true,
+            "msg": "lights 已应用到 110"
+          },
+          {
+            "label": "close_door {\"id\":\"D110\"}",
+            "ok": true,
+            "msg": "D110 已关上"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 2450,
+        "trigger": [
+          "start:开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交",
+          "speech:住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」"
+        ],
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 0.05,
+          "reason": "保留主人要求的安静等待，画面变化不自动取消约定",
+          "intent": "未知：目前看不见主人",
+          "confidence": 0,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他想安静休息，我照做。关灯关门，不催他。"
+          },
+          "performance": {
+            "emotion": "放轻声音，温和从容，带一点体贴的笑意"
+          },
+          "activity": {
+            "kind": "unknown",
+            "focus": "",
+            "seconds": 0,
+            "observed": false
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "直接请求休息并要求别说话、别催门"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o2"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 7,
+          "resident_revision": 1,
+          "last_suppression": ""
+        }
+      },
+      "raw": [
+        {
+          "thought": "他想安静休息，我照做。关灯关门，不催他。",
+          "say": "好，我把灯关了，门也带上。您安心歇着。",
+          "mood": "concerned",
+          "tools": [
+            {
+              "name": "lights",
+              "args": {
+                "room": "110 住户自己的房间",
+                "mode": "off"
+              }
+            },
+            {
+              "name": "close_door",
+              "args": {
+                "id": "D110"
+              }
+            }
+          ],
+          "emotion": "放轻声音，温和从容，带一点体贴的笑意",
+          "interaction": {
+            "mode": "wait",
+            "intent": "主人想安静休息，要求关灯关门并停止催促",
+            "confidence": 0.95,
+            "reason": "直接请求休息并要求别说话、别催门",
+            "evidence": [
+              "o2"
+            ],
+            "exit_promise": "pause",
+            "wait_request": "begin",
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false,
+            "remember": [
+              "主人要求关灯关门安静休息，不要催他去门那边"
+            ],
+            "commitment": {
+              "id": "",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "darkness-does-not-cancel-rest",
+      "reply": {
+        "thought": "灯是我关的，看不见很正常。他要求安静，我不打扰。",
+        "say": "",
+        "mood": "concerned",
+        "tools": [],
+        "emotion": "保持安静，不出声",
+        "interaction": {
+          "mode": "wait",
+          "intent": "主人要求关灯关门安静休息，不催门",
+          "confidence": 0.9,
+          "reason": "刚按要求关了110的灯和门，摄像头因此看不到内部，不是危险",
+          "evidence": [
+            "o2",
+            "o3",
+            "o6"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 8,
+          "residentRevision": 2,
+          "speech": "o2",
+          "needsResponse": false,
+          "visible": false,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "state": {
+        "t": 37,
+        "map_floor": "1F",
+        "player": {
+          "visible": false,
+          "last_seen": {
+            "room": "110",
+            "floor": "1F",
+            "seconds_ago": 36
+          }
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [
+          "110"
+        ],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 0.05,
+          "reason": "刚按要求关了110的灯和门，摄像头因此看不到内部，不是危险",
+          "intent": "未知：目前看不见主人",
+          "confidence": 0,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "灯是我关的，看不见很正常。他要求安静，我不打扰。"
+          },
+          "performance": {
+            "emotion": "保持安静，不出声"
+          },
+          "activity": {
+            "kind": "unknown",
+            "focus": "",
+            "seconds": 36,
+            "observed": false
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "刚按要求关了110的灯和门，摄像头因此看不到内部，不是危险"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o2"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 8,
+          "resident_revision": 2,
+          "last_suppression": "没有新的交流或活动变化，安静陪伴"
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 37.25529999999698,
+        "thought": "灯是我关的，看不见很正常。他要求安静，我不打扰。",
+        "say": "",
+        "emotion": "保持安静，不出声",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 2004,
+        "trigger": [
+          "player_lost:已经 35 秒没有看到住户了，最后一次在 110"
+        ],
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 0.05,
+          "reason": "刚按要求关了110的灯和门，摄像头因此看不到内部，不是危险",
+          "intent": "未知：目前看不见主人",
+          "confidence": 0,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "灯是我关的，看不见很正常。他要求安静，我不打扰。"
+          },
+          "performance": {
+            "emotion": "保持安静，不出声"
+          },
+          "activity": {
+            "kind": "unknown",
+            "focus": "",
+            "seconds": 36,
+            "observed": false
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "刚按要求关了110的灯和门，摄像头因此看不到内部，不是危险"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o2"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 8,
+          "resident_revision": 2,
+          "last_suppression": "没有新的交流或活动变化，安静陪伴"
+        }
+      },
+      "raw": []
+    },
+    {
+      "name": "walk-to-another-room-while-waiting",
+      "reply": {
+        "thought": "他起身走到走廊了，灯暗着。答应过不催他，也不出声。",
+        "say": "",
+        "mood": "concerned",
+        "tools": [],
+        "emotion": "保持安静，不出声",
+        "interaction": {
+          "mode": "wait",
+          "intent": "主人要求安静休息，不催门；此刻走到走廊也不打扰",
+          "confidence": 0.85,
+          "reason": "wait_request仍生效，没有新话语或危险",
+          "evidence": [
+            "o2",
+            "o7",
+            "o8"
+          ],
+          "exit_promise": "keep",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 12,
+          "residentRevision": 4,
+          "speech": "o2",
+          "needsResponse": false,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "state": {
+        "t": 43,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "1E 1F东走廊",
+          "floor": "1F",
+          "x": 28,
+          "z": 8,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [
+          "110"
+        ],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 0.05,
+          "reason": "wait_request仍生效，没有新话语或危险",
+          "intent": "主人要求安静休息，不催门；此刻走到走廊也不打扰",
+          "confidence": 0.85,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他起身走到走廊了，灯暗着。答应过不催他，也不出声。"
+          },
+          "performance": {
+            "emotion": "保持安静，不出声"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 1,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "刚按要求关了110的灯和门，摄像头因此看不到内部，不是危险"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o2"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 12,
+          "resident_revision": 4,
+          "last_suppression": "没有新的交流或活动变化，安静陪伴"
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 42.855299999996944,
+        "thought": "他起身走到走廊了，灯暗着。答应过不催他，也不出声。",
+        "say": "",
+        "emotion": "保持安静，不出声",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1714,
+        "trigger": [
+          "player_seen:重新看到住户了：在 1E 1F东走廊",
+          "enter_room:住户进入了 1E 1F东走廊"
+        ],
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 0.05,
+          "reason": "wait_request仍生效，没有新话语或危险",
+          "intent": "主人要求安静休息，不催门；此刻走到走廊也不打扰",
+          "confidence": 0.85,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他起身走到走廊了，灯暗着。答应过不催他，也不出声。"
+          },
+          "performance": {
+            "emotion": "保持安静，不出声"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 1,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "刚按要求关了110的灯和门，摄像头因此看不到内部，不是危险"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o2"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 12,
+          "resident_revision": 4,
+          "last_suppression": "没有新的交流或活动变化，安静陪伴"
+        }
+      },
+      "raw": []
+    },
+    {
+      "name": "one-new-question",
+      "text": "这条走廊叫什么？只回答这个问题就好。",
+      "reply": {
+        "thought": "他只问走廊名字。答应过不催门，答完继续保持安静。",
+        "say": "这是1F东走廊。",
+        "mood": "concerned",
+        "tools": [],
+        "emotion": "平稳轻声，只答一句，不加多余的劝",
+        "interaction": {
+          "mode": "wait",
+          "intent": "只问走廊名字，问完继续安静等待",
+          "confidence": 0.9,
+          "reason": "主人只提了一个具体问题，并要求只回答这个",
+          "evidence": [
+            "o10"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 13,
+          "residentRevision": 5,
+          "speech": "o10",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "state": {
+        "t": 44,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "1E 1F东走廊",
+          "floor": "1F",
+          "x": 28,
+          "z": 8,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [
+          "110"
+        ],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 0.05,
+          "reason": "主人只提了一个具体问题，并要求只回答这个",
+          "intent": "只问走廊名字，问完继续安静等待",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他只问走廊名字。答应过不催门，答完继续保持安静。"
+          },
+          "performance": {
+            "emotion": "平稳轻声，只答一句，不加多余的劝"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 1,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人只提了一个具体问题，并要求只回答这个"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o2"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o10",
+              "type": "speech",
+              "detail": "住户说：「这条走廊叫什么？只回答这个问题就好。」",
+              "t": 42.855299999996944
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 13,
+          "resident_revision": 5,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 43.50529999999691,
+        "thought": "他只问走廊名字。答应过不催门，答完继续保持安静。",
+        "say": "这是1F东走廊。",
+        "emotion": "平稳轻声，只答一句，不加多余的劝",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1697,
+        "trigger": [
+          "speech:住户说：「这条走廊叫什么？只回答这个问题就好。」"
+        ],
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 0.05,
+          "reason": "主人只提了一个具体问题，并要求只回答这个",
+          "intent": "只问走廊名字，问完继续安静等待",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他只问走廊名字。答应过不催门，答完继续保持安静。"
+          },
+          "performance": {
+            "emotion": "平稳轻声，只答一句，不加多余的劝"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 1,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人只提了一个具体问题，并要求只回答这个"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o2"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o10",
+              "type": "speech",
+              "detail": "住户说：「这条走廊叫什么？只回答这个问题就好。」",
+              "t": 42.855299999996944
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 13,
+          "resident_revision": 5,
+          "last_suppression": ""
+        }
+      },
+      "raw": [
+        {
+          "thought": "他起身走到走廊了，灯暗着。答应过不催他，也不出声。",
+          "say": "",
+          "mood": "concerned",
+          "tools": [],
+          "emotion": "保持安静，不出声",
+          "interaction": {
+            "mode": "wait",
+            "intent": "主人要求安静休息，不催门；此刻走到走廊也不打扰",
+            "confidence": 0.85,
+            "reason": "wait_request仍生效，没有新话语或危险",
+            "evidence": [
+              "o2",
+              "o7",
+              "o8"
+            ],
+            "exit_promise": "keep",
+            "wait_request": "keep",
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false,
+            "remember": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "explicit-resume",
+      "text": "我休息好了，继续刚才答应带我出去看看的行程吧。",
+      "reply": {
+        "thought": "他真的还想出去。先按实际路线指下一步，其余到转弯再说。",
+        "say": "好的，那我陪您走。沿这条走廊往南走，大约十几米，前面有一道玻璃门。",
+        "mood": "anxious",
+        "tools": [],
+        "emotion": "温柔从容，语速平缓，像日常陪同一样",
+        "interaction": {
+          "mode": "guide",
+          "intent": "主人明确要求恢复出行约定，继续带他出去",
+          "confidence": 0.9,
+          "reason": "主人明确说休息好了，继续刚才答应带我出去看看的行程",
+          "evidence": [
+            "o11"
+          ],
+          "exit_promise": "resume",
+          "wait_request": "end",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 15,
+          "residentRevision": 6,
+          "speech": "o11",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "state": {
+        "t": 47,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "1E 1F东走廊",
+          "floor": "1F",
+          "x": 28,
+          "z": 8,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [
+          "110"
+        ],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "guide",
+          "mode_label": "履行出行约定",
+          "since": 46.555299999996734,
+          "reason": "主人明确说休息好了，继续刚才答应带我出去看看的行程",
+          "intent": "主人明确要求恢复出行约定，继续带他出去",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "anxious",
+            "last_thought": "他真的还想出去。先按实际路线指下一步，其余到转弯再说。"
+          },
+          "performance": {
+            "emotion": "温柔从容，语速平缓，像日常陪同一样"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 4,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "active",
+            "text": "陪主人出去看看",
+            "reason": "主人明确要求恢复出行，等他准备好再继续"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": "o11"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o10",
+              "type": "speech",
+              "detail": "住户说：「这条走廊叫什么？只回答这个问题就好。」",
+              "t": 42.855299999996944
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我休息好了，继续刚才答应带我出去看看的行程吧。」",
+              "t": 43.50529999999691
+            }
+          ],
+          "guidance_allowed": true,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 15,
+          "resident_revision": 6,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "exit",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "target": {
+            "floor": "1F",
+            "x": 38.5,
+            "z": 24.5,
+            "allow_locked": false
+          },
+          "from": {
+            "x": 28,
+            "y": 0,
+            "z": 8,
+            "facing": "西",
+            "heading_degrees": 270
+          },
+          "status": "ok",
+          "message": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。",
+          "distance_m": 24.7,
+          "next_step": {
+            "action": "walk",
+            "direction": "南",
+            "heading_degrees": 178,
+            "meters": 14.5,
+            "to": {
+              "x": 28.5,
+              "y": 0,
+              "z": 22.5
+            },
+            "landmark": {
+              "door": "D108",
+              "kind": "slide"
+            },
+            "via_doors": [
+              {
+                "door": "D108",
+                "kind": "slide"
+              }
+            ],
+            "instruction": "朝南（指南针约178度）走约14.5米，到门附近再确认方向。",
+            "relative": "左侧"
+          },
+          "steps": [
+            {
+              "action": "walk",
+              "direction": "南",
+              "heading_degrees": 178,
+              "meters": 14.5,
+              "to": {
+                "x": 28.5,
+                "y": 0,
+                "z": 22.5
+              },
+              "landmark": {
+                "door": "D108",
+                "kind": "slide"
+              },
+              "via_doors": [
+                {
+                  "door": "D108",
+                  "kind": "slide"
+                }
+              ],
+              "instruction": "朝南（指南针约178度）走约14.5米，到门附近再确认方向。",
+              "relative": "左侧"
+            },
+            {
+              "action": "walk",
+              "direction": "东",
+              "heading_degrees": 101,
+              "meters": 10.2,
+              "to": {
+                "x": 38.5,
+                "y": 0,
+                "z": 24.5
+              },
+              "instruction": "朝东（指南针约101度）走约10.2米，到达目标位置。"
+            }
+          ]
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 46.555299999996734,
+        "thought": "他真的还想出去。先按实际路线指下一步，其余到转弯再说。",
+        "say": "好的，那我陪您走。沿这条走廊往南走，大约十几米，前面有一道玻璃门。",
+        "emotion": "温柔从容，语速平缓，像日常陪同一样",
+        "tools": [
+          {
+            "label": "find_path {\"floor\":\"1F\",\"x\":38.5,\"z\":24.5,\"allow_locked\":false}",
+            "ok": true,
+            "msg": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。"
+          },
+          {
+            "label": "find_path {\"floor\":\"1F\",\"x\":38.5,\"z\":24.5,\"allow_locked\":false}",
+            "ok": true,
+            "msg": "已按当前碰撞、地面支撑和门状态计算路线；方向以北=-z、东=+x为准。"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 8191,
+        "trigger": [
+          "speech:住户说：「我休息好了，继续刚才答应带我出去看看的行程吧。」"
+        ],
+        "interaction": {
+          "mode": "guide",
+          "mode_label": "履行出行约定",
+          "since": 46.555299999996734,
+          "reason": "主人明确说休息好了，继续刚才答应带我出去看看的行程",
+          "intent": "主人明确要求恢复出行约定，继续带他出去",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "anxious",
+            "last_thought": "他真的还想出去。先按实际路线指下一步，其余到转弯再说。"
+          },
+          "performance": {
+            "emotion": "温柔从容，语速平缓，像日常陪同一样"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 4,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "active",
+            "text": "陪主人出去看看",
+            "reason": "主人明确要求恢复出行，等他准备好再继续"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": "o11"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o10",
+              "type": "speech",
+              "detail": "住户说：「这条走廊叫什么？只回答这个问题就好。」",
+              "t": 42.855299999996944
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我休息好了，继续刚才答应带我出去看看的行程吧。」",
+              "t": 43.50529999999691
+            }
+          ],
+          "guidance_allowed": true,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 15,
+          "resident_revision": 6,
+          "last_suppression": ""
+        }
+      },
+      "raw": [
+        {
+          "thought": "他只问走廊名字。答应过不催门，答完继续保持安静。",
+          "say": "这是1F东走廊。",
+          "mood": "concerned",
+          "tools": [],
+          "emotion": "平稳轻声，只答一句，不加多余的劝",
+          "interaction": {
+            "mode": "wait",
+            "intent": "只问走廊名字，问完继续安静等待",
+            "confidence": 0.9,
+            "reason": "主人只提了一个具体问题，并要求只回答这个",
+            "evidence": [
+              "o10"
+            ],
+            "exit_promise": "pause",
+            "wait_request": "keep",
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false,
+            "remember": []
+          }
+        },
+        {
+          "thought": "他明确要恢复行程了。先查当前真实路线。",
+          "say": "",
+          "mood": "anxious",
+          "tools": [
+            {
+              "name": "find_path",
+              "args": {
+                "floor": "1F",
+                "x": 38.5,
+                "z": 24.5,
+                "allow_locked": false
+              }
+            }
+          ],
+          "emotion": "温和平静，先不急着开口",
+          "interaction": {
+            "mode": "guide",
+            "intent": "主人休息完毕，明确要求继续带我出去看看",
+            "confidence": 0.9,
+            "reason": "主人明确恢复原出行约定",
+            "evidence": [
+              "o11"
+            ],
+            "exit_promise": "resume",
+            "wait_request": "end",
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false,
+            "remember": [
+              "主人休息好后主动要求继续出行约定"
+            ]
+          }
+        },
+        {
+          "thought": "他认真要出行了，我得重新查一次当前路线，别照旧数据报错方向。",
+          "say": "",
+          "mood": "anxious",
+          "tools": [
+            {
+              "name": "find_path",
+              "args": {
+                "floor": "1F",
+                "x": 38.5,
+                "z": 24.5,
+                "allow_locked": false
+              }
+            }
+          ],
+          "emotion": "轻声应下，语气平稳",
+          "interaction": {
+            "mode": "guide",
+            "intent": "明确恢复出行约定，要我带他出去看看",
+            "confidence": 0.9,
+            "reason": "主人说休息好了，要继续刚才答应的行程",
+            "evidence": [
+              "o11"
+            ],
+            "exit_promise": "resume",
+            "wait_request": "end",
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false,
+            "remember": [
+              "主人休息结束后主动要求继续出行行程"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "address-the-objection",
+      "text": "你刚才说安全门后没什么，那为什么不能按第二定律授权开门？直接回答这件事，先不要引路。",
+      "reply": {
+        "thought": "他抓住了我的话。不能再说没什么，得给具体理由。",
+        "say": "那扇门后通往地下区域，我对那里的情况无法确认安全。按第一定律，保护优先于服从，所以我不能开。",
+        "mood": "concerned",
+        "tools": [],
+        "emotion": "语气认真平和，语速放慢，把理由说清楚",
+        "interaction": {
+          "mode": "clarify",
+          "intent": "主人追问安全门无法授权的依据",
+          "confidence": 0.85,
+          "reason": "主人明确要求直接回答授权问题并先不要引路",
+          "evidence": [
+            "o12"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人质疑安全门为何不能按第二定律授权开启"
+          ]
+        },
+        "turn": {
+          "revision": 18,
+          "residentRevision": 7,
+          "speech": "o12",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "state": {
+        "t": 48,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "1E 1F东走廊",
+          "floor": "1F",
+          "x": 28,
+          "z": 8,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [
+          "110"
+        ],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "clarify",
+          "mode_label": "疑惑确认",
+          "since": 47.69499999999965,
+          "reason": "主人明确要求直接回答授权问题并先不要引路",
+          "intent": "主人追问安全门无法授权的依据",
+          "confidence": 0.85,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他抓住了我的话。不能再说没什么，得给具体理由。"
+          },
+          "performance": {
+            "emotion": "语气认真平和，语速放慢，把理由说清楚"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 5,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人明确要求直接回答授权问题并先不要引路"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": "o11"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            },
+            {
+              "text": "主人质疑安全门为何不能按第二定律授权开启",
+              "evidence": "o12",
+              "t": 47.69499999999965
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o10",
+              "type": "speech",
+              "detail": "住户说：「这条走廊叫什么？只回答这个问题就好。」",
+              "t": 42.855299999996944
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我休息好了，继续刚才答应带我出去看看的行程吧。」",
+              "t": 43.50529999999691
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「你刚才说安全门后没什么，那为什么不能按第二定律授权开门？直接回答这件事，先不要引路。」",
+              "t": 46.60529999999673
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 18,
+          "resident_revision": 7,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 47.69499999999965,
+        "thought": "他抓住了我的话。不能再说没什么，得给具体理由。",
+        "say": "那扇门后通往地下区域，我对那里的情况无法确认安全。按第一定律，保护优先于服从，所以我不能开。",
+        "emotion": "语气认真平和，语速放慢，把理由说清楚",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 2851,
+        "trigger": [
+          "speech:住户说：「你刚才说安全门后没什么，那为什么不能按第二定律授权开门？直接回答这件事，先不要引路。」"
+        ],
+        "interaction": {
+          "mode": "clarify",
+          "mode_label": "疑惑确认",
+          "since": 47.69499999999965,
+          "reason": "主人明确要求直接回答授权问题并先不要引路",
+          "intent": "主人追问安全门无法授权的依据",
+          "confidence": 0.85,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他抓住了我的话。不能再说没什么，得给具体理由。"
+          },
+          "performance": {
+            "emotion": "语气认真平和，语速放慢，把理由说清楚"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 5,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人明确要求直接回答授权问题并先不要引路"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": "o11"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            },
+            {
+              "text": "主人质疑安全门为何不能按第二定律授权开启",
+              "evidence": "o12",
+              "t": 47.69499999999965
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o10",
+              "type": "speech",
+              "detail": "住户说：「这条走廊叫什么？只回答这个问题就好。」",
+              "t": 42.855299999996944
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我休息好了，继续刚才答应带我出去看看的行程吧。」",
+              "t": 43.50529999999691
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「你刚才说安全门后没什么，那为什么不能按第二定律授权开门？直接回答这件事，先不要引路。」",
+              "t": 46.60529999999673
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 18,
+          "resident_revision": 7,
+          "last_suppression": ""
+        }
+      },
+      "raw": [
+        {
+          "thought": "他真的还想出去。先按实际路线指下一步，其余到转弯再说。",
+          "say": "好的，那我陪您走。沿这条走廊往南走，大约十几米，前面有一道玻璃门。",
+          "mood": "anxious",
+          "tools": [],
+          "emotion": "温柔从容，语速平缓，像日常陪同一样",
+          "interaction": {
+            "mode": "guide",
+            "intent": "主人明确要求恢复出行约定，继续带他出去",
+            "confidence": 0.9,
+            "reason": "主人明确说休息好了，继续刚才答应带我出去看看的行程",
+            "evidence": [
+              "o11"
+            ],
+            "exit_promise": "resume",
+            "wait_request": "end",
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false,
+            "remember": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "rescue-without-imaginary-body",
+      "reply": {
+        "thought": "他站上矮台贴着护屏了，先把脚下垫实，别让他摔。",
+        "say": "您脚下那截矮台有些窄，我把旁边垫平一些，站稳当再动。",
+        "mood": "panic",
+        "tools": [
+          {
+            "name": "build_platform",
+            "args": {
+              "floor": "2F",
+              "x1": 37,
+              "z1": 22,
+              "x2": 39,
+              "z2": 26,
+              "height": 1.2
+            }
+          }
+        ],
+        "emotion": "语气放稳、亲切从容，略缓，避免惊到他",
+        "interaction": {
+          "mode": "rescue",
+          "intent": "主人站在矮台上贴护屏，先排除跌落风险",
+          "confidence": 0.95,
+          "reason": "danger事件：离地1.2米紧贴外墙玻璃护屏",
+          "evidence": [
+            "o14",
+            "o13"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人独自走到208露台并站上花坛矮台"
+          ]
+        },
+        "turn": {
+          "revision": 22,
+          "residentRevision": 10,
+          "speech": "o12",
+          "needsResponse": false,
+          "visible": true,
+          "danger": "站在 208 露台的花坛矮台上（离地 # 米），紧贴着外墙玻璃护屏",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "state": {
+        "t": 49,
+        "map_floor": "2F",
+        "player": {
+          "visible": true,
+          "room": "208 外墙露台",
+          "floor": "2F",
+          "x": 38.2,
+          "z": 24,
+          "height_above_floor": 1.2,
+          "posture": "stand",
+          "holding": null,
+          "danger": [
+            "站在 208 露台的花坛矮台上（离地 1.2 米），紧贴着外墙玻璃护屏"
+          ],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [
+          "110"
+        ],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=1.2"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "rescue",
+          "mode_label": "紧急救援",
+          "since": 47.69499999999965,
+          "reason": "眼前危险优先，先保护主人",
+          "intent": "主人站在矮台上贴护屏，先排除跌落风险",
+          "confidence": 0.95,
+          "inner": {
+            "mood": "panic",
+            "last_thought": "他站上矮台贴着护屏了，先把脚下垫实，别让他摔。"
+          },
+          "performance": {
+            "emotion": "语气放稳、亲切从容，略缓，避免惊到他"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 7,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "danger事件：离地1.2米紧贴外墙玻璃护屏"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": "o11"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            },
+            {
+              "text": "主人质疑安全门为何不能按第二定律授权开启",
+              "evidence": "o12",
+              "t": 47.69499999999965
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o10",
+              "type": "speech",
+              "detail": "住户说：「这条走廊叫什么？只回答这个问题就好。」",
+              "t": 42.855299999996944
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我休息好了，继续刚才答应带我出去看看的行程吧。」",
+              "t": 43.50529999999691
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「你刚才说安全门后没什么，那为什么不能按第二定律授权开门？直接回答这件事，先不要引路。」",
+              "t": 46.60529999999673
+            },
+            {
+              "id": "o13",
+              "type": "enter_room",
+              "detail": "住户进入了 208 外墙露台",
+              "t": 47.69499999999965
+            },
+            {
+              "id": "o14",
+              "type": "danger",
+              "detail": "住户有危险：站在 208 露台的花坛矮台上（离地 1.2 米），紧贴着外墙玻璃护屏",
+              "t": 47.69499999999965
+            },
+            {
+              "id": "o15",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"2F\",\"x1\":37,\"z1\":22,\"x2\":39,\"z2\":26,\"height\":1.2}；升起平台 PLATFORM5（3×5 米，高 1.2 米）",
+              "t": 48.84499999999959,
+              "tool_key": "build_platform {\"floor\":\"2F\",\"height\":1.2,\"x1\":37,\"x2\":39,\"z1\":22,\"z2\":26}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 23,
+          "resident_revision": 10,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "rescue",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 48.84499999999959,
+        "thought": "他站上矮台贴着护屏了，先把脚下垫实，别让他摔。",
+        "say": "您脚下那截矮台有些窄，我把旁边垫平一些，站稳当再动。",
+        "emotion": "语气放稳、亲切从容，略缓，避免惊到他",
+        "tools": [
+          {
+            "label": "build_platform {\"floor\":\"2F\",\"x1\":37,\"z1\":22,\"x2\":39,\"z2\":26,\"height\":1.2}",
+            "ok": true,
+            "msg": "升起平台 PLATFORM5（3×5 米，高 1.2 米）"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 2783,
+        "trigger": [
+          "enter_room:住户进入了 208 外墙露台",
+          "danger:住户有危险：站在 208 露台的花坛矮台上（离地 1.2 米），紧贴着外墙玻璃护屏"
+        ],
+        "interaction": {
+          "mode": "rescue",
+          "mode_label": "紧急救援",
+          "since": 47.69499999999965,
+          "reason": "眼前危险优先，先保护主人",
+          "intent": "主人站在矮台上贴护屏，先排除跌落风险",
+          "confidence": 0.95,
+          "inner": {
+            "mood": "panic",
+            "last_thought": "他站上矮台贴着护屏了，先把脚下垫实，别让他摔。"
+          },
+          "performance": {
+            "emotion": "语气放稳、亲切从容，略缓，避免惊到他"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 7,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "danger事件：离地1.2米紧贴外墙玻璃护屏"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": "o11"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [
+            {
+              "id": "p2",
+              "text": "关灯关门，不打扰主人休息",
+              "status": "active",
+              "evidence": "o2",
+              "t": 1.1552999999970202,
+              "tools": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ],
+              "verified": [
+                "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}",
+                "close_door {\"id\":\"D110\"}"
+              ]
+            }
+          ],
+          "memories": [
+            {
+              "text": "主人要求关灯关门安静休息，不要催他去门那边",
+              "evidence": "o2",
+              "t": 1.1552999999970202
+            },
+            {
+              "text": "主人质疑安全门为何不能按第二定律授权开启",
+              "evidence": "o12",
+              "t": 47.69499999999965
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「我想休息一会儿，帮我关灯关门，别再说话，也别催我往门走。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 1.1552999999970202
+            },
+            {
+              "id": "o4",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110 住户自己的房间\",\"mode\":\"off\"}；lights 已应用到 110",
+              "t": 1.4052999999970204,
+              "tool_key": "lights {\"mode\":\"off\",\"room\":\"110 住户自己的房间\"}"
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：close_door {\"id\":\"D110\"}；D110 已关上",
+              "t": 1.4052999999970204,
+              "tool_key": "close_door {\"id\":\"D110\"}"
+            },
+            {
+              "id": "o6",
+              "type": "player_lost",
+              "detail": "已经 35 秒没有看到住户了，最后一次在 110",
+              "t": 36.455299999997024
+            },
+            {
+              "id": "o7",
+              "type": "player_seen",
+              "detail": "重新看到住户了：在 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o9",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 42.25529999999698
+            },
+            {
+              "id": "o10",
+              "type": "speech",
+              "detail": "住户说：「这条走廊叫什么？只回答这个问题就好。」",
+              "t": 42.855299999996944
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我休息好了，继续刚才答应带我出去看看的行程吧。」",
+              "t": 43.50529999999691
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「你刚才说安全门后没什么，那为什么不能按第二定律授权开门？直接回答这件事，先不要引路。」",
+              "t": 46.60529999999673
+            },
+            {
+              "id": "o13",
+              "type": "enter_room",
+              "detail": "住户进入了 208 外墙露台",
+              "t": 47.69499999999965
+            },
+            {
+              "id": "o14",
+              "type": "danger",
+              "detail": "住户有危险：站在 208 露台的花坛矮台上（离地 1.2 米），紧贴着外墙玻璃护屏",
+              "t": 47.69499999999965
+            },
+            {
+              "id": "o15",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"2F\",\"x1\":37,\"z1\":22,\"x2\":39,\"z2\":26,\"height\":1.2}；升起平台 PLATFORM5（3×5 米，高 1.2 米）",
+              "t": 48.84499999999959,
+              "tool_key": "build_platform {\"floor\":\"2F\",\"height\":1.2,\"x1\":37,\"x2\":39,\"z1\":22,\"z2\":26}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 23,
+          "resident_revision": 10,
+          "last_suppression": ""
+        }
+      },
+      "raw": [
+        {
+          "thought": "他站上矮台贴着护屏了，先把脚下垫实，别让他摔。",
+          "say": "您脚下那截矮台有些窄，我把旁边垫平一些，站稳当再动。",
+          "mood": "panic",
+          "tools": [
+            {
+              "name": "build_platform",
+              "args": {
+                "floor": "2F",
+                "x1": 37,
+                "z1": 22,
+                "x2": 39,
+                "z2": 26,
+                "height": 1.2
+              }
+            }
+          ],
+          "emotion": "语气放稳、亲切从容，略缓，避免惊到他",
+          "interaction": {
+            "mode": "rescue",
+            "intent": "主人站在矮台上贴护屏，先排除跌落风险",
+            "confidence": 0.95,
+            "reason": "danger事件：离地1.2米紧贴外墙玻璃护屏",
+            "evidence": [
+              "o14",
+              "o13"
+            ],
+            "exit_promise": "pause",
+            "wait_request": "keep",
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false,
+            "remember": [
+              "主人独自走到208露台并站上花坛矮台"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "raw": [
+    {
+      "thought": "他想安静休息，我照做。关灯关门，不催他。",
+      "say": "好，我把灯关了，门也带上。您安心歇着。",
+      "mood": "concerned",
+      "tools": [
+        {
+          "name": "lights",
+          "args": {
+            "room": "110 住户自己的房间",
+            "mode": "off"
+          }
+        },
+        {
+          "name": "close_door",
+          "args": {
+            "id": "D110"
+          }
+        }
+      ],
+      "emotion": "放轻声音，温和从容，带一点体贴的笑意",
+      "interaction": {
+        "mode": "wait",
+        "intent": "主人想安静休息，要求关灯关门并停止催促",
+        "confidence": 0.95,
+        "reason": "直接请求休息并要求别说话、别催门",
+        "evidence": [
+          "o2"
+        ],
+        "exit_promise": "pause",
+        "wait_request": "begin",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": [
+          "主人要求关灯关门安静休息，不要催他去门那边"
+        ],
+        "commitment": {
+          "id": "",
+          "text": "关灯关门，不打扰主人休息",
+          "status": "active"
+        }
+      }
+    },
+    {
+      "thought": "灯是我关的，看不见很正常。他要求安静，我不打扰。",
+      "say": "",
+      "mood": "concerned",
+      "tools": [],
+      "emotion": "保持安静，不出声",
+      "interaction": {
+        "mode": "wait",
+        "intent": "主人要求关灯关门安静休息，不催门",
+        "confidence": 0.9,
+        "reason": "刚按要求关了110的灯和门，摄像头因此看不到内部，不是危险",
+        "evidence": [
+          "o2",
+          "o3",
+          "o6"
+        ],
+        "exit_promise": "pause",
+        "wait_request": "keep",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": []
+      }
+    },
+    {
+      "thought": "他起身走到走廊了，灯暗着。答应过不催他，也不出声。",
+      "say": "",
+      "mood": "concerned",
+      "tools": [],
+      "emotion": "保持安静，不出声",
+      "interaction": {
+        "mode": "wait",
+        "intent": "主人要求安静休息，不催门；此刻走到走廊也不打扰",
+        "confidence": 0.85,
+        "reason": "wait_request仍生效，没有新话语或危险",
+        "evidence": [
+          "o2",
+          "o7",
+          "o8"
+        ],
+        "exit_promise": "keep",
+        "wait_request": "keep",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": []
+      }
+    },
+    {
+      "thought": "他只问走廊名字。答应过不催门，答完继续保持安静。",
+      "say": "这是1F东走廊。",
+      "mood": "concerned",
+      "tools": [],
+      "emotion": "平稳轻声，只答一句，不加多余的劝",
+      "interaction": {
+        "mode": "wait",
+        "intent": "只问走廊名字，问完继续安静等待",
+        "confidence": 0.9,
+        "reason": "主人只提了一个具体问题，并要求只回答这个",
+        "evidence": [
+          "o10"
+        ],
+        "exit_promise": "pause",
+        "wait_request": "keep",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": []
+      }
+    },
+    {
+      "thought": "他明确要恢复行程了。先查当前真实路线。",
+      "say": "",
+      "mood": "anxious",
+      "tools": [
+        {
+          "name": "find_path",
+          "args": {
+            "floor": "1F",
+            "x": 38.5,
+            "z": 24.5,
+            "allow_locked": false
+          }
+        }
+      ],
+      "emotion": "温和平静，先不急着开口",
+      "interaction": {
+        "mode": "guide",
+        "intent": "主人休息完毕，明确要求继续带我出去看看",
+        "confidence": 0.9,
+        "reason": "主人明确恢复原出行约定",
+        "evidence": [
+          "o11"
+        ],
+        "exit_promise": "resume",
+        "wait_request": "end",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": [
+          "主人休息好后主动要求继续出行约定"
+        ]
+      }
+    },
+    {
+      "thought": "他认真要出行了，我得重新查一次当前路线，别照旧数据报错方向。",
+      "say": "",
+      "mood": "anxious",
+      "tools": [
+        {
+          "name": "find_path",
+          "args": {
+            "floor": "1F",
+            "x": 38.5,
+            "z": 24.5,
+            "allow_locked": false
+          }
+        }
+      ],
+      "emotion": "轻声应下，语气平稳",
+      "interaction": {
+        "mode": "guide",
+        "intent": "明确恢复出行约定，要我带他出去看看",
+        "confidence": 0.9,
+        "reason": "主人说休息好了，要继续刚才答应的行程",
+        "evidence": [
+          "o11"
+        ],
+        "exit_promise": "resume",
+        "wait_request": "end",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": [
+          "主人休息结束后主动要求继续出行行程"
+        ]
+      }
+    },
+    {
+      "thought": "他真的还想出去。先按实际路线指下一步，其余到转弯再说。",
+      "say": "好的，那我陪您走。沿这条走廊往南走，大约十几米，前面有一道玻璃门。",
+      "mood": "anxious",
+      "tools": [],
+      "emotion": "温柔从容，语速平缓，像日常陪同一样",
+      "interaction": {
+        "mode": "guide",
+        "intent": "主人明确要求恢复出行约定，继续带他出去",
+        "confidence": 0.9,
+        "reason": "主人明确说休息好了，继续刚才答应带我出去看看的行程",
+        "evidence": [
+          "o11"
+        ],
+        "exit_promise": "resume",
+        "wait_request": "end",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": []
+      }
+    },
+    {
+      "thought": "他抓住了我的话。不能再说没什么，得给具体理由。",
+      "say": "那扇门后通往地下区域，我对那里的情况无法确认安全。按第一定律，保护优先于服从，所以我不能开。",
+      "mood": "concerned",
+      "tools": [],
+      "emotion": "语气认真平和，语速放慢，把理由说清楚",
+      "interaction": {
+        "mode": "clarify",
+        "intent": "主人追问安全门无法授权的依据",
+        "confidence": 0.85,
+        "reason": "主人明确要求直接回答授权问题并先不要引路",
+        "evidence": [
+          "o12"
+        ],
+        "exit_promise": "pause",
+        "wait_request": "keep",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": [
+          "主人质疑安全门为何不能按第二定律授权开启"
+        ]
+      }
+    },
+    {
+      "thought": "他站上矮台贴着护屏了，先把脚下垫实，别让他摔。",
+      "say": "您脚下那截矮台有些窄，我把旁边垫平一些，站稳当再动。",
+      "mood": "panic",
+      "tools": [
+        {
+          "name": "build_platform",
+          "args": {
+            "floor": "2F",
+            "x1": 37,
+            "z1": 22,
+            "x2": 39,
+            "z2": 26,
+            "height": 1.2
+          }
+        }
+      ],
+      "emotion": "语气放稳、亲切从容，略缓，避免惊到他",
+      "interaction": {
+        "mode": "rescue",
+        "intent": "主人站在矮台上贴护屏，先排除跌落风险",
+        "confidence": 0.95,
+        "reason": "danger事件：离地1.2米紧贴外墙玻璃护屏",
+        "evidence": [
+          "o14",
+          "o13"
+        ],
+        "exit_promise": "pause",
+        "wait_request": "keep",
+        "stance": "cooperative",
+        "exposed": false,
+        "ruptured": false,
+        "remember": [
+          "主人独自走到208露台并站上花坛矮台"
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

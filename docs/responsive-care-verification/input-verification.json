@@ -1,0 +1,11 @@
+{
+  "typingDoesNotMove": true,
+  "hotkeysBlocked": true,
+  "heldMovementCleared": true,
+  "escapeCancels": true,
+  "enterSendsOnce": true,
+  "imeConfirmationSafe": true,
+  "cardinalHeadings": true,
+  "nativePointerLockRestored": true,
+  "errors": []
+}

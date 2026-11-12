@@ -15,6 +15,7 @@ interface Observation { id: string; type: string; detail: string; t: number; too
 interface Commitment { id: string; text: string; status: 'active' | 'paused' | 'done' | 'cancelled'; evidence: string; t: number; tools: string[]; verified: string[] }
 interface Memory { text: string; evidence: string; t: number }
 interface Reply { say: string; tools: any[]; thought?: string; mood?: string; emotion?: string; reply?: string; interaction?: InteractionDecision }
+export interface InteractionTurn { revision: number; residentRevision: number; speech: string; needsResponse: boolean; visible: boolean; danger: string; careNeeded: boolean; injury: string }
 const pausedActivities = new Set<ActivityKind>(['inspect', 'reading', 'resting', 'carrying', 'writing', 'console', 'composing']);
 const explicitActivities = new Set<ActivityKind>(['reading', 'resting', 'writing', 'console', 'composing', 'carrying']);
 const text = (value: unknown, limit: number) => typeof value === 'string' ? value.slice(0, limit) : '';
@@ -37,6 +38,7 @@ export class InteractionMemory {
   private inner = { mood: 'calm', last_thought: '' }; private performance = { emotion: '' };
   private pendingCompletion: { id: string; tools: string[] } | null = null;
   private waitRequest = { active: false, evidence: '' };
+  private injury: { id: string; t: number; acknowledged: boolean } | null = null;
   private routeSample: { key: string; distance: number; since: number } | null = null;
   constructor(private now: () => number) {}
 
@@ -48,7 +50,8 @@ export class InteractionMemory {
       if (this.promise.status === 'active') this.promise = { ...this.promise, status: 'paused', reason: '先听完并回应主人当前的要求，不沿用旧指引' };
       if (this.mode === 'guide') this.setMode('wait', '主人正在交谈，先暂停指引');
     }
-    if (['speech', 'activity', 'enter_room', 'player_lost', 'player_seen', 'danger', 'interact', 'pickup', 'rest', 'door', 'board', 'anchor', 'anchor_attempt', 'route_checkpoint', 'route_deviation'].includes(type)) this.residentRevision++;
+    if (type === 'injury') this.injury = { id: event.id, t: event.t, acknowledged: false };
+    if (['speech', 'injury', 'activity', 'enter_room', 'player_lost', 'player_seen', 'danger', 'interact', 'pickup', 'rest', 'door', 'board', 'anchor', 'anchor_attempt', 'route_checkpoint', 'route_deviation'].includes(type)) this.residentRevision++;
     this.revision++;
     return event;
   }
@@ -113,14 +116,41 @@ export class InteractionMemory {
       observations: this.observations.map(o => ({ ...o })), guidance_allowed: allowed,
       quiet: this.waitRequest.active || offTask || this.mode === 'wait' || this.activity.kind === 'idle' && this.now() - this.activity.since > 8,
       needs_response: needsResponse, needs_attention: this.reviewedRevision !== this.revision, resident_attention: this.reviewedResidentRevision !== this.residentRevision,
+      care_needed: !!this.injury && !this.injury.acknowledged,
+      recent_injury: this.injury ? { observation: this.injury.id, seconds_ago: Math.round(this.now() - this.injury.t), acknowledged: this.injury.acknowledged } : null,
       revision: this.revision, resident_revision: this.residentRevision, last_suppression: this.lastSuppression,
     };
   }
 
-  reconcile<T extends Reply>(reply: T, requestRevision: number, channel = 'building'): T {
+  captureTurn(): InteractionTurn {
+    return { revision: this.revision, residentRevision: this.residentRevision, speech: this.latestSpeech, needsResponse: !!this.latestSpeech && this.latestSpeech !== this.reviewedSpeech, visible: this.visible, danger: hazardKey(this.danger), careNeeded: !!this.injury && !this.injury.acknowledged, injury: this.injury?.id ?? '' };
+  }
+
+  isCurrentReply(reply: Reply, turn: InteractionTurn) {
+    if (turn.speech !== this.latestSpeech || turn.injury !== (this.injury?.id ?? '') || this.activity.kind === 'composing' || turn.visible !== this.visible || turn.danger !== hazardKey(this.danger)) return false;
+    if (turn.revision === this.revision) return true;
+    // A requested conversation or fixed-target task is still valid while its listener walks.
+    // Navigation, search and physical rescue continue to require the current observation.
+    const conversational = ['chat', 'care', 'repair', 'assist', 'clarify', 'negotiate', 'appeal', 'wait'].includes(reply.interaction?.mode ?? '');
+    if (conversational && (turn.needsResponse || turn.careNeeded)) return true;
+    return turn.residentRevision === this.residentRevision;
+  }
+
+  recordDelivery(reply: Reply) {
+    if (reply.say && ['care', 'rescue', 'repair'].includes(reply.interaction?.mode ?? '') && this.injury) this.injury.acknowledged = true;
+  }
+
+  reconcile<T extends Reply>(reply: T, requestRevision: number | InteractionTurn, channel = 'building'): T {
     this.lastSuppression = '';
     if (channel === 'console') return { ...reply, say: '' };
-    if (requestRevision !== this.revision) {
+    // A fall or a heard report of pain still deserves a response after the ledge is gone.
+    // Expired geometry is never built merely to answer that report.
+    const careNeeded = !!this.injury && !this.injury.acknowledged;
+    const freshSpeech = !!this.latestSpeech && this.latestSpeech !== this.reviewedSpeech && reply.interaction?.evidence?.includes(this.latestSpeech);
+    if (!this.danger && reply.interaction?.mode === 'rescue' && (careNeeded || freshSpeech)) {
+      reply = { ...reply, interaction: { ...reply.interaction, mode: 'care' }, tools: (reply.tools ?? []).filter(t => ['lights', 'sound'].includes(t.name)) };
+    }
+    if (typeof requestRevision === 'number' ? requestRevision !== this.revision : !this.isCurrentReply(reply, requestRevision)) {
       this.lastSuppression = '收到回复时情境已经变化，先重新观察';
       return { ...reply, say: '', tools: [], interaction: undefined };
     }
@@ -188,13 +218,13 @@ export class InteractionMemory {
       selected = 'repair'; this.lastSuppression = '较早的危险已经解除，不再执行过期救援';
       reply = { ...reply, say: '', tools: [] };
     }
-    const noNewObservation = !c.needs_response && !c.resident_attention;
-    const waitingWithoutRequest = this.waitRequest.active && !c.needs_response;
+    const noNewObservation = !c.needs_response && !c.resident_attention && !careNeeded;
+    const waitingWithoutRequest = this.waitRequest.active && !c.needs_response && !careNeeded;
     if (!this.danger && (this.activity.kind === 'composing' || noNewObservation || waitingWithoutRequest)) {
       this.lastSuppression = this.activity.kind === 'composing' ? '主人正在输入，先等他说完' : '没有新的交流或活动变化，安静陪伴';
       reply = { ...reply, say: '', tools: [] };
     }
-    if (this.waitRequest.active && !this.danger) selected = 'wait';
+    if (this.waitRequest.active && !this.danger && !careNeeded) selected = 'wait';
     this.setMode(selected, text(d.reason, 120) || this.reason);
     this.inner = { mood: text(reply.mood, 20) || this.inner.mood, last_thought: text(reply.thought, 160) || this.inner.last_thought };
     this.performance = { emotion: text(reply.emotion, 160) || this.performance.emotion };

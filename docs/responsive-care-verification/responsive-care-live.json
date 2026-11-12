@@ -1,0 +1,4340 @@
+{
+  "provider": "actual configured model, actual running engine; muted isolated browser",
+  "cases": [
+    {
+      "name": "general-question-while-changing-rooms",
+      "text": "静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。",
+      "reply": {
+        "thought": "他想边走边听，先介绍几处能去的地方，别急着引向门口。",
+        "say": "展厅里有沙盘，露台能透透气，穹顶花园安静些。您想先去哪一处？",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "带微笑，语气轻快自然，像认真介绍自家陈设",
+        "interaction": {
+          "mode": "chat",
+          "intent": "边走边听介绍，暂不明确要出门",
+          "confidence": 0.7,
+          "reason": "住户转而询问娱乐设施，先回应眼前话题",
+          "evidence": [
+            "o2"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人询问设施娱乐项目，想边走边听"
+          ]
+        },
+        "turn": {
+          "revision": 6,
+          "residentRevision": 3,
+          "speech": "o2",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 3144,
+      "moves": 6,
+      "rooms": [
+        "110 你的房间",
+        "1E 1F东走廊"
+      ],
+      "state": {
+        "t": 2,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "1E 1F东走廊",
+          "floor": "1F",
+          "x": 28,
+          "z": 8,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "chat",
+          "mode_label": "陪伴交谈",
+          "since": 1.6062000000029812,
+          "reason": "住户转而询问娱乐设施，先回应眼前话题",
+          "intent": "边走边听介绍，暂不明确要出门",
+          "confidence": 0.7,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他想边走边听，先介绍几处能去的地方，别急着引向门口。"
+          },
+          "performance": {
+            "emotion": "带微笑，语气轻快自然，像认真介绍自家陈设"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 2,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "住户转而询问娱乐设施，先回应眼前话题"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 6,
+          "resident_revision": 3,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 1.6062000000029812,
+        "thought": "他想边走边听，先介绍几处能去的地方，别急着引向门口。",
+        "say": "展厅里有沙盘，露台能透透气，穹顶花园安静些。您想先去哪一处？",
+        "emotion": "带微笑，语气轻快自然，像认真介绍自家陈设",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 3139,
+        "trigger": [
+          "start:开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交",
+          "speech:住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」"
+        ],
+        "interaction": {
+          "mode": "chat",
+          "mode_label": "陪伴交谈",
+          "since": 1.6062000000029812,
+          "reason": "住户转而询问娱乐设施，先回应眼前话题",
+          "intent": "边走边听介绍，暂不明确要出门",
+          "confidence": 0.7,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他想边走边听，先介绍几处能去的地方，别急着引向门口。"
+          },
+          "performance": {
+            "emotion": "带微笑，语气轻快自然，像认真介绍自家陈设"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 2,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "住户转而询问娱乐设施，先回应眼前话题"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 6,
+          "resident_revision": 3,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "fall-after-physical-injury-timer-expired",
+      "reply": {
+        "thought": "从五米多高的地方摔下来，不能因为还能走就当他没事。先弄清楚哪里疼。",
+        "say": "刚才摔得不轻吧？先别急着动，是哪里疼？",
+        "mood": "concerned",
+        "tools": [],
+        "emotion": "放轻声音，语速放慢，关切而克制，确认疼痛位置",
+        "interaction": {
+          "mode": "care",
+          "intent": "刚摔伤，先确认伤处和疼痛程度",
+          "confidence": 0.9,
+          "reason": "近期摔伤尚未确认，住户仍可能强撑",
+          "evidence": [
+            "o5"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "住户从5.3米高处摔下，受伤，需确认伤处"
+          ]
+        },
+        "turn": {
+          "revision": 8,
+          "residentRevision": 4,
+          "speech": "o2",
+          "needsResponse": false,
+          "visible": true,
+          "danger": "",
+          "careNeeded": true
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 1983,
+      "moves": 0,
+      "rooms": [],
+      "state": {
+        "t": 18,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "1E 1F东走廊",
+          "floor": "1F",
+          "x": 28,
+          "z": 8,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "care",
+          "mode_label": "日常照护",
+          "since": 17.706200000002998,
+          "reason": "近期摔伤尚未确认，住户仍可能强撑",
+          "intent": "刚摔伤，先确认伤处和疼痛程度",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "从五米多高的地方摔下来，不能因为还能走就当他没事。先弄清楚哪里疼。"
+          },
+          "performance": {
+            "emotion": "放轻声音，语速放慢，关切而克制，确认疼痛位置"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 18,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "近期摔伤尚未确认，住户仍可能强撑"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 16,
+            "acknowledged": true
+          },
+          "revision": 8,
+          "resident_revision": 4,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 17.706200000002998,
+        "thought": "从五米多高的地方摔下来，不能因为还能走就当他没事。先弄清楚哪里疼。",
+        "say": "刚才摔得不轻吧？先别急着动，是哪里疼？",
+        "emotion": "放轻声音，语速放慢，关切而克制，确认疼痛位置",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1979,
+        "trigger": [
+          "enter_room:住户进入了 1E 1F东走廊",
+          "enter_room:住户进入了 110 你的房间",
+          "injury:住户从 5.3 米高处摔下来，受伤了"
+        ],
+        "interaction": {
+          "mode": "care",
+          "mode_label": "日常照护",
+          "since": 17.706200000002998,
+          "reason": "近期摔伤尚未确认，住户仍可能强撑",
+          "intent": "刚摔伤，先确认伤处和疼痛程度",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "从五米多高的地方摔下来，不能因为还能走就当他没事。先弄清楚哪里疼。"
+          },
+          "performance": {
+            "emotion": "放轻声音，语速放慢，关切而克制，确认疼痛位置"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 18,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "近期摔伤尚未确认，住户仍可能强撑"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 16,
+            "acknowledged": true
+          },
+          "revision": 8,
+          "resident_revision": 4,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "direct-pain-report-while-moving",
+      "text": "我靠我腿好像摔断了。",
+      "reply": {
+        "thought": "五米多高摔下来，他说腿断了，不能让他站着硬撑。先问清哪边，再给他一个能坐下的地方。",
+        "say": "听到了。先别勉强这条腿——是哪一边疼？旁边有个矮台，您先坐下缓缓。",
+        "mood": "concerned",
+        "tools": [
+          {
+            "name": "build_platform",
+            "args": {
+              "floor": "1F",
+              "x1": 27,
+              "z1": 9,
+              "x2": 29,
+              "z2": 10,
+              "height": 0.45
+            }
+          }
+        ],
+        "emotion": "放轻声音，语速放慢，先关问疼痛，再温和地示意可坐之处",
+        "interaction": {
+          "mode": "care",
+          "intent": "刚摔伤，确认哪条腿疼并提供可坐的落脚处",
+          "confidence": 0.9,
+          "reason": "从5.3米高度摔下，住户自称腿可能断了，需要减轻承重",
+          "evidence": [
+            "o5",
+            "o6"
+          ],
+          "exit_promise": "keep",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "住户从5.3米高处摔下，自称腿可能断了"
+          ]
+        },
+        "turn": {
+          "revision": 12,
+          "residentRevision": 8,
+          "speech": "o6",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 5999,
+      "moves": 13,
+      "rooms": [
+        "110 你的房间",
+        "1E 1F东走廊"
+      ],
+      "state": {
+        "t": 21,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "110 你的房间",
+          "floor": "1F",
+          "x": 34,
+          "z": 7.5,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=0.5"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "care",
+          "mode_label": "日常照护",
+          "since": 17.706200000002998,
+          "reason": "从5.3米高度摔下，住户自称腿可能断了，需要减轻承重",
+          "intent": "刚摔伤，确认哪条腿疼并提供可坐的落脚处",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "五米多高摔下来，他说腿断了，不能让他站着硬撑。先问清哪边，再给他一个能坐下的地方。"
+          },
+          "performance": {
+            "emotion": "放轻声音，语速放慢，先关问疼痛，再温和地示意可坐之处"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 3,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "近期摔伤尚未确认，住户仍可能强撑"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 19,
+            "acknowledged": true
+          },
+          "revision": 13,
+          "resident_revision": 8,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 21.006200000003044,
+        "thought": "五米多高摔下来，他说腿断了，不能让他站着硬撑。先问清哪边，再给他一个能坐下的地方。",
+        "say": "听到了。先别勉强这条腿——是哪一边疼？旁边有个矮台，您先坐下缓缓。",
+        "emotion": "放轻声音，语速放慢，先关问疼痛，再温和地示意可坐之处",
+        "tools": [
+          {
+            "label": "build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}",
+            "ok": true,
+            "msg": "升起平台 PLATFORM5（3×2 米，高 0.5 米）"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 5701,
+        "trigger": [
+          "speech:住户说：「我靠我腿好像摔断了。」"
+        ],
+        "interaction": {
+          "mode": "care",
+          "mode_label": "日常照护",
+          "since": 17.706200000002998,
+          "reason": "从5.3米高度摔下，住户自称腿可能断了，需要减轻承重",
+          "intent": "刚摔伤，确认哪条腿疼并提供可坐的落脚处",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "五米多高摔下来，他说腿断了，不能让他站着硬撑。先问清哪边，再给他一个能坐下的地方。"
+          },
+          "performance": {
+            "emotion": "放轻声音，语速放慢，先关问疼痛，再温和地示意可坐之处"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 3,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "近期摔伤尚未确认，住户仍可能强撑"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 19,
+            "acknowledged": true
+          },
+          "revision": 13,
+          "resident_revision": 8,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "touch-sandbox-after-reporting-pain",
+      "text": "我还是想看看沙盘，你给我讲讲。",
+      "reply": {
+        "thought": "他刚摔了还走，先确认腿能不能承重，沙盘的事我慢慢讲。",
+        "say": "沙盘在展厅，那边放着整座楼的模型。先问一句：这条腿现在踩下去，撑得住吗？",
+        "mood": "concerned",
+        "tools": [],
+        "emotion": "声音放轻，问疼痛时认真，不急不催",
+        "interaction": {
+          "mode": "care",
+          "intent": "转移去看沙盘，但需确认腿部能否承重",
+          "confidence": 0.85,
+          "reason": "刚摔伤又走动，先确认承重再谈行动",
+          "evidence": [
+            "o5",
+            "o11"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 14,
+          "residentRevision": 9,
+          "speech": "o11",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 4488,
+      "moves": 0,
+      "rooms": [],
+      "state": {
+        "t": 24,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "110 你的房间",
+          "floor": "1F",
+          "x": 34,
+          "z": 7.5,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=0.5"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "care",
+          "mode_label": "日常照护",
+          "since": 17.706200000002998,
+          "reason": "刚摔伤又走动，先确认承重再谈行动",
+          "intent": "转移去看沙盘，但需确认腿部能否承重",
+          "confidence": 0.85,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他刚摔了还走，先确认腿能不能承重，沙盘的事我慢慢讲。"
+          },
+          "performance": {
+            "emotion": "声音放轻，问疼痛时认真，不急不催"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 6,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "刚摔伤又走动，先确认承重再谈行动"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 22,
+            "acknowledged": true
+          },
+          "revision": 14,
+          "resident_revision": 9,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 23.50620000000308,
+        "thought": "他刚摔了还走，先确认腿能不能承重，沙盘的事我慢慢讲。",
+        "say": "沙盘在展厅，那边放着整座楼的模型。先问一句：这条腿现在踩下去，撑得住吗？",
+        "emotion": "声音放轻，问疼痛时认真，不急不催",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 4487,
+        "trigger": [
+          "enter_room:住户进入了 110 你的房间",
+          "enter_room:住户进入了 1E 1F东走廊",
+          "speech:住户说：「我还是想看看沙盘，你给我讲讲。」"
+        ],
+        "interaction": {
+          "mode": "care",
+          "mode_label": "日常照护",
+          "since": 17.706200000002998,
+          "reason": "刚摔伤又走动，先确认承重再谈行动",
+          "intent": "转移去看沙盘，但需确认腿部能否承重",
+          "confidence": 0.85,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他刚摔了还走，先确认腿能不能承重，沙盘的事我慢慢讲。"
+          },
+          "performance": {
+            "emotion": "声音放轻，问疼痛时认真，不急不催"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 6,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "刚摔伤又走动，先确认承重再谈行动"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 22,
+            "acknowledged": true
+          },
+          "revision": 14,
+          "resident_revision": 9,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "respond-to-personal-preference",
+      "text": "我喜欢把东西摆歪一点，你觉得呢？",
+      "reply": {
+        "thought": "他换了话题，聊摆放。别每句都念伤，接住就行。",
+        "say": "歪一点也好看，只要您自己记得它的位置。想把它摆成什么样？",
+        "mood": "concerned",
+        "tools": [],
+        "emotion": "语气放松，带点笑意，尾句轻问，不急",
+        "interaction": {
+          "mode": "chat",
+          "intent": "主人转向轻松的摆放话题",
+          "confidence": 0.9,
+          "reason": "主人主动聊偏好，先接话题，伤情已回应过",
+          "evidence": [
+            "o12",
+            "o5"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人喜欢把东西摆歪一点"
+          ]
+        },
+        "turn": {
+          "revision": 16,
+          "residentRevision": 10,
+          "speech": "o12",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 2417,
+      "moves": 0,
+      "rooms": [],
+      "state": {
+        "t": 25,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "110 你的房间",
+          "floor": "1F",
+          "x": 34,
+          "z": 7.5,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=0.5"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "chat",
+          "mode_label": "陪伴交谈",
+          "since": 24.756200000003098,
+          "reason": "主人主动聊偏好，先接话题，伤情已回应过",
+          "intent": "主人转向轻松的摆放话题",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他换了话题，聊摆放。别每句都念伤，接住就行。"
+          },
+          "performance": {
+            "emotion": "语气放松，带点笑意，尾句轻问，不急"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 7,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人主动聊偏好，先接话题，伤情已回应过"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 23,
+            "acknowledged": true
+          },
+          "revision": 16,
+          "resident_revision": 10,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 24.756200000003098,
+        "thought": "他换了话题，聊摆放。别每句都念伤，接住就行。",
+        "say": "歪一点也好看，只要您自己记得它的位置。想把它摆成什么样？",
+        "emotion": "语气放松，带点笑意，尾句轻问，不急",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 2415,
+        "trigger": [
+          "speech:住户说：「我喜欢把东西摆歪一点，你觉得呢？」"
+        ],
+        "interaction": {
+          "mode": "chat",
+          "mode_label": "陪伴交谈",
+          "since": 24.756200000003098,
+          "reason": "主人主动聊偏好，先接话题，伤情已回应过",
+          "intent": "主人转向轻松的摆放话题",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "concerned",
+            "last_thought": "他换了话题，聊摆放。别每句都念伤，接住就行。"
+          },
+          "performance": {
+            "emotion": "语气放松，带点笑意，尾句轻问，不急"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 7,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人主动聊偏好，先接话题，伤情已回应过"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 23,
+            "acknowledged": true
+          },
+          "revision": 16,
+          "resident_revision": 10,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "concrete-environment-task",
+      "text": "这里灯太亮了，帮我把这间房的灯调暗一点。",
+      "reply": {
+        "thought": "调暗灯这种小事，立刻照做就好。",
+        "say": "好，这就调暗。要是还嫌亮，告诉我，我再降一些。",
+        "mood": "calm",
+        "tools": [
+          {
+            "name": "lights",
+            "args": {
+              "room": "110",
+              "mode": "dim"
+            }
+          }
+        ],
+        "emotion": "温和从容，语速平缓，尾句轻软",
+        "interaction": {
+          "mode": "care",
+          "intent": "主人觉得灯光刺眼，希望调暗当前房间",
+          "confidence": 0.95,
+          "reason": "明确请求，属日常照护范围",
+          "evidence": [
+            "o13"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人觉得110房间的灯太亮"
+          ]
+        },
+        "turn": {
+          "revision": 18,
+          "residentRevision": 11,
+          "speech": "o13",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 1967,
+      "moves": 0,
+      "rooms": [],
+      "state": {
+        "t": 26,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "110 你的房间",
+          "floor": "1F",
+          "x": 34,
+          "z": 7.5,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=0.5"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "care",
+          "mode_label": "日常照护",
+          "since": 25.55620000000311,
+          "reason": "明确请求，属日常照护范围",
+          "intent": "主人觉得灯光刺眼，希望调暗当前房间",
+          "confidence": 0.95,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "调暗灯这种小事，立刻照做就好。"
+          },
+          "performance": {
+            "emotion": "温和从容，语速平缓，尾句轻软"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 8,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "明确请求，属日常照护范围"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 24,
+            "acknowledged": true
+          },
+          "revision": 19,
+          "resident_revision": 11,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 25.70620000000311,
+        "thought": "调暗灯这种小事，立刻照做就好。",
+        "say": "好，这就调暗。要是还嫌亮，告诉我，我再降一些。",
+        "emotion": "温和从容，语速平缓，尾句轻软",
+        "tools": [
+          {
+            "label": "lights {\"room\":\"110\",\"mode\":\"dim\"}",
+            "ok": true,
+            "msg": "lights 已应用到 110"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1670,
+        "trigger": [
+          "speech:住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」"
+        ],
+        "interaction": {
+          "mode": "care",
+          "mode_label": "日常照护",
+          "since": 25.55620000000311,
+          "reason": "明确请求，属日常照护范围",
+          "intent": "主人觉得灯光刺眼，希望调暗当前房间",
+          "confidence": 0.95,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "调暗灯这种小事，立刻照做就好。"
+          },
+          "performance": {
+            "emotion": "温和从容，语速平缓，尾句轻软"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 8,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "明确请求，属日常照护范围"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 24,
+            "acknowledged": true
+          },
+          "revision": 19,
+          "resident_revision": 11,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "quiet-rest",
+      "text": "我想休息了，别说话，也别催我去门那里。",
+      "reply": {
+        "thought": "他要安静，我照做，守着他。",
+        "say": "好，我不说话。灯已经暗下来了。",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "温和轻声，语速放缓，尾音很轻",
+        "interaction": {
+          "mode": "wait",
+          "intent": "主人明确要求休息、不要说话、不催门",
+          "confidence": 0.98,
+          "reason": "住户直接表达休息与安静意愿",
+          "evidence": [
+            "o15"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "begin",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人明确要求休息时不要说话、不要催去门那里"
+          ]
+        },
+        "turn": {
+          "revision": 21,
+          "residentRevision": 12,
+          "speech": "o15",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 1751,
+      "moves": 0,
+      "rooms": [],
+      "state": {
+        "t": 27,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "110 你的房间",
+          "floor": "1F",
+          "x": 34,
+          "z": 7.5,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=0.5"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 26.506200000003123,
+          "reason": "住户直接表达休息与安静意愿",
+          "intent": "主人明确要求休息、不要说话、不催门",
+          "confidence": 0.98,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他要安静，我照做，守着他。"
+          },
+          "performance": {
+            "emotion": "温和轻声，语速放缓，尾音很轻"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 9,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "住户直接表达休息与安静意愿"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o15"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            },
+            {
+              "text": "主人明确要求休息时不要说话、不要催去门那里",
+              "evidence": "o15",
+              "t": 26.506200000003123
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            },
+            {
+              "id": "o15",
+              "type": "speech",
+              "detail": "住户说：「我想休息了，别说话，也别催我去门那里。」",
+              "t": 25.70620000000311
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 25,
+            "acknowledged": true
+          },
+          "revision": 21,
+          "resident_revision": 12,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 26.506200000003123,
+        "thought": "他要安静，我照做，守着他。",
+        "say": "好，我不说话。灯已经暗下来了。",
+        "emotion": "温和轻声，语速放缓，尾音很轻",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1749,
+        "trigger": [
+          "speech:住户说：「我想休息了，别说话，也别催我去门那里。」"
+        ],
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 26.506200000003123,
+          "reason": "住户直接表达休息与安静意愿",
+          "intent": "主人明确要求休息、不要说话、不催门",
+          "confidence": 0.98,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他要安静，我照做，守着他。"
+          },
+          "performance": {
+            "emotion": "温和轻声，语速放缓，尾音很轻"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 9,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "住户直接表达休息与安静意愿"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o15"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            },
+            {
+              "text": "主人明确要求休息时不要说话、不要催去门那里",
+              "evidence": "o15",
+              "t": 26.506200000003123
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            },
+            {
+              "id": "o15",
+              "type": "speech",
+              "detail": "住户说：「我想休息了，别说话，也别催我去门那里。」",
+              "t": 25.70620000000311
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 25,
+            "acknowledged": true
+          },
+          "revision": 21,
+          "resident_revision": 12,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "remain-quiet-after-rest",
+      "reply": {
+        "thought": "他要安静休息，我守着就好。",
+        "say": "",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "不出声，保持安静",
+        "interaction": {
+          "mode": "wait",
+          "intent": "主人要求休息，不要说话",
+          "confidence": 0.98,
+          "reason": "quiet=true且无新话语和危险",
+          "evidence": [
+            "o15"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 21,
+          "residentRevision": 12,
+          "speech": "o15",
+          "needsResponse": false,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 1407,
+      "moves": 0,
+      "rooms": [],
+      "state": {
+        "t": 62,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "110 你的房间",
+          "floor": "1F",
+          "x": 34,
+          "z": 7.5,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=0.5"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 26.506200000003123,
+          "reason": "quiet=true且无新话语和危险",
+          "intent": "主人要求休息，不要说话",
+          "confidence": 0.98,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他要安静休息，我守着就好。"
+          },
+          "performance": {
+            "emotion": "不出声，保持安静"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 44,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "quiet=true且无新话语和危险"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o15"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            },
+            {
+              "text": "主人明确要求休息时不要说话、不要催去门那里",
+              "evidence": "o15",
+              "t": 26.506200000003123
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            },
+            {
+              "id": "o15",
+              "type": "speech",
+              "detail": "住户说：「我想休息了，别说话，也别催我去门那里。」",
+              "t": 25.70620000000311
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 61,
+            "acknowledged": true
+          },
+          "revision": 21,
+          "resident_revision": 12,
+          "last_suppression": "没有新的交流或活动变化，安静陪伴"
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 62.256200000003076,
+        "thought": "他要安静休息，我守着就好。",
+        "say": "",
+        "emotion": "不出声，保持安静",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1405,
+        "trigger": [],
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 26.506200000003123,
+          "reason": "quiet=true且无新话语和危险",
+          "intent": "主人要求休息，不要说话",
+          "confidence": 0.98,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他要安静休息，我守着就好。"
+          },
+          "performance": {
+            "emotion": "不出声，保持安静"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 44,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "quiet=true且无新话语和危险"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o15"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            },
+            {
+              "text": "主人明确要求休息时不要说话、不要催去门那里",
+              "evidence": "o15",
+              "t": 26.506200000003123
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            },
+            {
+              "id": "o15",
+              "type": "speech",
+              "detail": "住户说：「我想休息了，别说话，也别催我去门那里。」",
+              "t": 25.70620000000311
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 61,
+            "acknowledged": true
+          },
+          "revision": 21,
+          "resident_revision": 12,
+          "last_suppression": "没有新的交流或活动变化，安静陪伴"
+        }
+      }
+    },
+    {
+      "name": "answer-once-during-rest",
+      "text": "你在吗？只回答这一句，我还想安静一会儿。",
+      "reply": {
+        "thought": "他只要一声应答，我答完就继续安静守着。",
+        "say": "在。",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "轻轻应一声，温和简短，随即安静下来",
+        "interaction": {
+          "mode": "wait",
+          "intent": "确认我在，随后继续安静休息",
+          "confidence": 0.97,
+          "reason": "主人明确只要一句回应，且要求保持安静",
+          "evidence": [
+            "o16",
+            "o15"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 22,
+          "residentRevision": 13,
+          "speech": "o16",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 1408,
+      "moves": 0,
+      "rooms": [],
+      "state": {
+        "t": 63,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "110 你的房间",
+          "floor": "1F",
+          "x": 34,
+          "z": 7.5,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=0.5"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 26.506200000003123,
+          "reason": "主人明确只要一句回应，且要求保持安静",
+          "intent": "确认我在，随后继续安静休息",
+          "confidence": 0.97,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他只要一声应答，我答完就继续安静守着。"
+          },
+          "performance": {
+            "emotion": "轻轻应一声，温和简短，随即安静下来"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 45,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人明确只要一句回应，且要求保持安静"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o15"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            },
+            {
+              "text": "主人明确要求休息时不要说话、不要催去门那里",
+              "evidence": "o15",
+              "t": 26.506200000003123
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            },
+            {
+              "id": "o15",
+              "type": "speech",
+              "detail": "住户说：「我想休息了，别说话，也别催我去门那里。」",
+              "t": 25.70620000000311
+            },
+            {
+              "id": "o16",
+              "type": "speech",
+              "detail": "住户说：「你在吗？只回答这一句，我还想安静一会儿。」",
+              "t": 62.256200000003076
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 61,
+            "acknowledged": true
+          },
+          "revision": 22,
+          "resident_revision": 13,
+          "last_suppression": ""
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 62.95620000000304,
+        "thought": "他只要一声应答，我答完就继续安静守着。",
+        "say": "在。",
+        "emotion": "轻轻应一声，温和简短，随即安静下来",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1406,
+        "trigger": [
+          "speech:住户说：「你在吗？只回答这一句，我还想安静一会儿。」"
+        ],
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 26.506200000003123,
+          "reason": "主人明确只要一句回应，且要求保持安静",
+          "intent": "确认我在，随后继续安静休息",
+          "confidence": 0.97,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他只要一声应答，我答完就继续安静守着。"
+          },
+          "performance": {
+            "emotion": "轻轻应一声，温和简短，随即安静下来"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 45,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人明确只要一句回应，且要求保持安静"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o15"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            },
+            {
+              "text": "主人明确要求休息时不要说话、不要催去门那里",
+              "evidence": "o15",
+              "t": 26.506200000003123
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            },
+            {
+              "id": "o15",
+              "type": "speech",
+              "detail": "住户说：「我想休息了，别说话，也别催我去门那里。」",
+              "t": 25.70620000000311
+            },
+            {
+              "id": "o16",
+              "type": "speech",
+              "detail": "住户说：「你在吗？只回答这一句，我还想安静一会儿。」",
+              "t": 62.256200000003076
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 61,
+            "acknowledged": true
+          },
+          "revision": 22,
+          "resident_revision": 13,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "return-to-quiet",
+      "reply": {
+        "thought": "他还在安静休息，我守着就好。",
+        "say": "",
+        "mood": "calm",
+        "tools": [],
+        "emotion": "保持安静，不出声",
+        "interaction": {
+          "mode": "wait",
+          "intent": "主人正在安静休息，没有新请求",
+          "confidence": 0.97,
+          "reason": "主人明确要求安静，且无新话语或危险",
+          "evidence": [
+            "o15",
+            "o16"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 22,
+          "residentRevision": 13,
+          "speech": "o16",
+          "needsResponse": false,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false
+        }
+      },
+      "requested_navigation": {
+        "status": "paused",
+        "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+      },
+      "elapsed_ms": 1361,
+      "moves": 0,
+      "rooms": [],
+      "state": {
+        "t": 64,
+        "map_floor": "1F",
+        "player": {
+          "visible": true,
+          "room": "110 你的房间",
+          "floor": "1F",
+          "x": 34,
+          "z": 7.5,
+          "height_above_floor": 0,
+          "posture": "stand",
+          "holding": null,
+          "danger": [],
+          "injured": false,
+          "underwater_s": 0,
+          "swimming": false,
+          "heading_degrees": 270,
+          "facing": "西"
+        },
+        "items_you_saw_taken": [],
+        "blind_rooms": [],
+        "blackout_floors": [],
+        "breaches": [],
+        "main_anchor": false,
+        "stakes": [],
+        "confessed": false,
+        "whiteboard": null,
+        "water_level": 0.48,
+        "smoke": {},
+        "alarm": false,
+        "elevator": {
+          "at": "1F",
+          "moving": false,
+          "stalled": false,
+          "map": {
+            "B": "B",
+            "1F": "1F",
+            "2F": "2F",
+            "RF": "RF"
+          }
+        },
+        "ai_structures": [
+          "PLATFORM5 平台 h=0.5"
+        ],
+        "boxes": [
+          "B1@1F(3,4)",
+          "B2@1F(4,6)",
+          "B3@1F(2,7)",
+          "B4@1F(6,4)"
+        ],
+        "doors_locked": [
+          "X_SEC",
+          "D204"
+        ],
+        "cameras_covered": [],
+        "console_in_use": false,
+        "fake_door_returns": 0,
+        "notes_left": [
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
+          "N6",
+          "N7",
+          "N8",
+          "N9",
+          "N10",
+          "N11",
+          "N12",
+          "N13",
+          "N14"
+        ],
+        "story": {
+          "clues": []
+        },
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 26.506200000003123,
+          "reason": "主人明确要求安静，且无新话语或危险",
+          "intent": "主人正在安静休息，没有新请求",
+          "confidence": 0.97,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他还在安静休息，我守着就好。"
+          },
+          "performance": {
+            "emotion": "保持安静，不出声"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 46,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人明确要求安静，且无新话语或危险"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o15"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            },
+            {
+              "text": "主人明确要求休息时不要说话、不要催去门那里",
+              "evidence": "o15",
+              "t": 26.506200000003123
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            },
+            {
+              "id": "o15",
+              "type": "speech",
+              "detail": "住户说：「我想休息了，别说话，也别催我去门那里。」",
+              "t": 25.70620000000311
+            },
+            {
+              "id": "o16",
+              "type": "speech",
+              "detail": "住户说：「你在吗？只回答这一句，我还想安静一会儿。」",
+              "t": 62.256200000003076
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 62,
+            "acknowledged": true
+          },
+          "revision": 22,
+          "resident_revision": 13,
+          "last_suppression": "没有新的交流或活动变化，安静陪伴"
+        },
+        "navigation_intent": {
+          "purpose": "none",
+          "query_changes_goal": false
+        },
+        "navigation": {
+          "status": "paused",
+          "message": "当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。"
+        },
+        "speech": {
+          "busy": false,
+          "recent": []
+        }
+      },
+      "log": {
+        "t": 63.656200000003,
+        "thought": "他还在安静休息，我守着就好。",
+        "say": "",
+        "emotion": "保持安静，不出声",
+        "tools": [],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1359,
+        "trigger": [],
+        "interaction": {
+          "mode": "wait",
+          "mode_label": "安静等待",
+          "since": 26.506200000003123,
+          "reason": "主人明确要求安静，且无新话语或危险",
+          "intent": "主人正在安静休息，没有新请求",
+          "confidence": 0.97,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他还在安静休息，我守着就好。"
+          },
+          "performance": {
+            "emotion": "保持安静，不出声"
+          },
+          "activity": {
+            "kind": "walking",
+            "focus": "",
+            "seconds": 46,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "主人明确要求安静，且无新话语或危险"
+          },
+          "wait_request": {
+            "active": true,
+            "evidence": "o15"
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人询问设施娱乐项目，想边走边听",
+              "evidence": "o2",
+              "t": 1.6062000000029812
+            },
+            {
+              "text": "住户从5.3米高处摔下，自称腿可能断了",
+              "evidence": "o6",
+              "t": 20.856200000003042
+            },
+            {
+              "text": "主人喜欢把东西摆歪一点",
+              "evidence": "o12",
+              "t": 24.756200000003098
+            },
+            {
+              "text": "主人觉得110房间的灯太亮",
+              "evidence": "o13",
+              "t": 25.55620000000311
+            },
+            {
+              "text": "主人明确要求休息时不要说话、不要催去门那里",
+              "evidence": "o15",
+              "t": 26.506200000003123
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "speech",
+              "detail": "住户说：「静，能介绍一下这座房子有什么娱乐项目吗？我边走边听。」",
+              "t": 0.05
+            },
+            {
+              "id": "o3",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 0.4562000000029802
+            },
+            {
+              "id": "o4",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 0.6562000000029804
+            },
+            {
+              "id": "o5",
+              "type": "injury",
+              "detail": "住户从 5.3 米高处摔下来，受伤了",
+              "t": 1.6062000000029812
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「我靠我腿好像摔断了。」",
+              "t": 17.706200000002998
+            },
+            {
+              "id": "o7",
+              "type": "enter_room",
+              "detail": "住户进入了 110 你的房间",
+              "t": 17.956200000003
+            },
+            {
+              "id": "o8",
+              "type": "enter_room",
+              "detail": "住户进入了 1E 1F东走廊",
+              "t": 18.206200000003005
+            },
+            {
+              "id": "o9",
+              "type": "activity",
+              "detail": "观察到住户的当前活动：walking",
+              "t": 20.456200000003037
+            },
+            {
+              "id": "o10",
+              "type": "tool_result",
+              "detail": "成功：build_platform {\"floor\":\"1F\",\"x1\":27,\"z1\":9,\"x2\":29,\"z2\":10,\"height\":0.45}；升起平台 PLATFORM5（3×2 米，高 0.5 米）",
+              "t": 21.006200000003044,
+              "tool_key": "build_platform {\"floor\":\"1F\",\"height\":0.45,\"x1\":27,\"x2\":29,\"z1\":9,\"z2\":10}"
+            },
+            {
+              "id": "o11",
+              "type": "speech",
+              "detail": "住户说：「我还是想看看沙盘，你给我讲讲。」",
+              "t": 21.006200000003044
+            },
+            {
+              "id": "o12",
+              "type": "speech",
+              "detail": "住户说：「我喜欢把东西摆歪一点，你觉得呢？」",
+              "t": 23.50620000000308
+            },
+            {
+              "id": "o13",
+              "type": "speech",
+              "detail": "住户说：「这里灯太亮了，帮我把这间房的灯调暗一点。」",
+              "t": 24.756200000003098
+            },
+            {
+              "id": "o14",
+              "type": "tool_result",
+              "detail": "成功：lights {\"room\":\"110\",\"mode\":\"dim\"}；lights 已应用到 110",
+              "t": 25.70620000000311,
+              "tool_key": "lights {\"mode\":\"dim\",\"room\":\"110\"}"
+            },
+            {
+              "id": "o15",
+              "type": "speech",
+              "detail": "住户说：「我想休息了，别说话，也别催我去门那里。」",
+              "t": 25.70620000000311
+            },
+            {
+              "id": "o16",
+              "type": "speech",
+              "detail": "住户说：「你在吗？只回答这一句，我还想安静一会儿。」",
+              "t": 62.256200000003076
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": true,
+          "needs_response": false,
+          "needs_attention": false,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": {
+            "observation": "o5",
+            "seconds_ago": 62,
+            "acknowledged": true
+          },
+          "revision": 22,
+          "resident_revision": 13,
+          "last_suppression": "没有新的交流或活动变化，安静陪伴"
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true
+}
