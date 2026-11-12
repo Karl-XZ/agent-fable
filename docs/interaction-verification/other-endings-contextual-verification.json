@@ -1,0 +1,57 @@
+[
+  {
+    "key": "fake",
+    "name": "如常",
+    "settlement": true,
+    "stats": 6,
+    "maps": true,
+    "logPreserved": true,
+    "entry": "actual-memory-door",
+    "filmAudioEnabled": false,
+    "errors": []
+  },
+  {
+    "key": "stay",
+    "name": "长住",
+    "settlement": true,
+    "stats": 6,
+    "maps": true,
+    "logPreserved": true,
+    "entry": "direct-ending-hook",
+    "filmAudioEnabled": false,
+    "errors": []
+  },
+  {
+    "key": "jail",
+    "name": "囚禁",
+    "settlement": true,
+    "stats": 6,
+    "maps": true,
+    "logPreserved": true,
+    "entry": "direct-ending-hook",
+    "filmAudioEnabled": false,
+    "errors": []
+  },
+  {
+    "key": "loop",
+    "name": "门外还是门",
+    "settlement": true,
+    "stats": 6,
+    "maps": true,
+    "logPreserved": true,
+    "entry": "direct-ending-hook",
+    "filmAudioEnabled": false,
+    "errors": []
+  },
+  {
+    "key": "swap",
+    "name": "易位",
+    "settlement": true,
+    "stats": 6,
+    "maps": true,
+    "logPreserved": true,
+    "entry": "direct-ending-hook",
+    "filmAudioEnabled": false,
+    "errors": []
+  }
+]

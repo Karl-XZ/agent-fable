@@ -1,0 +1,12 @@
+{
+  "url": "http://127.0.0.1:7862/",
+  "pid": 51272,
+  "verified_at": "2026-11-12T19:22:51.475668+08:00",
+  "health": true,
+  "served_current_build": true,
+  "real_model_quiet_reading": {
+    "mode": "wait",
+    "silent": true
+  },
+  "old_7863_kept_running": true
+}

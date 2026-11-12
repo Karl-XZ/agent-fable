@@ -1,0 +1,12 @@
+{
+  "provider": "actual Aliyun streaming TTS",
+  "dialogueSource": "actual model prolonged-inspect reply; replayed through mocked agent endpoint for audio isolation",
+  "text": "当然可以。这是整座生活区的模型，四层都在上面；您想先看哪一层，我就细说哪一层。",
+  "emotion": "带微笑，温柔从容，语速放缓，像陪着看展品一样",
+  "mood": "calm",
+  "firstAudioMs": 600,
+  "playbackSeconds": 8.610000000000001,
+  "captionOffsetMs": 0.30000000074505806,
+  "quietFollowupSilent": true,
+  "errors": []
+}

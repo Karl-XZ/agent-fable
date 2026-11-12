@@ -1,0 +1,16 @@
+{
+  "geometry": {
+    "plinthTop": 0.85,
+    "coverBottom": 0.8500000000000001,
+    "coverTriangles": 10,
+    "coincidentTriangles": 0,
+    "coverDepthWrite": false
+  },
+  "qualities": [
+    "high",
+    "mid",
+    "low"
+  ],
+  "framesPerQuality": 12,
+  "errors": []
+}

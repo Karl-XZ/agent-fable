@@ -1,6 +1,6 @@
 # Agent的寓言
 
-> 当前恢复节点：尚未加入互动模式。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
+> 当前恢复节点：15 种互动模式初版。重建来源、检查结果及恢复命令见 [版本节点说明](VERSION_HISTORY.md)。
 
 第一人称 3D 逃离游戏。你一直舒适地住在管家AI「静」安排的屋子里，直到有一天想出去看看。她勉强答应指路，却把你引向一扇会让你忘记离开念头的门。
 
@@ -95,7 +95,15 @@ DASHSCOPE_TTS_VOICE=longanhuan_v3.1
 | `web/src/world.ts` | 体素网格化与分块重建、碰撞、门、结构、箱子、电梯、水、灯光池、特效 |
 | `web/src/props.ts` | 家具、摄像头、物品、纸条、可交互物 |
 | `web/src/tools.ts` | 58 个 AI 工具的执行器（含只读寻路、锚定检查、动画、挤压和实际调用凭据） |
-| `web/src/agent.ts` | LLM 调用循环、事件队列、只读寻路续轮和规则保底 |
+| `web/src/agent.ts` | LLM 调用循环、事件队列、情境校验、实际送达台词记录和规则保底 |
+| `interaction_modes.json` / `interaction.py` | 15 种互动行为的共享定义、人物规则和决策字段验证 |
+| `web/src/interaction.ts` | 当前活动、出行约定、其他承诺、观察记忆、关系事实、真实内心与对外表演 |
 | `web/src/player.ts` | 第一人称物理（台阶、游泳、被推挤、被挤出世界） |
 | `web/src/main.ts` | 感知、危险检测、交互、24 个事件、电梯、锚定、控制台、结局演出 |
 | `web/src/ending.ts` | 结局页与分享卡 |
+
+静根据当前活动决定陪伴、协助、等待、试探、掩饰、协商、阻拦或救援。看展品、阅读、休息等会暂停出行；明确请求可以恢复约定。线索披露进度不等于静知道玩家已经识破；已经发生的摊牌不会因为恢复照护而消失。失联时只保留最后已知线索，实际危险优先于争执。坐着或躺着时，寻路先返回 `stand_up` 前置条件。
+
+空台词是有效的安静陪伴决策。旧回复和尚未执行的动作会在玩家活动变化后停止，未送达的台词不写成已说过；物理承诺须有匹配操作及目标的成功结果才能记为完成。上述内部状态不显示为 HUD 心情标签。
+
+新增行为回归：`node tests/run-interaction-tests.cjs`。后台浏览器脚本为 `tests/verify-interaction-browser.cjs`，真实模型脚本为 `tests/verify-interaction-live.py`，实际阿里云音频验证为 `tests/verify-interaction-audio.cjs`；浏览器脚本需要设置 `FABLE_PLAYWRIGHT` 与 `FABLE_CHROMIUM`，默认使用独立的本地测试端口 7862。真实寻路续轮可以先运行 `node tests/behavior-navigation-bridge.cjs`，再运行 `python tests/verify-interaction-live.py --navigation-bridge http://127.0.0.1:7962`。详细场景、截图与测试边界见 `docs/静的情境互动验收.html`。

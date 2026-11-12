@@ -1,0 +1,25 @@
+{
+  "stage": "02-interaction-modes",
+  "label": "15 种情境互动模式初版",
+  "original_remote_commit": "7754911837483d81ed722d1027db1f656636a3cb",
+  "reconstruction": {
+    "source": "03-pre-character-card",
+    "overlays": [
+      "app.py",
+      "interaction.py",
+      "README.md",
+      "tests/agent-behavior.test.cjs",
+      "tests/interaction.test.cjs",
+      "tests/test_interaction.py",
+      "web/src/agent.ts",
+      "web/src/audio.ts",
+      "web/src/interaction.ts",
+      "web/src/main.ts",
+      "web/src/navigation.ts"
+    ]
+  },
+  "shared_files": "Unchanged files inherit from the next newer snapshot; this is not an exact whole-directory historical archive.",
+  "test_adjustments": [
+    "Removed the playback telemetry test, introduced by the later speech queue repair."
+  ]
+}

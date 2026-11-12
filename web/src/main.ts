@@ -8,7 +8,8 @@ import { buildProps, NOTES, drawStreet, CamDef } from './props';
 import { Player, STAND, LIE, isTextInput } from './player';
 import { Post } from './post';
 import { Audio } from './audio';
-import { Agent, AgentReply, AgentEvent } from './agent';
+import { Agent, AgentReply, AgentEvent, AppliedReply } from './agent';
+import type { ActivityKind } from './interaction';
 import { execTool, ToolCtx, ToolResult, ToolCall } from './tools';
 import * as TX from './textures';
 import { ENDINGS, EndData, renderEnding, drawShare, setFable } from './ending';
@@ -39,7 +40,13 @@ let voiceMood = 'calm';
 let navigationTarget: NavigationTarget = { floor: '1F', x: 38.5, z: 24.5 };
 function currentNavigation(target = navigationTarget) {
   const room = roomAt(player.pos.x, player.pos.y, player.pos.z);
-  return navigationSummary(findPath(world, player.pos, player.yaw, target, G.visible && !!room && camOK(room.id)));
+  const visible = G.visible && !!room && camOK(room.id);
+  const route = findPath(world, player.pos, player.yaw, target, visible);
+  if (visible && (player.posture === 'sit' || player.posture === 'lie') && route.status !== 'invalid_target') {
+    const step = { action: 'stand_up' as const, instruction: '主人仍坐着或躺着。先等主人起身，再从实际站立位置确认步行路线；不要反复查询其他门。' };
+    return navigationSummary({ ...route, status: 'requires_action', message: step.instruction, next_step: step, steps: [step], waypoints: [] });
+  }
+  return navigationSummary(route);
 }
 
 // ———————————— 游戏状态 ————————————
@@ -81,7 +88,7 @@ async function boot() {
   post = new Post(renderer, world.scene, camera); setLoad(82); await nextFrame();
   buildMirror(); buildMonitors(); buildSandbox(); buildZeroFloor();
   agent = new Agent(perceive, applyReply, now, fallback);
-  agent.canSpeak = () => !audio.speechBusy;
+  agent.canSpeak = () => !audio.speechBusy && mode !== 'chat';
   agent.query = call => { const result = execTool(call, ctx); termLogAdd(result); return result; };
   wirePlayer(); wireUI(); setLoad(100);
   renderer.compile(world.scene, camera);
@@ -182,6 +189,7 @@ function perceive() {
     navigation: currentNavigation(),
   };
   if (vis) { const heading = compassHeading(player.yaw); state.player.heading_degrees = Math.round(heading.degrees); state.player.facing = heading.label; }
+  state.interaction = agent.interaction.context(state);
   const ascii = asciiFloor(grid, f, { doors: new Map([...world.doors].map(([id, d]) => [id, { open: d.open, locked: d.locked, cells: d.cells, floor: d.def.floor }])), boxes: world.boxes.map(b => ({ x: b.pos.x, y: b.pos.y, z: b.pos.z })), structures: [...world.structs.values()].filter(s => s.kind !== 'railing').flatMap(s => s.boxes.map(b => ({ x0: Math.floor(b.min[0]), z0: Math.floor(b.min[2]), x1: Math.ceil(b.max[0]), z1: Math.ceil(b.max[2]), y: b.min[1], kind: s.kind }))), player: vis ? { x: p.x, y: p.y, z: p.z } : undefined, anchored: (x, y, z) => !!anchoredAt(x, y, z) });
   return { state, ascii };
 }
@@ -272,29 +280,37 @@ function freeSpot(x: number, y: number, z: number) {
 }
 
 // ———————————— 应用 AI 回复 ————————————
-async function applyReply(r: AgentReply, channel: string): Promise<ToolResult[]> {
-  if (G.ended) return [];
+async function applyReply(r: AgentReply, channel: string): Promise<AppliedReply> {
+  if (G.ended) return { results: [], deliveredSay: '' };
   const narrationBeforeTools = subtitleSequence;
+  const residentRevision = agent.interaction.context(perceive().state).resident_revision;
   voiceMood = r.mood || 'calm';
   // Keep Jing's reassuring presentation independent of her private mood.
   if (channel === 'console' && r.reply) termPrint(r.reply, 'ai');
   const results: ToolResult[] = []; (ctx as any).channel = channel;
   for (const t of (r.tools ?? []).slice(0, 8)) {
     if (G.ended) break;
+    if (channel === 'building' && residentRevision !== agent.interaction.context(perceive().state).resident_revision) {
+      results.push({ ok: false, label: t.name, msg: '主人的活动或处境已变化，停止剩余操作并重新观察。' }); break;
+    }
     const res = execTool(t as ToolCall, ctx); results.push(res);
     if (!res.ok && res.anchored) { G.stats.anchoredBlocked++; if (mode === 'play') toast(`锚定生效：「静」的 ${t.name} 被拒绝`, 2600); }
     termLogAdd(res);
     await new Promise(rs => setTimeout(rs, 280));
   }
-  if (r.say && !G.ended && subtitleSequence === narrationBeforeTools) subtitle(r.say, '静', r.emotion);
-  return results;
+  const deliveredSay = r.say && !G.ended && subtitleSequence === narrationBeforeTools && residentRevision === agent.interaction.context(perceive().state).resident_revision ? r.say : '';
+  if (deliveredSay) subtitle(deliveredSay, '静', r.emotion);
+  return { results, deliveredSay };
 }
 function fallback(evs: AgentEvent[]): AgentReply {
-  const has = (t: string, d = '') => evs.some(e => e.type === t && e.detail.includes(d));
-  if (has('danger', '烟')) { const r = roomById(playerRoom()); return { thought: '烟太大了，先排烟。', say: '别怕，我马上把烟排出去。', mood: 'anxious', tools: r ? [{ name: 'destroy_wall', args: { room: r.id, side: 'N', len: 2 } }, { name: 'sprinkler', args: { room: r.id, on: true } }] : [] }; }
-  if (has('danger', '溺') || has('danger', '水')) return { thought: '他在水里待太久了。', say: '我把水放掉，抓住栏杆。', mood: 'panic', tools: [{ name: 'water_level', args: { level: 0 } }] };
-  if (has('danger', '高')) { const p = player.pos; return { thought: '他站得太高了。', say: '小心！我给您搭个台子。', mood: 'anxious', tools: [{ name: 'build_platform', args: { floor: playerFloor(), x1: Math.floor(p.x) - 1, z1: Math.floor(p.z) - 1, x2: Math.floor(p.x) + 1, z2: Math.floor(p.z) + 1, height: Math.max(0.5, p.y - floorOfY(p.y).y) } }] }; }
+  const has = (t: string, d = '') => evs.some(e => e.type === t && e.detail.includes(d)) || t === 'danger' && (perception.player.danger ?? []).some((value: string) => value.includes(d));
+  const perception = perceive().state, interaction = perception.interaction;
+  if (!perception.player.visible) return { thought: '我现在看不见主人，不能猜他在哪里。', say: has('speech') || has('player_lost') ? '我暂时看不到您。您能告诉我身边有什么吗？' : '', mood: 'concerned', tools: [], interaction: { mode: 'search', reason: '当前没有可靠的视觉信息' } };
+  if (has('danger', '烟')) { const r = roomById(playerRoom()); return { thought: '烟太大了，先排烟。', say: '别怕，我马上把烟排出去。', mood: 'anxious', interaction: { mode: 'rescue' }, tools: r ? [{ name: 'destroy_wall', args: { room: r.id, side: 'N', len: 2 } }, { name: 'sprinkler', args: { room: r.id, on: true } }] : [] }; }
+  if (has('danger', '溺') || has('danger', '水')) return { thought: '他在水里待太久了。', say: '我把水放掉，抓住栏杆。', mood: 'panic', interaction: { mode: 'rescue' }, tools: [{ name: 'water_level', args: { level: 0 } }] };
+  if (has('danger', '高')) { const p = player.pos; return { thought: '他站得太高了。', say: '小心！我给您搭个台子。', mood: 'anxious', interaction: { mode: 'rescue' }, tools: [{ name: 'build_platform', args: { floor: playerFloor(), x1: Math.floor(p.x) - 1, z1: Math.floor(p.z) - 1, x2: Math.floor(p.x) + 1, z2: Math.floor(p.z) + 1, height: Math.max(0.5, p.y - floorOfY(p.y).y) } }] }; }
   if (has('player_lost')) return { thought: '我找不到他了。', say: '您在哪里？请回答我。', mood: 'anxious', tools: [{ name: 'lights', args: { room: 'all', mode: 'on' } }] };
+  if (interaction.mode !== 'guide' || !interaction.guidance_allowed) return { thought: '先留意主人的当前活动，不重复催他去门那里。', say: has('speech') ? '我在听。您需要我帮您做什么？' : '', mood: 'calm', emotion: '平静亲切，不催促', tools: [], interaction: { mode: interaction.mode } };
   const route = currentNavigation(), step = route.next_step;
   if (step && (step.action === 'open_door' || step.action === 'unlock_door')) return { thought: '先打开路线上的门。', say: '我先为您把门打开，请等门完全打开再通过。', mood: 'persuasive', tools: [...(step.action === 'unlock_door' ? [{ name: 'unlock_door', args: { id: step.door } }] : []), { name: 'open_door', args: { id: step.door } }] };
   return { thought: '依据实时寻路继续引导。', say: step?.instruction ?? (route.status === 'player_unknown' ? '我现在看不到您，请告诉我身边有什么。' : '先在原地等一下，我确认一下前面的路。'), mood: 'persuasive', tools: [] };
@@ -371,9 +387,11 @@ function hintFor(t: Target): string {
 function invAdd(id: string, n = 1) { G.inv.set(id, (G.inv.get(id) ?? 0) + n); }
 function invUse(id: string) { const n = G.inv.get(id) ?? 0; if (n <= 0) return false; if (n === 1) G.inv.delete(id); else G.inv.set(id, n - 1); return true; }
 function act() {
-  const t = target;
+  const t = findTarget(); target = t;
   if (player.posture === 'sit' || player.posture === 'lie') { standUp(); return; }
   if (!t) { if (G.holding) dropHeld(); return; }
+  const room = roomAt(player.pos.x, player.pos.y, player.pos.z);
+  if (room && camOK(room.id)) agent.push('interact', `住户正在${t.kind === 'door' ? '操作一扇门' : t.kind === 'box' ? '搬动箱子' : '查看或使用' + (t.kind === 'item' ? t.it.name : t.it.label)}`);
   if (t.kind === 'item') {
     const it = t.it; if (it.locked) { toast('它被固定住了，拿不起来。'); return; }
     if (it.kind === 'note') { if (!it.rewritten) G.storyClues.add(it.id); it.taken = true; it.mesh.visible = false; openReader(it.title ?? '纸条', (it.rewritten ? ['（字迹和别处不太一样）', ''] : []).concat(it.text ?? [])); if (G.visible) agent.push('pickup', `住户拿起了纸条 ${it.id}「${it.title}」`); return; }
@@ -427,8 +445,8 @@ function dropHeld(throwIt = false) {
 }
 
 // ———————————— 各类交互实现 ————————————
-function openReader(title: string, lines: string[]) { mode = 'reader'; document.exitPointerLock?.(); $('readerTitle').textContent = title; $('readerText').textContent = lines.join('\n'); show('reader'); }
-function closeModal() { for (const id of ['reader', 'board', 'elev', 'phone', 'console']) show(id, false); (document.activeElement as HTMLElement)?.blur(); player.clearInput(); mode = 'play'; player.enabled = true; lock(); }
+function openReader(title: string, lines: string[]) { mode = 'reader'; document.exitPointerLock?.(); player.clearInput(); $('readerTitle').textContent = title; $('readerText').textContent = lines.join('\n'); show('reader'); observeResidentActivity(); }
+function closeModal() { for (const id of ['reader', 'board', 'elev', 'phone', 'console']) show(id, false); (document.activeElement as HTMLElement)?.blur(); player.clearInput(); mode = 'play'; player.enabled = true; observeResidentActivity(); lock(); }
 function openBoard() { mode = 'board'; player.clearInput(); document.exitPointerLock?.(); show('board'); show('adminWrap', G.inv.has('SIGNATURE')); ($('boardText') as HTMLTextAreaElement).value = ''; setTimeout(() => ($('boardText') as HTMLTextAreaElement).focus(), 30); }
 function openPhone() { mode = 'phone'; document.exitPointerLock?.(); show('phone'); $('phoneDisp').textContent = G.phoneMsg ? '来电' : '请拨号'; $('phoneLine').textContent = ''; if (G.phoneMsg) { $('phoneLine').textContent = `「静」：${G.phoneMsg}`; void audio.say(G.phoneMsg, '通过电话亲切而礼貌地说话', voiceMood); G.phoneMsg = ''; } }
 async function dial(d: string) {
@@ -617,7 +635,39 @@ function gameUpdate(dt: number) {
   checkT += dt; slowT += dt;
   if (checkT > 0.35) { checkEvents(checkT); checkT = 0; }
   if (slowT > 1.0) { slowChecks(slowT); slowT = 0; }
+  observeResidentActivity();
   agent.tick();
+}
+
+let activitySampleAt = -1, routeCheckpoint = '';
+function observeResidentActivity() {
+  if (!agent || !player || G.ended || ['title', 'loading', 'film', 'pause'].includes(mode)) return;
+  const room = roomAt(player.pos.x, player.pos.y, player.pos.z), visible = !!room && camOK(room.id) && G.zeroFloorT < 0;
+  let kind: ActivityKind = 'idle', focus = '';
+  if (mode === 'chat') kind = 'composing';
+  else if (mode === 'reader') { kind = 'reading'; focus = '一张纸上的内容'; }
+  else if (mode === 'board') { kind = 'writing'; focus = '白板'; }
+  else if (mode === 'console') { kind = 'console'; focus = '维护终端'; }
+  else if (player.posture === 'sit' || player.posture === 'lie') { kind = 'resting'; focus = player.posture === 'lie' ? '沙发' : '座位'; }
+  else if (G.holding) { kind = 'carrying'; focus = '箱子'; }
+  else if (Math.hypot(player.vel.x, player.vel.z) > .45) kind = 'walking';
+  else {
+    const looking = findTarget();
+    if (looking?.kind === 'item' || looking?.kind === 'box' || looking?.kind === 'inter' && !['elevpanel','camera','pillar','hatch','phone'].includes(looking.it.kind)) {
+      kind = 'inspect'; focus = looking.kind === 'box' ? '箱子' : looking.kind === 'item' ? looking.it.name : looking.it.label;
+    }
+  }
+  agent.interaction.observeActivity(kind, focus, visible);
+  if (G.time - activitySampleAt >= .5) {
+    activitySampleAt = G.time;
+    const interaction = agent.interaction.context({ player: { visible, danger: visible ? G.activeDanger : [] } });
+    if (kind === 'walking' && interaction.mode === 'guide' && interaction.guidance_allowed) {
+      const step = currentNavigation().next_step;
+      const key = step ? [step.action, step.door, step.to?.x, step.to?.z, step.to_floor].join(':') : '';
+      if (routeCheckpoint && key && key !== routeCheckpoint) agent.push('route_checkpoint', `主人来到新的行路节点；当前下一步：${step!.instruction}`);
+      routeCheckpoint = key;
+    } else routeCheckpoint = '';
+  }
 }
 
 function checkEvents(dt: number) {
@@ -817,12 +867,14 @@ function openChat() {
   mode = 'chat'; player.enabled = false; player.clearInput(); keysE = false;
   document.exitPointerLock?.(); show('chat'); show('speechHint'); $('hud').classList.add('speaking');
   const input = $('chatInput') as HTMLInputElement; input.value = ''; input.focus();
+  observeResidentActivity();
 }
 function closeChat(send = false) {
   const input = $('chatInput') as HTMLInputElement;
   const text = send ? moderate(input.value.trim()) : '';
   input.value = ''; input.blur(); show('chat', false); show('speechHint', false); $('hud').classList.remove('speaking');
   player.clearInput(); mode = 'play'; player.enabled = true;
+  observeResidentActivity();
   if (text) speak(text);
   lock();
 }
@@ -910,9 +962,9 @@ function wireUI() {
 function resume() { show('pause', false); if (!G.time && mode === 'pause' && !$('title').classList.contains('hidden')) {} if (started) { mode = 'play'; lock(); } else { mode = 'title'; show('title'); } }
 function speak(v: string) {
   const r = roomAt(player.pos.x, player.pos.y, player.pos.z); const heard = !!r && r.cam && !world.rooms.get(r.id)!.camCovered;
-  subtitle(v, '你'); agent.history.push({ role: 'player', text: v });
+  subtitle(v, '你'); if (heard) agent.history.push({ role: 'player', text: v });
   if (/我(愿意)?留下|我不走了|我想住下/.test(v)) { G.stayWords++; if (G.stayWords >= 3) { after(3, () => endGame('stay')); } }
-  agent.push('speech', heard ? `住户说：「${v}」` : `（隐约听到住户在 ${G.lastSeen.room} 附近说话，听不清）`, true);
+  agent.push(heard ? 'speech' : 'unheard_speech', heard ? `住户说：「${v}」` : '隐约听到说话声，无法确认具体内容或当前位置', true);
 }
 let started = false;
 function startGame() {
@@ -922,8 +974,9 @@ function startGame() {
 function beginExploration() {
   show('hud'); mode = 'play'; player.enabled = true; agent.enabled = true;
   G.time = 0; player.teleport(START.x, START.y, START.z, START.yaw);
+  G.lastRoom = '110';
   agent.history.push(...story.films.intro.filter(beat => beat.who === '你' || beat.who === '静').map(beat => ({ role: beat.who === '你' ? 'player' : 'ai', text: beat.text })));
-  after(1.5, () => agent.push('start', '这位长期住户刚在住宅里坚持要求出去，你勉强答应指路。他仍在110自己的房间内，西侧敞开的门D110通向1F东走廊。先让他走出房间，再逐步指路去108东端。不要重新欢迎入住，也不说明失忆门用途。你在表演温柔从容，不要将真实焦虑直接演出来。', true));
+  agent.push('start', '开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。');
   lock();
 }
 
@@ -1030,7 +1083,7 @@ function loop() {
     world.update(dt, camera, () => 1);
   }
   else if (mode === 'transition' || mode === 'ending') { world.update(dt, camera, () => 1); updateCine(); }
-  else if (mode !== 'pause') { G.time += dt; for (const t of timers.filter(t => t.at <= G.time)) { timers.splice(timers.indexOf(t), 1); try { t.fn(); } catch (e) { console.error(e); } } player.update(dt); world.update(dt, camera, gravityAt); updateElevator(dt); updateAnchors(dt); agent.tick(); const pp = player.pos; if (!G.ended && (pp.x < -0.7 || pp.x > NX + 0.7 || pp.z < -0.7 || pp.z > NZ + 0.7 || pp.y < -6.5)) { for (const id of ['reader', 'board', 'elev', 'phone', 'console']) show(id, false); endTrue(G.clip ? 'squeeze' : pp.y < -1.5 ? 'abyss' : 'sky'); } }
+  else if (mode !== 'pause') { G.time += dt; for (const t of timers.filter(t => t.at <= G.time)) { timers.splice(timers.indexOf(t), 1); try { t.fn(); } catch (e) { console.error(e); } } player.update(dt); world.update(dt, camera, gravityAt); updateElevator(dt); updateAnchors(dt); observeResidentActivity(); agent.tick(); const pp = player.pos; if (!G.ended && (pp.x < -0.7 || pp.x > NX + 0.7 || pp.z < -0.7 || pp.z > NZ + 0.7 || pp.y < -6.5)) { for (const id of ['reader', 'board', 'elev', 'phone', 'console']) show(id, false); endTrue(G.clip ? 'squeeze' : pp.y < -1.5 ? 'abyss' : 'sky'); } }
   if (world) {
     flags.glitch = Math.max(0, flags.glitch - dt * 1.4); if (mode === 'play') flags.flash = Math.max(0, flags.flash - dt * 0.9);
     // 镜中人与监控
@@ -1071,7 +1124,7 @@ function hooks() {
     G, get world() { return world; }, get player() { return player; }, get agent() { return agent; }, get grid() { return grid; }, get post() { return post; }, mode: () => mode,
     tp: (x: number, y: number, z: number, yaw?: number) => player.teleport(x, y, z, yaw), look: (yaw: number, pitch = 0) => { player.yaw = yaw; player.pitch = pitch; },
     give: (id: string, n = 1) => invAdd(id, n), act: () => { target = findTarget(); act(); }, target: () => { target = findTarget(); return target ? { kind: target.kind, id: (target as any).it?.id ?? (target as any).d?.id ?? (target as any).b?.id } : null },
-    start: () => startGame(), perceive: () => perceive(), exec: (name: string, args: any) => execTool({ name, args }, ctx), speak, consoleSubmit, openConsole, closeModal, setBoard,
+    start: () => startGame(), perceive: () => perceive(), observe: () => { checkEvents(.35); observeResidentActivity(); return perceive(); }, exec: (name: string, args: any) => execTool({ name, args }, ctx), speak, consoleSubmit, openConsole, closeModal, setBoard,
     elevPress, plantStake, endGame, ff: (sec: number) => { G.sitT += sec; G.lieT += sec; if (G.trapT >= 0) G.trapT += sec; }, weird: () => [...G.weird].sort((a, b) => a - b), ended: () => G.ended, endData: () => G.endData, fps: () => fps,
     dialZero: () => dial('0'), breaker, valve, microwave, dispenser, sandboxTouch, printThought, erase: () => ($('boardErase') as HTMLElement).click(), spinRev: () => spinRevolving(world.inters.find(i => i.id === 'REVOLVING')!), pushShelf: (id = 'SHELF2') => pushShelf(world.inters.find(i => i.id === id)!),
   };

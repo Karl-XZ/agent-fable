@@ -1,0 +1,70 @@
+{
+  "stage": "02-interaction-modes",
+  "checks": [
+    {
+      "check": "typescript",
+      "exit_code": 0,
+      "summary": []
+    },
+    {
+      "check": "build",
+      "exit_code": 0,
+      "summary": []
+    },
+    {
+      "check": "python",
+      "exit_code": 0,
+      "summary": [
+        "51 passed in 1.50s"
+      ]
+    },
+    {
+      "check": "run-interaction-tests",
+      "exit_code": 0,
+      "summary": [
+        "✔ failed actions cannot be recorded as completed commitments (0.7761ms)",
+        "✔ unrelated successful actions or the wrong door never complete a failed door promise (0.2582ms)",
+        "ℹ tests 25",
+        "ℹ pass 25",
+        "ℹ fail 0"
+      ]
+    },
+    {
+      "check": "run-navigation-tests",
+      "exit_code": 0,
+      "summary": [
+        "ℹ tests 8",
+        "ℹ pass 8",
+        "ℹ fail 0"
+      ]
+    },
+    {
+      "check": "run-audio-tests",
+      "exit_code": 0,
+      "summary": [
+        "ℹ tests 7",
+        "ℹ pass 7",
+        "ℹ fail 0"
+      ]
+    },
+    {
+      "check": "run-outside-tests",
+      "exit_code": 0,
+      "summary": [
+        "ℹ tests 8",
+        "ℹ pass 8",
+        "ℹ fail 0"
+      ]
+    },
+    {
+      "check": "run-homefilm-tests",
+      "exit_code": 0,
+      "summary": [
+        "ℹ tests 12",
+        "ℹ pass 12",
+        "ℹ fail 0"
+      ]
+    }
+  ],
+  "note": "Checks run after reconstruction, not claimed as tests at the original historical time."
+}
