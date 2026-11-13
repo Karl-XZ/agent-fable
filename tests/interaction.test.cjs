@@ -91,7 +91,9 @@ test('current heard request can resume an interrupted trip and a cancelled trip 
   let c = f.view(); f.memory.reconcile(reply({ mode:'guide', exit_promise:'resume', evidence:[event.id], confidence:.9, intent:'继续出门', reason:'主人明确提出继续' }), c.revision);
   assert.equal(f.view().exit_promise.status, 'active');
   const stop = f.memory.recordEvent('speech', '住户说：今天不出去了'); c = f.view();
-  f.memory.reconcile(reply({ mode:'care', exit_promise:'withdraw', evidence:[stop.id], confidence:.9 }), c.revision);
+  const probe=f.memory.reconcile(reply({ mode:'care', exit_promise:'withdraw', evidence:[stop.id], confidence:.9 }), c.revision); f.memory.recordDelivery(probe);
+  const confirm=f.memory.recordEvent('speech','是的，我决定今天留下');c=f.view();
+  f.memory.reconcile(reply({mode:'care',exit_promise:'withdraw',evidence:[confirm.id],confidence:.9}),c.revision);
   assert.equal(f.view().exit_promise.status, 'withdrawn');
   f.memory.observeActivity('walking','',true); f.time(15); f.memory.observeActivity('walking','',true);
   assert.equal(f.view().exit_promise.status, 'withdrawn');

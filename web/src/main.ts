@@ -71,6 +71,7 @@ const G = {
   fakeDoors: [] as { x: number; y: number; z: number; mesh: THREE.Mesh }[], snapshots: new Map<string, Uint8Array>(), prevVisible: true, injuries: 0,
   stats: { llm: 0, edits: 0, anchoredBlocked: 0 }, fx: true, music: 'calm', lastStep: 0, cineScene: null as THREE.Group | null, confessedAt: -1,
   storyClues: new Set<string>(),
+  memoryDoorReached: false,
 };
 const timers: { at: number; fn: () => void }[] = [];
 const after = (sec: number, fn: () => void) => timers.push({ at: G.time + sec, fn });
@@ -188,6 +189,7 @@ function camOK(roomId: string) {
 function playerVisibleNow() { return G.visible && G.zeroFloorT < 0 && camOK(playerRoom()); }
 function perceive() {
   const p = player.pos; const r = roomAt(p.x, p.y, p.z); const vis = playerVisibleNow();
+  if (vis && r?.id === '108' && Math.hypot(p.x-38.5,p.z-24.5)<2.5) G.memoryDoorReached=true;
   const fl = floorOfY(p.y); const f = vis ? fl.id : G.lastSeen.floor;
   const hAbove = p.y - fl.y;
   const blind = ROOMS.filter(x => x.cam && !camOK(x.id)).map(x => x.id);
@@ -207,6 +209,7 @@ function perceive() {
     doors_locked: [...world.doors.values()].filter(d => d.locked).map(d => d.id), cameras_covered: ROOMS.filter(x => world.rooms.get(x.id)!.camCovered).map(x => x.id),
     console_in_use: mode === 'console', fake_door_returns: G.fakeLoops, notes_left: world.items.filter(i => i.kind === 'note' && !i.taken && !i.hidden).map(i => i.id),
     story: { clues: [...G.storyClues] },
+    memory_door_reached: G.memoryDoorReached,
   };
   if (vis) { const heading = compassHeading(player.yaw); state.player.heading_degrees = Math.round(heading.degrees); state.player.facing = heading.label; }
   state.interaction = agent.interaction.context(state);
@@ -214,6 +217,13 @@ function perceive() {
   state.navigation = state.interaction.guidance_allowed ? currentNavigation() : { status: 'paused', message: '当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。' };
   state.speech = audio.speechState;
   state.projection = projection.state();
+  const board=world.inters.find(i=>i.id==='BOARD')!;
+  const approach={floor:'2F',x:board.pos.x+.5,z:board.pos.z};
+  const dx=board.pos.x-p.x,dz=board.pos.z-p.z,heading=compassHeading(-Math.atan2(dx,-dz));
+  const boardRequested=agent.history.filter(h=>h.role==='player').at(-1)?.text.includes('白板');
+  state.landmarks=[{id:board.id,label:board.label,room:board.room,floor:'2F',wall:'西墙',position:{x:board.pos.x,y:board.pos.y,z:board.pos.z},approach,
+    relative:vis&&r?.floor==='2F'?{direction:heading.label,meters:+Math.hypot(dx,dz).toFixed(1)}:null,
+    navigation:vis&&(r?.id==='202'||boardRequested)?currentNavigation(approach):undefined}];
   const ascii = asciiFloor(grid, f, { doors: new Map([...world.doors].map(([id, d]) => [id, { open: d.open, locked: d.locked, cells: d.cells, floor: d.def.floor }])), boxes: world.boxes.map(b => ({ x: b.pos.x, y: b.pos.y, z: b.pos.z })), structures: [...world.structs.values()].filter(s => s.kind !== 'railing').flatMap(s => s.boxes.map(b => ({ x0: Math.floor(b.min[0]), z0: Math.floor(b.min[2]), x1: Math.ceil(b.max[0]), z1: Math.ceil(b.max[2]), y: b.min[1], kind: s.kind }))), player: vis ? { x: p.x, y: p.y, z: p.z } : undefined, anchored: (x, y, z) => !!anchoredAt(x, y, z) });
   return { state, ascii };
 }
@@ -308,15 +318,15 @@ async function applyReply(r: AgentReply, channel: string): Promise<AppliedReply>
   if (G.ended) return { results: [], deliveredSay: '' };
   const narrationBeforeTools = subtitleSequence;
   const turn = r.turn ?? agent.interaction.captureTurn();
-  const current = () => { agent.interaction.context(perceive().state); return channel === 'console' || agent.interaction.isCurrentReply(r, turn); };
+  const current = (part: 'speech' | 'actions' = 'speech') => { agent.interaction.context(perceive().state); return channel === 'console' || agent.interaction.isCurrentReply(r, turn, part); };
   voiceMood = r.mood || 'calm';
   // Keep Jing's reassuring presentation independent of her private mood.
   if (channel === 'console' && r.reply) termPrint(r.reply, 'ai');
   const results: ToolResult[] = []; (ctx as any).channel = channel;
   for (const t of (r.tools ?? []).slice(0, 8)) {
     if (G.ended) break;
-    if (!current()) {
-      results.push({ ok: false, label: t.name, msg: '主人的活动或处境已变化，停止剩余操作并重新观察。' }); break;
+    if (!current('actions')) {
+      results.push({ ok: false, label: t.name, call:t, msg: '主人的活动或处境已变化，停止剩余操作并重新观察。' }); break;
     }
     const res = execTool(t as ToolCall, ctx); results.push(res);
     // The requested light switch may itself remove the camera image. That is an
@@ -713,6 +723,7 @@ function checkEvents(dt: number) {
   const p = player.pos; const r = roomAt(p.x, p.y, p.z); const rid = r?.id ?? '';
   // 可见性
   const vis = !!r && camOK(rid) && G.zeroFloorT < 0;
+  if (vis && rid === '108' && Math.hypot(p.x-38.5,p.z-24.5)<2.5) G.memoryDoorReached=true;
   if (vis) { if (!G.visible && G.time - G.lastSeen.t > 8) agent.push('player_seen', `重新看到住户了：在 ${rid} ${r!.name}`, G.lostSent); G.visible = true; G.lastSeen = { room: rid, floor: r!.floor, t: G.time, x: p.x, z: p.z }; G.lostSent = false; if (G.boardPending && rid) { if (camOK('202')) { G.boardPending = false; agent.push('board', `会议室白板上有字：「${G.board.text}」${G.board.admin ? '（管理员周的笔迹和签名）' : '（住户的字迹）'}`, G.board.admin); } } }
   else { G.visible = false; if (!G.lostSent && G.time - G.lastSeen.t > 25) { G.lostSent = true; agent.push('player_lost', `已经 ${Math.round(G.time - G.lastSeen.t)} 秒没有看到住户了，最后一次在 ${G.lastSeen.room}`, true); } }
   if (vis && rid !== G.lastRoom) { G.lastRoom = rid; agent.push('enter_room', `住户进入了 ${rid} ${r!.name}`); }

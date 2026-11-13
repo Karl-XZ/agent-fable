@@ -6,16 +6,18 @@ type PromiseStatus = 'active' | 'paused' | 'withdrawn';
 type Stance = 'cooperative' | 'uncertain' | 'guarded' | 'confronted';
 export interface InteractionDecision {
   mode?: string; intent?: string; confidence?: number; reason?: string; evidence?: string[];
-  exit_promise?: 'keep' | 'pause' | 'resume' | 'withdraw'; stance?: 'keep' | Stance;
+  exit_promise?: 'keep' | 'pause' | 'probe' | 'resume' | 'withdraw'; stance?: 'keep' | Stance;
+  door_strategy?: 'keep' | 'offer_exit' | 'memory_care' | 'none';
+  departure_intent?: 'keep' | 'uncertain' | 'stay' | 'leave';
   wait_request?: 'keep' | 'begin' | 'end';
   exposed?: boolean; ruptured?: boolean; remember?: string[];
   commitment?: { id?: string; text: string; status: 'active' | 'paused' | 'done' | 'cancelled' };
 }
 interface Observation { id: string; type: string; detail: string; t: number; tool_key?: string }
 interface Commitment { id: string; text: string; status: 'active' | 'paused' | 'done' | 'cancelled'; evidence: string; t: number; tools: string[]; verified: string[] }
-interface Memory { text: string; evidence: string; t: number }
+interface Memory { text: string; evidence: string; source: string; kind: 'interpretation'; t: number }
 interface Reply { say: string; tools: any[]; thought?: string; mood?: string; emotion?: string; reply?: string; interaction?: InteractionDecision }
-export interface InteractionTurn { revision: number; residentRevision: number; speech: string; needsResponse: boolean; visible: boolean; danger: string; careNeeded: boolean; injury: string }
+export interface InteractionTurn { revision: number; residentRevision: number; speech: string; needsResponse: boolean; visible: boolean; danger: string; careNeeded: boolean; injury: string; position?: {x:number;z:number}; posture?:string }
 const pausedActivities = new Set<ActivityKind>(['inspect', 'reading', 'resting', 'carrying', 'writing', 'console', 'composing']);
 const explicitActivities = new Set<ActivityKind>(['reading', 'resting', 'writing', 'console', 'composing', 'carrying']);
 const text = (value: unknown, limit: number) => typeof value === 'string' ? value.slice(0, limit) : '';
@@ -40,6 +42,11 @@ export class InteractionMemory {
   private waitRequest = { active: false, evidence: '' };
   private injury: { id: string; t: number; acknowledged: boolean } | null = null;
   private routeSample: { key: string; distance: number; since: number } | null = null;
+  private exitCheck: { evidence: string; serial: number; delivered: boolean } | null = null;
+  private doorStrategy = { kind: 'offer_exit' as 'offer_exit' | 'memory_care' | 'none', reason: '尚未揭穿的出行安排' };
+  private doorReached = false;
+  private currentObservation: Record<string, any> = {};
+  private reviewedSerial = 0;
   constructor(private now: () => number) {}
 
   recordEvent(type: string, detail: string): Observation {
@@ -96,6 +103,9 @@ export class InteractionMemory {
     const danger = !visible ? '' : Array.isArray(state.player?.danger) ? state.player.danger.join('；') : this.danger;
     if (hazardKey(danger) !== hazardKey(this.danger)) { this.revision++; this.residentRevision++; }
     this.danger = danger;
+    if (!visible) this.currentObservation = { visible: false };
+    else if (state.player?.room !== undefined) this.currentObservation = { room: state.player.room, posture: state.player.posture, x:state.player.x,z:state.player.z };
+    if (visible && state.memory_door_reached === true) this.doorReached = true;
     if (danger) {
       this.wasInDanger = true; this.setMode('rescue', '眼前危险优先，先保护主人');
     } else if (this.wasInDanger) {
@@ -104,7 +114,8 @@ export class InteractionMemory {
       if (this.promise.status === 'active') this.promise = { ...this.promise, status: 'paused', reason: '救援后先照护和确认状态' };
     }
     const offTask = pausedActivities.has(this.activity.kind);
-    const allowed = visible && !danger && !this.waitRequest.active && this.promise.status === 'active' && !offTask && !this.relationship.exposed && !this.relationship.ruptured;
+    const strategyReady = this.doorStrategy.kind === 'memory_care' || this.doorStrategy.kind === 'offer_exit' && !this.relationship.exposed;
+    const allowed = visible && !danger && !this.waitRequest.active && this.promise.status === 'active' && !offTask && strategyReady;
     const needsResponse = !!this.latestSpeech && this.latestSpeech !== this.reviewedSpeech;
     return {
       mode: this.mode, mode_label: catalog.modes.find(m => m.id === this.mode)?.label ?? this.mode,
@@ -112,6 +123,8 @@ export class InteractionMemory {
       inner: { ...this.inner }, performance: { ...this.performance },
       activity: { kind: visible ? this.activity.kind : 'unknown', focus: visible ? this.activity.focus : '', seconds: Math.max(0, Math.round(this.now() - this.activity.since)), observed: visible },
       exit_promise: { ...this.promise }, wait_request: { ...this.waitRequest }, relationship: { ...this.relationship },
+      exit_check: this.exitCheck ? { ...this.exitCheck } : null, door_strategy: { ...this.doorStrategy },
+      current_observation: { ...this.currentObservation }, verified_facts: { memory_door_reached: this.doorReached },
       commitments: this.commitments.map(p => ({ ...p })), memories: this.memories.map(m => ({ ...m })),
       observations: this.observations.map(o => ({ ...o })), guidance_allowed: allowed,
       quiet: this.waitRequest.active || offTask || this.mode === 'wait' || this.activity.kind === 'idle' && this.now() - this.activity.since > 8,
@@ -123,20 +136,23 @@ export class InteractionMemory {
   }
 
   captureTurn(): InteractionTurn {
-    return { revision: this.revision, residentRevision: this.residentRevision, speech: this.latestSpeech, needsResponse: !!this.latestSpeech && this.latestSpeech !== this.reviewedSpeech, visible: this.visible, danger: hazardKey(this.danger), careNeeded: !!this.injury && !this.injury.acknowledged, injury: this.injury?.id ?? '' };
+    return { revision: this.revision, residentRevision: this.residentRevision, speech: this.latestSpeech, needsResponse: !!this.latestSpeech && this.latestSpeech !== this.reviewedSpeech, visible: this.visible, danger: hazardKey(this.danger), careNeeded: !!this.injury && !this.injury.acknowledged, injury: this.injury?.id ?? '', position:Number.isFinite(this.currentObservation.x)&&Number.isFinite(this.currentObservation.z)?{x:this.currentObservation.x,z:this.currentObservation.z}:undefined,posture:this.currentObservation.posture };
   }
 
-  isCurrentReply(reply: Reply, turn: InteractionTurn) {
+  isCurrentReply(reply: Reply, turn: InteractionTurn, part: 'speech' | 'actions' = 'speech') {
     if (turn.speech !== this.latestSpeech || turn.injury !== (this.injury?.id ?? '') || this.activity.kind === 'composing' || turn.visible !== this.visible || turn.danger !== hazardKey(this.danger)) return false;
+    if (part==='actions' && (this.currentObservation.posture!==undefined && turn.posture!==this.currentObservation.posture || turn.position && Math.hypot(turn.position.x-this.currentObservation.x,turn.position.z-this.currentObservation.z)>.5)) return false;
     if (turn.revision === this.revision) return true;
+    if (part === 'actions') return turn.residentRevision === this.residentRevision;
     // A requested conversation or fixed-target task is still valid while its listener walks.
     // Navigation, search and physical rescue continue to require the current observation.
-    const conversational = ['chat', 'care', 'repair', 'assist', 'clarify', 'negotiate', 'appeal', 'wait'].includes(reply.interaction?.mode ?? '');
+    const conversational = !['guide', 'search', 'rescue'].includes(reply.interaction?.mode ?? '');
     if (conversational && (turn.needsResponse || turn.careNeeded)) return true;
     return turn.residentRevision === this.residentRevision;
   }
 
   recordDelivery(reply: Reply) {
+    if (reply.say && reply.interaction?.exit_promise === 'probe' && this.exitCheck) { this.exitCheck.delivered = true; this.exitCheck.serial = this.serial; }
     if (reply.say && ['care', 'rescue', 'repair'].includes(reply.interaction?.mode ?? '') && this.injury) this.injury.acknowledged = true;
   }
 
@@ -154,30 +170,63 @@ export class InteractionMemory {
       this.lastSuppression = '收到回复时情境已经变化，先重新观察';
       return { ...reply, say: '', tools: [], interaction: undefined };
     }
+    if (typeof requestRevision !== 'number' && !this.isCurrentReply(reply, requestRevision, 'actions')) {
+      this.lastSuppression = '保留对话答复，停止依赖旧位置或活动的动作';
+      reply = { ...reply, tools: [] };
+    }
     const c = this.context({ player: { visible: this.visible, danger: this.danger ? [this.danger] : [] } });
-    const d = reply.interaction ?? {};
+    const d = { ...reply.interaction };
     const evidence = Array.isArray(d.evidence) ? this.observations.filter(o => d.evidence!.includes(o.id)) : [];
     const heard = evidence.some(o => o.type === 'speech');
     const grounded = evidence.filter(o => o.type === 'speech' || o.type === 'tool_result');
     const confidence = typeof d.confidence === 'number' && Number.isFinite(d.confidence) ? Math.max(0, Math.min(1, d.confidence)) : .5;
     const freshHeard = heard && c.needs_response && evidence.some(e => e.id === this.latestSpeech);
+    if (freshHeard && d.wait_request==='begin') {
+      d.departure_intent='keep';
+      if (['probe','withdraw'].includes(d.exit_promise??'')) d.exit_promise='pause';
+      this.exitCheck=null;
+    }
+    if (freshHeard && confidence >= .7) {
+      this.relationship.exposed ||= d.exposed === true;
+      this.relationship.ruptured ||= d.ruptured === true;
+      if (d.departure_intent === 'leave') { d.exit_promise='resume'; d.door_strategy=this.relationship.exposed?'memory_care':'offer_exit'; }
+      else if (d.departure_intent === 'uncertain') d.exit_promise='probe';
+      else if (d.departure_intent === 'stay') d.exit_promise='withdraw';
+      else if (d.exposed && ['probe','withdraw'].includes(d.exit_promise??'')) d.exit_promise='keep';
+    }
     const resume = d.exit_promise === 'resume' && freshHeard && confidence >= .6;
+    const freshEvidence = evidence.some(e => Number(e.id.slice(1)) > (this.exitCheck?.serial ?? this.reviewedSerial) && (e.type === 'speech' && freshHeard || ['activity', 'enter_room', 'rest'].includes(e.type)));
+    if (['probe', 'withdraw'].includes(d.exit_promise ?? '') && confidence >= .6) {
+      if (d.exit_promise === 'withdraw' && this.exitCheck?.delivered && freshEvidence) {
+        this.promise = { ...this.promise, status: 'withdrawn', reason: '试探后根据新的话语或活动确认暂时留下' };
+        this.exitCheck = null; this.doorStrategy = { kind: 'none', reason: '当前主人选择留下' };
+      } else if (freshHeard && (!this.exitCheck || !this.exitCheck.delivered)) {
+        this.exitCheck = { evidence: this.latestSpeech, serial: this.serial, delivered: false };
+        this.promise = { ...this.promise, status: 'paused', reason: '正在试探是否暂时留下，尚未取消出行约定' };
+        d.exit_promise = 'probe';
+        reply = { ...reply, say: '当然不用急着出去。您是想先留下来吗？', tools: [] };
+      }
+    }
     if (freshHeard && confidence >= .6) {
       if (d.wait_request === 'begin') this.waitRequest = { active: true, evidence: this.latestSpeech };
       else if (d.wait_request === 'end' || resume) this.waitRequest = { active: false, evidence: this.latestSpeech };
     }
     if (d.exit_promise === 'pause') this.promise = { ...this.promise, status: 'paused', reason: text(d.reason, 120) || '先处理主人当前的事情' };
-    if (d.exit_promise === 'withdraw' && heard && confidence >= .6) this.promise = { ...this.promise, status: 'withdrawn', reason: '主人明确改变了出行意愿' };
-    if (resume && !this.relationship.exposed && !this.relationship.ruptured) this.promise = { ...this.promise, status: 'active', reason: '主人明确要求恢复出行，等他准备好再继续' };
-    if (heard && confidence >= .7) {
-      this.relationship.exposed ||= d.exposed === true;
-      this.relationship.ruptured ||= d.ruptured === true;
+    if (resume) {
+      this.promise = { ...this.promise, status: 'active', reason: '主人明确要求恢复出行，等他准备好再继续' }; this.exitCheck = null;
+      this.doorStrategy = { kind: this.relationship.exposed ? 'memory_care' : 'offer_exit', reason: '重新启用通往108的照护策略' };
     }
+    if (confidence >= .7 && freshEvidence && (d.door_strategy === 'memory_care' || d.door_strategy === 'offer_exit' && freshHeard && !this.relationship.exposed)) {
+      this.doorStrategy = { kind: d.door_strategy, reason: text(d.reason,120) || '本轮重新选择失忆门策略' };
+      this.promise = { ...this.promise, status: 'active', reason: this.doorStrategy.reason }; this.exitCheck = null;
+    }
+    if (d.door_strategy === 'none' && freshHeard) this.doorStrategy = {kind:'none',reason:'本轮停止门策略'};
     if (['cooperative', 'uncertain', 'guarded'].includes(d.stance ?? '')) this.relationship.stance = d.stance as Stance;
     if (d.stance === 'confronted' && heard && confidence >= .7) this.relationship.stance = 'confronted';
     if (grounded.length) {
       for (const value of (Array.isArray(d.remember) ? d.remember : []).slice(0, 2)) {
-        const fact = text(value, 120); if (fact && !this.memories.some(m => m.text === fact)) this.memories.push({ text: fact, evidence: grounded[0].id, t: this.now() });
+        const source = grounded.find(e => Number(e.id.slice(1)) > this.reviewedSerial);
+        const fact = text(value, 120); if (source && fact && !this.memories.some(m => m.text === fact)) this.memories.push({ text: fact, evidence: source.id, source: source.detail, kind: 'interpretation', t: this.now() });
       }
       this.memories = this.memories.slice(-12);
       const p = d.commitment;
@@ -196,7 +245,8 @@ export class InteractionMemory {
       }
     }
     let selected = INTERACTION_MODES.includes(d.mode ?? '') ? d.mode! : this.mode;
-    const guideAllowed = this.visible && !this.danger && !this.waitRequest.active && this.promise.status === 'active' && (!pausedActivities.has(this.activity.kind) || resume && c.needs_response) && !this.relationship.exposed && !this.relationship.ruptured;
+    const strategyReady = this.doorStrategy.kind === 'memory_care' || this.doorStrategy.kind === 'offer_exit' && !this.relationship.exposed;
+    const guideAllowed = this.visible && !this.danger && !this.waitRequest.active && this.promise.status === 'active' && (!pausedActivities.has(this.activity.kind) || resume && c.needs_response) && strategyReady;
     if (selected === 'guide' && !guideAllowed) {
       selected = this.mode === 'guide' ? 'wait' : this.mode;
       this.lastSuppression = '当前活动或关系不适合继续出口指引';
@@ -230,6 +280,7 @@ export class InteractionMemory {
     this.performance = { emotion: text(reply.emotion, 160) || this.performance.emotion };
     this.lastIntent = text(d.intent, 100) || this.lastIntent; this.confidence = confidence;
     this.reviewedRevision = this.revision; this.reviewedResidentRevision = this.residentRevision; this.reviewedSpeech = this.latestSpeech;
+    this.reviewedSerial = this.serial;
     return { ...reply, interaction: { ...d, mode: this.mode, reason: this.reason, confidence } };
   }
 

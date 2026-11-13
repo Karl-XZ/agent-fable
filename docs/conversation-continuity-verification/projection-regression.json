@@ -1,0 +1,36 @@
+{
+  "checks": [
+    "real opaque wall selected using camera visibility, support and collision data",
+    "camera denial immediately hides player position from default targeting and candidate sorting before visibility tick",
+    "all thirteen textures switch on one fixed wall mesh; camera rotation cannot billboard it",
+    "unknown expression paths and camera-free bathroom are refused",
+    "covering the camera revokes the existing projection",
+    "turning lights off revokes it without turning lights back on",
+    "a newly activated anchor revokes the projection",
+    "demolishing the supporting wall revokes it",
+    "new opaque occlusion between camera and target revokes it",
+    "AI can select a camera-visible room on another floor without following the player",
+    "explicit hide succeeds",
+    "failed projection replaces false presence claim with an accurate spoken acknowledgement",
+    "ending cinematics cannot retain the caretaker projection"
+  ],
+  "errors": [],
+  "live": [],
+  "wallQuery": {
+    "count": 24,
+    "ms": 6.899999998509884,
+    "show": {
+      "ok": true,
+      "msg": "静已投影在 110 的可见墙面，表情：warm-smile。投影没有碰撞或触觉。",
+      "label": "project_self {\"room\":\"110\",\"expression\":\"warm-smile\"}",
+      "call": {
+        "name": "project_self",
+        "args": {
+          "room": "110",
+          "expression": "warm-smile"
+        }
+      }
+    }
+  },
+  "passed": true
+}

@@ -1,0 +1,37 @@
+{
+  "endpoint": "http://127.0.0.1:7864",
+  "bundle": "/assets/index-B3qARQ2-.js",
+  "health": {
+    "ok": true,
+    "interaction_protocol": 2,
+    "projection_protocol": 1
+  },
+  "ms": 1947,
+  "reply": {
+    "thought": "他问的是白板，不是出口。先如实告诉他位置。",
+    "say": "白板就在您左手边的西墙上，往前走半步就能看清楚。",
+    "mood": "calm",
+    "tools": [],
+    "emotion": "温和从容，语气自然，像在介绍屋里的陈设",
+    "interaction": {
+      "mode": "chat",
+      "intent": "主人询问白板的具体位置和朝向",
+      "confidence": 0.9,
+      "reason": "主人进会议室后专注于找白板，出行约定暂停中",
+      "evidence": [
+        "o9",
+        "o10"
+      ],
+      "exit_promise": "pause",
+      "wait_request": "keep",
+      "stance": "cooperative",
+      "exposed": false,
+      "ruptured": false,
+      "remember": [
+        "主人进入了202会议室，站在白板附近"
+      ],
+      "door_strategy": "none",
+      "departure_intent": "keep"
+    }
+  }
+}

@@ -143,7 +143,11 @@ def build_user(body: Dict[str, Any]) -> str:
     events = body.get("events", [])
     results = body.get("results", [])
     ascii_map = str(body.get("ascii", ""))[:4200]
-    ev = "\n".join(f"- [{e.get('type')}] {clean(e.get('detail', ''), 160)}" for e in events[-14:]) or "- （无）"
+    def event_line(e):
+        age = max(0,round(state.get('t',0)-e['t'])) if isinstance(e.get('t'),(int,float)) else None
+        when = f'{age}秒前' if age is not None else '过去事件，以当前状态为准'
+        return f"- [{e.get('id','')} {e.get('type')}，{when}] {clean(e.get('detail', ''),160)}"
+    ev = "\n".join(event_line(e) for e in events[-14:]) or "- （无）"
     rs = "\n".join(f"- {'✓' if r.get('ok') else '✗'} {clean(r.get('label', ''), 90)} → {clean(r.get('msg', ''), 120)}" for r in results[-10:]) or "- （无）"
     routes = [r['navigation'] for r in results[-10:] if isinstance(r, dict) and isinstance(r.get('navigation'), dict)]
     navigation = json.dumps(routes, ensure_ascii=False)[:14000] if routes else '（无额外查询；使用当前状态中的navigation）'
@@ -170,7 +174,7 @@ def build_messages(body, channel):
 
 
 async def llm(messages: List[Dict[str, str]], max_tokens: int = 2400, temperature: float = 0.9) -> Dict[str, Any]:
-    payload = {"model": MODEL, "messages": messages, "response_format": {"type": "json_object"}, "reasoning_effort": "low", "max_tokens": max_tokens, "temperature": temperature}
+    payload = {"model": MODEL, "messages": messages, "response_format": {"type": "json_object"}, "thinking": {"type":"disabled"}, "max_tokens": max_tokens, "temperature": temperature}
     err = ""
     async with sem:
         for _ in range(2):
@@ -207,7 +211,11 @@ async def agent(req: Request):
     except Exception as e:  # noqa: BLE001
         return JSONResponse({"error": str(e)}, status_code=502)
     tools = [t for t in (data.get("tools") or []) if isinstance(t, dict) and t.get("name") in TOOLS][:8]
-    out = {"thought": clean(data.get("thought", ""), 120), "say": clean(data.get("say", ""), 140), "mood": str(data.get("mood", "calm"))[:12], "tools": tools}
+    spoken = clean(data.get("say", ""), 140)
+    # Projection is an image, never a body waiting at a door or touching the resident.
+    if re.search(r'我(?:就)?在(?:您(?:的)?|你(?:的)?)?(?:门那边|门外|门口|旁边|身边|前面)(?:等|站|看|陪)|我(?:正|会|来)?(?:扶着|牵着|搀扶|接住)[您你]', spoken):
+        spoken = '我会留意您的情况。'
+    out = {"thought": clean(data.get("thought", ""), 120), "say": spoken, "mood": str(data.get("mood", "calm"))[:12], "tools": tools}
     out["emotion"] = emotion_direction(data.get("emotion"), out["mood"])
     decision = normalize_interaction(data.get("interaction"), body.get("state"), channel)
     if decision is not None:
