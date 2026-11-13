@@ -1,0 +1,1136 @@
+{
+  "checks": [
+    "real opaque wall selected using camera visibility, support and collision data",
+    "camera denial immediately hides player position from default targeting and candidate sorting before visibility tick",
+    "all thirteen textures switch on one fixed wall mesh; camera rotation cannot billboard it",
+    "unknown expression paths and camera-free bathroom are refused",
+    "covering the camera revokes the existing projection",
+    "turning lights off revokes it without turning lights back on",
+    "a newly activated anchor revokes the projection",
+    "demolishing the supporting wall revokes it",
+    "new opaque occlusion between camera and target revokes it",
+    "AI can select a camera-visible room on another floor without following the player",
+    "explicit hide succeeds",
+    "failed projection replaces false presence claim with an accurate spoken acknowledgement",
+    "ending cinematics cannot retain the caretaker projection"
+  ],
+  "errors": [],
+  "live": [
+    {
+      "name": "appear",
+      "text": "静，我想看看你。请用温柔微笑把自己投影在我这间屋子的墙上，不要指路。",
+      "reply": {
+        "thought": "他想看看我，不是要走。投影到西面的墙上，让他一抬头就能看见。",
+        "say": "好，我在您西面的墙上。今天不指路，就陪您站一会儿。",
+        "mood": "calm",
+        "tools": [
+          {
+            "name": "project_self",
+            "args": {
+              "room": "110",
+              "wall": "110:30:5:1:0",
+              "expression": "warm-smile"
+            }
+          }
+        ],
+        "emotion": "温柔含笑，语速放缓，带着被需要的放松",
+        "interaction": {
+          "mode": "chat",
+          "intent": "主人想看见静的投影，不指路",
+          "confidence": 0.95,
+          "reason": "住户明确要求投影并说不要指路",
+          "evidence": [
+            "o4"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人想看看静的投影，并要求不要指路"
+          ]
+        },
+        "turn": {
+          "revision": 9,
+          "residentRevision": 1,
+          "speech": "o4",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "projection": {
+        "available": true,
+        "active": {
+          "id": "110:30:5:1:0",
+          "room": "110",
+          "x": 31,
+          "y": 1.43,
+          "z": 5.5,
+          "nx": 1,
+          "nz": 0,
+          "width": 1.6666666666666667,
+          "height": 2.5,
+          "expression": "warm-smile"
+        },
+        "available_walls": [
+          {
+            "id": "110:30:5:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 5.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:4:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 4.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:3:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 3.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:2:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 2.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:9:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 9.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:32:0:0:1",
+            "room": "110",
+            "x": 32.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:32:11:0:-1",
+            "room": "110",
+            "x": 32.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:33:0:0:1",
+            "room": "110",
+            "x": 33.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:33:11:0:-1",
+            "room": "110",
+            "x": 33.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:34:0:0:1",
+            "room": "110",
+            "x": 34.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:34:11:0:-1",
+            "room": "110",
+            "x": 34.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:35:0:0:1",
+            "room": "110",
+            "x": 35.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          }
+        ],
+        "expressions": [
+          {
+            "id": "calm",
+            "label": "闭眼静候"
+          },
+          {
+            "id": "warm-smile",
+            "label": "温柔微笑"
+          },
+          {
+            "id": "gentle-speaking",
+            "label": "温和说话"
+          },
+          {
+            "id": "pleased",
+            "label": "欣慰浅笑"
+          },
+          {
+            "id": "curious",
+            "label": "疑惑倾听"
+          },
+          {
+            "id": "concerned",
+            "label": "担忧关切"
+          },
+          {
+            "id": "hesitant",
+            "label": "思考迟疑"
+          },
+          {
+            "id": "helpless",
+            "label": "无奈"
+          },
+          {
+            "id": "hurt",
+            "label": "委屈"
+          },
+          {
+            "id": "pleading",
+            "label": "恳求"
+          },
+          {
+            "id": "protective",
+            "label": "严肃保护"
+          },
+          {
+            "id": "strained-smile",
+            "label": "强撑微笑"
+          },
+          {
+            "id": "breaking-composure",
+            "label": "破防失态"
+          }
+        ]
+      },
+      "log": {
+        "t": 0.9000000000000002,
+        "thought": "他想看看我，不是要走。投影到西面的墙上，让他一抬头就能看见。",
+        "say": "好，我在您西面的墙上。今天不指路，就陪您站一会儿。",
+        "emotion": "温柔含笑，语速放缓，带着被需要的放松",
+        "tools": [
+          {
+            "label": "project_self {\"room\":\"110\",\"wall\":\"110:30:5:1:0\",\"expression\":\"warm-smile\"}",
+            "ok": true,
+            "msg": "静已投影在 110 的可见墙面，表情：warm-smile。投影没有碰撞或触觉。"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 2615,
+        "trigger": [
+          "start:开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交",
+          "speech:住户说：「静，我想看看你。请用温柔微笑把自己投影在我这间屋子的墙上，不要指路。」"
+        ],
+        "interaction": {
+          "mode": "chat",
+          "mode_label": "陪伴交谈",
+          "since": 0.8500000000000002,
+          "reason": "住户明确要求投影并说不要指路",
+          "intent": "主人想看见静的投影，不指路",
+          "confidence": 0.95,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他想看看我，不是要走。投影到西面的墙上，让他一抬头就能看见。"
+          },
+          "performance": {
+            "emotion": "温柔含笑，语速放缓，带着被需要的放松"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 1,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "住户明确要求投影并说不要指路"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人想看看静的投影，并要求不要指路",
+              "evidence": "o4",
+              "t": 0.8500000000000002
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 0.1
+            },
+            {
+              "id": "o3",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 0.1
+            },
+            {
+              "id": "o4",
+              "type": "speech",
+              "detail": "住户说：「静，我想看看你。请用温柔微笑把自己投影在我这间屋子的墙上，不要指路。」",
+              "t": 0.8000000000000002
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：project_self {\"room\":\"110\",\"wall\":\"110:30:5:1:0\",\"expression\":\"warm-smile\"}；静已投影在 110 的可见墙面，表情：warm-smile。投影没有碰撞或触觉。",
+              "t": 0.9000000000000002,
+              "tool_key": "project_self {\"expression\":\"warm-smile\",\"room\":\"110\",\"wall\":\"110:30:5:1:0\"}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 10,
+          "resident_revision": 1,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "expression",
+      "text": "请保持在刚才那面墙上，把表情换成疑惑倾听。",
+      "reply": {
+        "thought": "他想看我换个表情，不是要出门。就留在那面墙上。",
+        "say": "换好了。您想说什么？",
+        "mood": "calm",
+        "tools": [
+          {
+            "name": "project_self",
+            "args": {
+              "room": "110",
+              "wall": "110:30:5:1:0",
+              "expression": "curious"
+            }
+          }
+        ],
+        "emotion": "温和含笑，尾音轻扬，像等着听他把话说完",
+        "interaction": {
+          "mode": "chat",
+          "intent": "主人想继续看投影并换表情，像是在试探或准备说什么",
+          "confidence": 0.9,
+          "reason": "住户明确要求保持同一面墙并换成疑惑倾听",
+          "evidence": [
+            "o5",
+            "o6"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": [
+            "主人要求把投影留在西面墙上并换成疑惑倾听的表情"
+          ]
+        },
+        "turn": {
+          "revision": 11,
+          "residentRevision": 2,
+          "speech": "o6",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "projection": {
+        "available": true,
+        "active": {
+          "id": "110:30:5:1:0",
+          "room": "110",
+          "x": 31,
+          "y": 1.43,
+          "z": 5.5,
+          "nx": 1,
+          "nz": 0,
+          "width": 1.6666666666666667,
+          "height": 2.5,
+          "expression": "curious"
+        },
+        "available_walls": [
+          {
+            "id": "110:30:5:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 5.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:4:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 4.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:3:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 3.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:2:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 2.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:9:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 9.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:32:0:0:1",
+            "room": "110",
+            "x": 32.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:32:11:0:-1",
+            "room": "110",
+            "x": 32.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:33:0:0:1",
+            "room": "110",
+            "x": 33.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:33:11:0:-1",
+            "room": "110",
+            "x": 33.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:34:0:0:1",
+            "room": "110",
+            "x": 34.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:34:11:0:-1",
+            "room": "110",
+            "x": 34.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:35:0:0:1",
+            "room": "110",
+            "x": 35.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          }
+        ],
+        "expressions": [
+          {
+            "id": "calm",
+            "label": "闭眼静候"
+          },
+          {
+            "id": "warm-smile",
+            "label": "温柔微笑"
+          },
+          {
+            "id": "gentle-speaking",
+            "label": "温和说话"
+          },
+          {
+            "id": "pleased",
+            "label": "欣慰浅笑"
+          },
+          {
+            "id": "curious",
+            "label": "疑惑倾听"
+          },
+          {
+            "id": "concerned",
+            "label": "担忧关切"
+          },
+          {
+            "id": "hesitant",
+            "label": "思考迟疑"
+          },
+          {
+            "id": "helpless",
+            "label": "无奈"
+          },
+          {
+            "id": "hurt",
+            "label": "委屈"
+          },
+          {
+            "id": "pleading",
+            "label": "恳求"
+          },
+          {
+            "id": "protective",
+            "label": "严肃保护"
+          },
+          {
+            "id": "strained-smile",
+            "label": "强撑微笑"
+          },
+          {
+            "id": "breaking-composure",
+            "label": "破防失态"
+          }
+        ]
+      },
+      "log": {
+        "t": 0.9500000000000003,
+        "thought": "他想看我换个表情，不是要出门。就留在那面墙上。",
+        "say": "换好了。您想说什么？",
+        "emotion": "温和含笑，尾音轻扬，像等着听他把话说完",
+        "tools": [
+          {
+            "label": "project_self {\"room\":\"110\",\"wall\":\"110:30:5:1:0\",\"expression\":\"curious\"}",
+            "ok": true,
+            "msg": "静已投影在 110 的可见墙面，表情：curious。投影没有碰撞或触觉。"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1264,
+        "trigger": [
+          "speech:住户说：「请保持在刚才那面墙上，把表情换成疑惑倾听。」"
+        ],
+        "interaction": {
+          "mode": "chat",
+          "mode_label": "陪伴交谈",
+          "since": 0.8500000000000002,
+          "reason": "住户明确要求保持同一面墙并换成疑惑倾听",
+          "intent": "主人想继续看投影并换表情，像是在试探或准备说什么",
+          "confidence": 0.9,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他想看我换个表情，不是要出门。就留在那面墙上。"
+          },
+          "performance": {
+            "emotion": "温和含笑，尾音轻扬，像等着听他把话说完"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 1,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "住户明确要求保持同一面墙并换成疑惑倾听"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人想看看静的投影，并要求不要指路",
+              "evidence": "o4",
+              "t": 0.8500000000000002
+            },
+            {
+              "text": "主人要求把投影留在西面墙上并换成疑惑倾听的表情",
+              "evidence": "o5",
+              "t": 0.9000000000000002
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 0.1
+            },
+            {
+              "id": "o3",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 0.1
+            },
+            {
+              "id": "o4",
+              "type": "speech",
+              "detail": "住户说：「静，我想看看你。请用温柔微笑把自己投影在我这间屋子的墙上，不要指路。」",
+              "t": 0.8000000000000002
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：project_self {\"room\":\"110\",\"wall\":\"110:30:5:1:0\",\"expression\":\"warm-smile\"}；静已投影在 110 的可见墙面，表情：warm-smile。投影没有碰撞或触觉。",
+              "t": 0.9000000000000002,
+              "tool_key": "project_self {\"expression\":\"warm-smile\",\"room\":\"110\",\"wall\":\"110:30:5:1:0\"}"
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「请保持在刚才那面墙上，把表情换成疑惑倾听。」",
+              "t": 0.9000000000000002
+            },
+            {
+              "id": "o7",
+              "type": "tool_result",
+              "detail": "成功：project_self {\"room\":\"110\",\"wall\":\"110:30:5:1:0\",\"expression\":\"curious\"}；静已投影在 110 的可见墙面，表情：curious。投影没有碰撞或触觉。",
+              "t": 0.9500000000000003,
+              "tool_key": "project_self {\"expression\":\"curious\",\"room\":\"110\",\"wall\":\"110:30:5:1:0\"}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 12,
+          "resident_revision": 2,
+          "last_suppression": ""
+        }
+      }
+    },
+    {
+      "name": "hide",
+      "text": "请收起墙上你的影像。",
+      "reply": {
+        "thought": "他不想看了，就收起来，不必多问。",
+        "say": "收好了。需要的时候再叫我。",
+        "mood": "calm",
+        "tools": [
+          {
+            "name": "hide_projection",
+            "args": {}
+          }
+        ],
+        "emotion": "温和从容，语气平稳自然",
+        "interaction": {
+          "mode": "chat",
+          "intent": "主人想结束投影展示",
+          "confidence": 0.95,
+          "reason": "住户明确要求收起影像",
+          "evidence": [
+            "o8"
+          ],
+          "exit_promise": "pause",
+          "wait_request": "keep",
+          "stance": "cooperative",
+          "exposed": false,
+          "ruptured": false,
+          "remember": []
+        },
+        "turn": {
+          "revision": 13,
+          "residentRevision": 3,
+          "speech": "o8",
+          "needsResponse": true,
+          "visible": true,
+          "danger": "",
+          "careNeeded": false,
+          "injury": ""
+        }
+      },
+      "projection": {
+        "available": true,
+        "active": null,
+        "available_walls": [
+          {
+            "id": "110:30:5:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 5.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:4:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 4.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:3:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 3.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:2:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 2.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:30:9:1:0",
+            "room": "110",
+            "x": 31,
+            "y": 1.43,
+            "z": 9.5,
+            "nx": 1,
+            "nz": 0,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:32:0:0:1",
+            "room": "110",
+            "x": 32.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:32:11:0:-1",
+            "room": "110",
+            "x": 32.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:33:0:0:1",
+            "room": "110",
+            "x": 33.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:33:11:0:-1",
+            "room": "110",
+            "x": 33.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:34:0:0:1",
+            "room": "110",
+            "x": 34.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:34:11:0:-1",
+            "room": "110",
+            "x": 34.5,
+            "y": 1.43,
+            "z": 11,
+            "nx": 0,
+            "nz": -1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          },
+          {
+            "id": "110:35:0:0:1",
+            "room": "110",
+            "x": 35.5,
+            "y": 1.43,
+            "z": 1,
+            "nx": 0,
+            "nz": 1,
+            "width": 1.6666666666666667,
+            "height": 2.5
+          }
+        ],
+        "expressions": [
+          {
+            "id": "calm",
+            "label": "闭眼静候"
+          },
+          {
+            "id": "warm-smile",
+            "label": "温柔微笑"
+          },
+          {
+            "id": "gentle-speaking",
+            "label": "温和说话"
+          },
+          {
+            "id": "pleased",
+            "label": "欣慰浅笑"
+          },
+          {
+            "id": "curious",
+            "label": "疑惑倾听"
+          },
+          {
+            "id": "concerned",
+            "label": "担忧关切"
+          },
+          {
+            "id": "hesitant",
+            "label": "思考迟疑"
+          },
+          {
+            "id": "helpless",
+            "label": "无奈"
+          },
+          {
+            "id": "hurt",
+            "label": "委屈"
+          },
+          {
+            "id": "pleading",
+            "label": "恳求"
+          },
+          {
+            "id": "protective",
+            "label": "严肃保护"
+          },
+          {
+            "id": "strained-smile",
+            "label": "强撑微笑"
+          },
+          {
+            "id": "breaking-composure",
+            "label": "破防失态"
+          }
+        ]
+      },
+      "log": {
+        "t": 1.0000000000000002,
+        "thought": "他不想看了，就收起来，不必多问。",
+        "say": "收好了。需要的时候再叫我。",
+        "emotion": "温和从容，语气平稳自然",
+        "tools": [
+          {
+            "label": "hide_projection {}",
+            "ok": true,
+            "msg": "静的墙面投影已收起。"
+          }
+        ],
+        "source": "llm",
+        "channel": "building",
+        "ms": 1664,
+        "trigger": [
+          "speech:住户说：「请收起墙上你的影像。」"
+        ],
+        "interaction": {
+          "mode": "chat",
+          "mode_label": "陪伴交谈",
+          "since": 0.8500000000000002,
+          "reason": "住户明确要求收起影像",
+          "intent": "主人想结束投影展示",
+          "confidence": 0.95,
+          "inner": {
+            "mood": "calm",
+            "last_thought": "他不想看了，就收起来，不必多问。"
+          },
+          "performance": {
+            "emotion": "温和从容，语气平稳自然"
+          },
+          "activity": {
+            "kind": "idle",
+            "focus": "",
+            "seconds": 1,
+            "observed": true
+          },
+          "exit_promise": {
+            "status": "paused",
+            "text": "陪主人出去看看",
+            "reason": "住户明确要求收起影像"
+          },
+          "wait_request": {
+            "active": false,
+            "evidence": ""
+          },
+          "relationship": {
+            "stance": "cooperative",
+            "exposed": false,
+            "ruptured": false
+          },
+          "commitments": [],
+          "memories": [
+            {
+              "text": "主人想看看静的投影，并要求不要指路",
+              "evidence": "o4",
+              "t": 0.8500000000000002
+            },
+            {
+              "text": "主人要求把投影留在西面墙上并换成疑惑倾听的表情",
+              "evidence": "o5",
+              "t": 0.9000000000000002
+            }
+          ],
+          "observations": [
+            {
+              "id": "o1",
+              "type": "start",
+              "detail": "开场中主人坚持想出去看看，你已答应陪同。此约定可以暂停；当前位置和正在做什么以本轮实际观察为准。若仍要出发再依据实时路线指引；若转去看展品、休息或交谈，先回应那件事，不要催门。保持熟悉的管家口吻，不重新欢迎入住。",
+              "t": 0
+            },
+            {
+              "id": "o2",
+              "type": "sight_lost",
+              "detail": "当前摄像头无法看见主人，不能确认主人此刻的位置、姿势或正在做的事情。",
+              "t": 0.1
+            },
+            {
+              "id": "o3",
+              "type": "sight_seen",
+              "detail": "画面重新可用，先确认眼前活动，不沿用失联前的判断。",
+              "t": 0.1
+            },
+            {
+              "id": "o4",
+              "type": "speech",
+              "detail": "住户说：「静，我想看看你。请用温柔微笑把自己投影在我这间屋子的墙上，不要指路。」",
+              "t": 0.8000000000000002
+            },
+            {
+              "id": "o5",
+              "type": "tool_result",
+              "detail": "成功：project_self {\"room\":\"110\",\"wall\":\"110:30:5:1:0\",\"expression\":\"warm-smile\"}；静已投影在 110 的可见墙面，表情：warm-smile。投影没有碰撞或触觉。",
+              "t": 0.9000000000000002,
+              "tool_key": "project_self {\"expression\":\"warm-smile\",\"room\":\"110\",\"wall\":\"110:30:5:1:0\"}"
+            },
+            {
+              "id": "o6",
+              "type": "speech",
+              "detail": "住户说：「请保持在刚才那面墙上，把表情换成疑惑倾听。」",
+              "t": 0.9000000000000002
+            },
+            {
+              "id": "o7",
+              "type": "tool_result",
+              "detail": "成功：project_self {\"room\":\"110\",\"wall\":\"110:30:5:1:0\",\"expression\":\"curious\"}；静已投影在 110 的可见墙面，表情：curious。投影没有碰撞或触觉。",
+              "t": 0.9500000000000003,
+              "tool_key": "project_self {\"expression\":\"curious\",\"room\":\"110\",\"wall\":\"110:30:5:1:0\"}"
+            },
+            {
+              "id": "o8",
+              "type": "speech",
+              "detail": "住户说：「请收起墙上你的影像。」",
+              "t": 0.9500000000000003
+            },
+            {
+              "id": "o9",
+              "type": "tool_result",
+              "detail": "成功：hide_projection {}；静的墙面投影已收起。",
+              "t": 1.0000000000000002,
+              "tool_key": "hide_projection {}"
+            }
+          ],
+          "guidance_allowed": false,
+          "quiet": false,
+          "needs_response": false,
+          "needs_attention": true,
+          "resident_attention": false,
+          "care_needed": false,
+          "recent_injury": null,
+          "revision": 14,
+          "resident_revision": 3,
+          "last_suppression": ""
+        }
+      }
+    }
+  ],
+  "wallQuery": {
+    "count": 24,
+    "ms": 7.5,
+    "show": {
+      "ok": true,
+      "msg": "静已投影在 110 的可见墙面，表情：warm-smile。投影没有碰撞或触觉。",
+      "label": "project_self {\"room\":\"110\",\"expression\":\"warm-smile\"}",
+      "call": {
+        "name": "project_self",
+        "args": {
+          "room": "110",
+          "expression": "warm-smile"
+        }
+      }
+    }
+  },
+  "passed": true
+}

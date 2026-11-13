@@ -64,13 +64,13 @@ export class Agent {
         const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 26000);
         if (channel === 'building') pending.controller = ctl;
         try {
-          const res = await fetch('/api/agent', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal, body: JSON.stringify({ session: this.session, channel, character_card: card, private_character_session: this.privateCharacterSession, state: p.state, ascii: p.ascii, events: evs.map(e => ({ id: e.id, type: e.type, detail: e.detail })), history: this.history.slice(-12), results: [...this.results.filter(r => !r.navigation), ...queries].slice(-10) }) });
+          const res = await fetch('/api/agent', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal, body: JSON.stringify({ session: this.session, channel, character_card: card, private_character_session: this.privateCharacterSession, state: p.state, ascii: p.ascii, events: evs.map(e => ({ id: e.id, type: e.type, detail: e.detail })), history: this.history.slice(-12), results: [...this.results.filter(r => !r.navigation && !r.projection_walls), ...queries].slice(-10) }) });
           if (!res.ok) throw new Error(String(res.status));
           reply = await res.json(); if (!reply || typeof reply !== 'object' || (reply as any).error) throw new Error('bad');
         } finally { clearTimeout(to); pending.controller = undefined; }
         if (pending.superseded) return null;
         this.llmOk++;
-        const requests = (reply.tools ?? []).filter(t => t.name === 'find_path').slice(0, 2);
+        const requests = (reply.tools ?? []).filter(t => t.name === 'find_path' || t.name === 'list_projection_walls').slice(0, 2);
         if (!requests.length) break;
         if (!this.query) throw new Error('Navigation queries unavailable');
         for (const request of requests) queries.push(this.query(request));

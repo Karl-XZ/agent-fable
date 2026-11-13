@@ -1,0 +1,72 @@
+{
+  "tool": "built-in image_gen",
+  "base": "用户确认的 jing-base.png",
+  "common_prompt": "Edit the supplied approved full-body character portrait (the sole edit target). Identity-preserve / precise expression edit for a game sprite. Change ONLY the eyes, eyebrows and mouth within the existing face. Keep her head position and face outline, long dark cobalt-blue hair with pale blue tips, whale-like ear fins with white edges, braid, blue ribbon and long curling forelock exactly the same. Keep her exact white long-sleeved collared shirt, dark fitted buttoned waistcoat, plain red necktie, dark long skirt, white tights, dark blue buckle shoes, whale tail on the right, folded hands and standing posture. Same polished Japanese anime illustration, linework, rendering and colors. Keep full body, shoes and forelock visible; identical 2:3 portrait canvas, framing, scale and placement to the 1024x1536 base, no body or clothing redesign and no zoom or crop. Preserve everything outside the face as closely as possible. Transparent RGBA background with clean alpha, no painted black/white background, no shadow rectangle, no checkerboard, no captions, labels, panel borders, other characters or props. She is Jing, a gentle caretaker AI whose affection hides protective possessiveness; adult, refined and respectful, never mocking. Requested expression:  STRICT: No glow, no aura, no blue backlight, no rim-light, no hologram shader, no colored fog behind hair, no ambient light effects. This is a plain opaque illustrated character cutout on entirely empty transparent canvas, not a rendered wall projection. Copy the reference's original hair silhouette and tail placement, do not restyle them. ",
+  "expressions": [
+    {
+      "id": "calm",
+      "label": "闭眼静候",
+      "prompt": "用户已确认的基础立绘，原样保留。"
+    },
+    {
+      "id": "warm-smile",
+      "label": "温柔微笑",
+      "prompt": "Gentle open blue eyes and small kind closed-mouth smile, relaxed eyebrows, refined professional warmth."
+    },
+    {
+      "id": "gentle-speaking",
+      "label": "温和说话",
+      "prompt": "Gentle open blue eyes, relaxed attentive brows, lips slightly parted naturally while softly explaining; no teeth showing, no wide grin."
+    },
+    {
+      "id": "pleased",
+      "label": "欣慰浅笑",
+      "prompt": "Eyes softly closed with cheeks slightly lifted and a small genuine contented smile. Quiet relief, not an exaggerated laugh."
+    },
+    {
+      "id": "curious",
+      "label": "疑惑倾听",
+      "prompt": "Open blue eyes showing attentive mild puzzlement, one eyebrow subtly raised, small lightly parted mouth. Head remains exactly in the original position; no tilted head."
+    },
+    {
+      "id": "concerned",
+      "label": "担忧关切",
+      "prompt": "Blue eyes softly widened in concern, inner eyebrows slightly lifted toward the center, small parted lips. Compassion for someone hurt, neither panic nor scolding."
+    },
+    {
+      "id": "hesitant",
+      "label": "思考迟疑",
+      "prompt": "Blue eyes looking slightly sideways without moving the head, brows subtly drawn in thought, mouth closed with a tiny hesitation. Considering how to answer, not contempt."
+    },
+    {
+      "id": "helpless",
+      "label": "无奈",
+      "prompt": "Half-lowered soft blue eyes, eyebrows raised slightly at the inner corners, small resigned closed-mouth smile. Patient, fond helplessness, not an eye roll or mocking smirk."
+    },
+    {
+      "id": "hurt",
+      "label": "委屈",
+      "prompt": "Blue eyes a little glossy, slightly knitted upward inner eyebrows, small downturned closed mouth. Quietly wounded affection, holding composure; no crying streams."
+    },
+    {
+      "id": "pleading",
+      "label": "恳求",
+      "prompt": "Blue eyes meeting the viewer, shiny with a restrained hint of tears, eyebrows gently raised with vulnerability, slightly parted lips in a soft earnest plea. Dignified affection, no sobbing."
+    },
+    {
+      "id": "protective",
+      "label": "严肃保护",
+      "prompt": "Focused blue eyes, gently lowered determined eyebrows, lips firmly but naturally closed. Serious protective resolve and responsibility, not rage, intimidation or cold contempt."
+    },
+    {
+      "id": "strained-smile",
+      "label": "强撑微笑",
+      "prompt": "A small meticulously polite closed-mouth smile paired with visibly worried blue eyes and tense lifted inner brows. Smile is performed to hide fear. Subtle asymmetry, no sinister grin."
+    },
+    {
+      "id": "breaking-composure",
+      "label": "破防失态",
+      "prompt": "Visible fear of losing someone beloved: blue eyes wide and watery with a single small tear at an outer corner, inner brows lifted and drawn together, lips slightly open with a fragile pleading tension. Heartbroken, helpless protective attachment. Not angry, not evil, no red eyes, no exaggerated horror expression."
+    }
+  ]
+}

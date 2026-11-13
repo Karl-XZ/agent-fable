@@ -2,6 +2,15 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { Agent } = require('../.runtime/agent-behavior-test.cjs');
 
+test('wall visibility query is internal and arrives before projection or speech',async()=>{
+ const requests=[],applied=[];
+ global.fetch=async(_url,options)=>{const body=JSON.parse(options.body);requests.push(body);const e=body.state.interaction.observations.find(e=>e.type==='speech');return Response.json({say:requests.length===1?'尚未执行就声称已出现':'我会在这面墙上显示影像。',tools:requests.length===1?[{name:'list_projection_walls',args:{room:'202'}}]:[{name:'project_self',args:{room:'202',wall:'202:test',expression:'warm-smile'}}],interaction:{mode:'assist',evidence:[e.id],confidence:.95}});};
+ const a=new Agent(()=>({state:{player:{visible:true,danger:[]}},ascii:''}),async r=>{applied.push(r);return[];},()=>0,()=>{throw Error('unexpected fallback')});
+ a.query=()=>({ok:true,label:'list_projection_walls',msg:'找到墙面',projection_walls:[{id:'202:test',room:'202'}]});
+ a.push('speech','请在会议室墙面投影');await a.run('building');
+ assert.equal(requests.length,2);assert.equal(requests[1].results[0].projection_walls[0].id,'202:test');assert.equal(applied.length,1);assert.equal(applied[0].tools[0].name,'project_self');assert.ok(!a.history.some(h=>h.text.includes('尚未执行')));
+});
+
 test('ambient observations wait for the current voice', () => {
   for(const type of ['player_lost','board']){
     let calls=0;

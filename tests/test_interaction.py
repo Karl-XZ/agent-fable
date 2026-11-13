@@ -125,6 +125,7 @@ def test_health_identifies_the_current_interaction_protocol():
 def test_jing_addresses_objections_without_a_body_or_turning_every_answer_into_a_route():
     from interaction import interaction_context
     prompt=interaction_context(context())
-    assert '没有可供主人定位的身体' in prompt
+    assert '没有可以触碰主人的身体' in prompt
+    assert 'state.projection.active' in prompt
     assert '具体异议' in prompt
     assert '临时查询' in prompt

@@ -1,0 +1,126 @@
+{
+  "character": "静",
+  "version": 1,
+  "base_portrait_approved": true,
+  "new_variants": 12,
+  "entries": [
+    {
+      "id": "calm",
+      "label": "闭眼静候",
+      "file": "calm.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "d120ea81b03bfd0980acc2a663987de58fd76178cc4906d714746216a60d662a"
+    },
+    {
+      "id": "warm-smile",
+      "label": "温柔微笑",
+      "file": "warm-smile.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "cb84e1a63f5e60664bf72952b88081a7952031be616c5d76de01a4ef8aeb7628"
+    },
+    {
+      "id": "gentle-speaking",
+      "label": "温和说话",
+      "file": "gentle-speaking.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "aa0cfa4d1aabb2778cf9d7e9d1fb50e9d877b8bece3b5cdc2a40f2564f85745f"
+    },
+    {
+      "id": "pleased",
+      "label": "欣慰浅笑",
+      "file": "pleased.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "f02b1f82bffd40b865a0d2658bade8cd722cb6ed9aa3f9832c94171bbc462e38"
+    },
+    {
+      "id": "curious",
+      "label": "疑惑倾听",
+      "file": "curious.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "52d9896939587d2434479bd3455d1422d3bf6b908ce8b95a88da226fd78ba9dd"
+    },
+    {
+      "id": "concerned",
+      "label": "担忧关切",
+      "file": "concerned.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "ad522c4f823f79ecc76da56de0ede24a460d0292999e992efdc117b72ee5b691"
+    },
+    {
+      "id": "hesitant",
+      "label": "思考迟疑",
+      "file": "hesitant.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "b3e5b72c31da3920fdc937c1572ceaed960f9676b608b97047eb7e8a37ecbd23"
+    },
+    {
+      "id": "helpless",
+      "label": "无奈",
+      "file": "helpless.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "c8656ddb4bbcb77e3a87899b857e748367ada913eaaaceb2cb3b5f431e91eeb1"
+    },
+    {
+      "id": "hurt",
+      "label": "委屈",
+      "file": "hurt.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "ef98655d634996419bf20587cd30f8455f3c556a2adcbc046680d29d678f952a"
+    },
+    {
+      "id": "pleading",
+      "label": "恳求",
+      "file": "pleading.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "5493359bf36fd76ed1666ae7f6d42cb27476642ed7b2b8b75f7175c6b3d455ac"
+    },
+    {
+      "id": "protective",
+      "label": "严肃保护",
+      "file": "protective.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "f0a9ecfd38e04612e4f54cecc419d3b72956cb62383c99ddce51b1e451614f00"
+    },
+    {
+      "id": "strained-smile",
+      "label": "强撑微笑",
+      "file": "strained-smile.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "fdb32f4cc7416cb65570217bc706ee9dd62cbb5f080a2beb235cb8e5783d3d79"
+    },
+    {
+      "id": "breaking-composure",
+      "label": "破防失态",
+      "file": "breaking-composure.png",
+      "width": 1024,
+      "height": 1536,
+      "format": "RGBA PNG",
+      "sha256": "f52cd81a9dab6f449580ea8f82469f071f6a4a9720aa298aea299420be6568eb"
+    }
+  ],
+  "note": "本阶段为表情素材，尚未接入墙面投影。表情是对外表现，不自动等同内心 mood；冲突表情仅在对应剧情中使用。"
+}

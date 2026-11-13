@@ -236,7 +236,7 @@ export class InteractionMemory {
   recordResults(results: { ok: boolean; label: string; msg: string; call?: { name: string; args?: Record<string, any> } }[], channel = 'building') {
     let lastSuccess: Observation | undefined;
     for (const result of results) {
-      if (!result.label.startsWith('find_path')) {
+      if (!result.label.startsWith('find_path') && !result.label.startsWith('list_projection_walls')) {
         const event = this.recordEvent(channel === 'console' ? 'console_tool_result' : 'tool_result', `${result.ok ? '成功' : '失败'}：${result.label}；${result.msg}`);
         if (result.call) event.tool_key = actionKey(result.call);
         if (result.ok) lastSuccess = event;

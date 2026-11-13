@@ -3,11 +3,13 @@ import { World, AABB, DoorObj } from './world';
 import { Grid, M, NX, NZ, ROOMS, Room, roomById, floorById, floorOfY, iyOf, SOLID, StairDef, BOX_SIZE } from './level';
 import * as TX from './textures';
 import type { NavigationTarget, NavigationResult } from './navigation';
+import type { JingProjection } from './projection';
 
 export interface ToolCall { name: string; args: Record<string, any> }
-export interface ToolResult { ok: boolean; msg: string; label: string; call?: ToolCall; anchored?: boolean; x?: number; y?: number; z?: number; navigation?: Omit<NavigationResult, 'waypoints'> }
+export interface ToolResult { ok: boolean; msg: string; label: string; call?: ToolCall; anchored?: boolean; x?: number; y?: number; z?: number; navigation?: Omit<NavigationResult, 'waypoints'>; projection_walls?: ReturnType<JingProjection['walls']> }
 
 export interface ToolCtx {
+  projection: JingProjection;
   world: World; grid: Grid;
   playerPos(): THREE.Vector3; playerFloor(): string; playerRoom(): string;
   navigate(target: NavigationTarget): Omit<NavigationResult, 'waypoints'>;
@@ -81,6 +83,9 @@ export function execTool(call: ToolCall, ctx: ToolCtx): ToolResult {
   const doorAtCell = (x: number, z: number, floor: string) => [...w.doors.values()].find(d => d.def.floor === floor && d.cells.some(([cx, cz]) => cx === x && cz === z));
   try {
     switch (call.name) {
+      case 'project_self': { const result=ctx.projection.show(a);return R(result.ok,result.msg); }
+      case 'hide_projection': { const result=ctx.projection.hide();return R(result.ok,result.msg); }
+      case 'list_projection_walls': return R(true,'已查询当前摄像头看得到的墙面。',{projection_walls:ctx.projection.walls(typeof a.room==='string'?a.room:undefined,true)});
       case 'find_path': {
         const navigation = ctx.navigate(a);
         return R(['ok', 'requires_action', 'arrived'].includes(navigation.status), navigation.message, { navigation });

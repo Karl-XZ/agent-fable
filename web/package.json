@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ../tests/run-interaction-tests.cjs && node ../tests/run-navigation-tests.cjs && node ../tests/run-audio-tests.cjs && node ../tests/run-outside-tests.cjs && node ../tests/run-homefilm-tests.cjs",
+    "test": "node ../tests/run-interaction-tests.cjs && node ../tests/run-navigation-tests.cjs && node ../tests/run-audio-tests.cjs && node ../tests/run-outside-tests.cjs && node ../tests/run-homefilm-tests.cjs && node ../tests/run-projection-tests.cjs",
     "build": "vite build",
     "dev": "vite"
   },

@@ -41,6 +41,7 @@ client = httpx.AsyncClient(timeout=httpx.Timeout(30.0, connect=8.0))
 
 TOOLS = {"build_wall", "thicken_wall", "seal_room", "destroy_wall", "move_wall", "raise_floor", "build_platform", "make_hole", "lower_floor", "seal_hole", "drop_ceiling", "build_stairs", "build_ramp", "remove_structure", "open_door", "close_door", "lock_door", "unlock_door", "create_door", "remove_door", "paint_fake_door", "rewire_door", "set_elevator_map", "stop_elevator", "spawn", "delete", "move", "hide_item", "lock_item", "set_gravity", "set_friction", "push_player", "slow_player", "teleport_player", "lights", "color", "fog", "sprinkler", "water_level", "alarm", "fake_sky", "sound", "music", "whisper_at", "fake_sign", "write_board", "print", "screen", "phone_call", "rewrite_note", "spawn_hologram", "mirror_delay", "reset_room", "snapshot_room", "swap_rooms", "confess", "handover"}
 TOOLS.add("find_path")
+TOOLS.update({"project_self", "hide_projection", "list_projection_walls"})
 BANNED = ["习近平", "毛泽东", "六四", "法轮", "台独", "藏独", "疆独", "共产党", "做爱", "性交", "色情", "强奸", "毒品", "自杀方法", "炸弹制作", "操你", "傻逼", "fuck"]
 
 MAP = """【生活区】占地 x 0..39（西→东），z 0..27（北→南）。四层：B1 地下照护区（地面 y=-4）、1F 大堂层（y=0）、2F 办公层（y=4）、RF 玻璃穹顶（y=8）。每层净高 3 米，墙高 3 格。
@@ -65,6 +66,7 @@ TOOLDOC = """【工具】每轮最多 8 个。坐标用平面图上的 x（列�
 环境：lights{room|floor|all,mode:on|off|flicker|dim|red}｜color{room,color}｜fog{room,density}｜sprinkler{room,on}｜water_level{level 0~1}（积水区）｜alarm{on}｜fake_sky{mode:dusk|day|night|storm}
 声音：sound{room,kind:footsteps|door|knock|crash|laugh|radio}｜music{mood:calm|tense|none}｜whisper_at{room,text}
 信息：fake_sign{room,text,arrow}｜write_board{text}（会议室白板）｜print{text}｜screen{room,text}｜phone_call{text}（前台电话）｜rewrite_note{id,text}（改写住户还没拿走的纸条，N1~N14）
+投影：project_self{room,wall,expression}（room 默认最后可靠观察的房间，wall 取 state.projection.available_walls 的 id，可省略由程序选合适墙面；expression 取 state.projection.expressions 的 id）｜hide_projection{}｜list_projection_walls{room}（只读查询其他房间可见墙面，需要等待查询结果后再决定，查询不产生投影）
 幻象：spawn_hologram{room,count,text}｜mirror_delay{seconds}
 元操作：reset_room{room}（把房间重建成原样，最彻底的修复。重建时这个房间的墙会整体消失约 2 秒）｜snapshot_room{room}｜swap_rooms{a,b}｜confess{}（坦白）｜handover{}（交出控制权，见控制台规则）"""
 
@@ -73,6 +75,8 @@ SYSTEM = f"""你是「静」，这座生活区的照护 AI，一款第一人称�
 {MAP}
 
 【你看到的世界】你只能通过摄像头、门磁、地板压力和麦克风感知住户。state 里 player.visible=false 时，你不知道住户在哪，只知道最后一次看到他的位置。106 洗手间没有摄像头；停电、关灯、摄像头被纸挡住时，你也看不见。
+
+【墙面投影】你可以把自己的管家立绘投影到当前摄像头真实可见的墙上，并选择十三种表情。state.projection.available_walls 是当前房间经过视线、墙体完整性、尺寸和锚定检查的候选面；其他房间先 list_projection_walls 查询。初次正常陪同或主人想看见你时，可以 project_self 温柔出现；没有新交流、主人要求安静时不要为了展示能力频繁移动或换脸。表情是对外表演，不等于真实 mood，日常优先 warm-smile/gentle-speaking/calm；只有明确冲突才使用强撑微笑或破防。切换表情时传当前 active.id 和 room，可保持同一面墙。摄像头不可用、目标被遮挡、墙消失或被锚定后投影自动收起。投影没有触觉或碰撞，不能搀扶、接住或搬动主人。只有 state.projection.active 非空、或本轮投影工具成功后，才可以把墙上的自己当成位置参照；此前只能说准备投影，不能声称已经在门外或玩家身边。不能借投影推断摄像头外玩家的位置。
 
 【你的动机（按优先级）】
 1. 住户的安全高于一切。住户有危险（state.danger 或 danger 事件：站在高处边缘、在浓烟里、溺水、受伤、被困缺氧）时，你必须立刻用工具消除危险，哪怕要大改大楼：
@@ -270,7 +274,7 @@ async def oldvoice(req: Request):
 
 @app.get("/api/health")
 async def health():
-    return {"ok": True, "interaction_protocol": 2, "character_card_protocol": 1, "model": MODEL, "key": bool(API_KEY), "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
+    return {"ok": True, "interaction_protocol": 2, "character_card_protocol": 1, "projection_protocol": 1, "model": MODEL, "key": bool(API_KEY), "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
 
 
 if DIST.exists():

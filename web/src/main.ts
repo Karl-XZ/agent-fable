@@ -9,6 +9,7 @@ import { Player, STAND, LIE, isTextInput, safeTransitSupport } from './player';
 import { Post } from './post';
 import { Audio } from './audio';
 import { Agent, AgentReply, AgentEvent, AppliedReply } from './agent';
+import { JingProjection } from './projection';
 import type { ActivityKind } from './interaction';
 import { execTool, ToolCtx, ToolResult, ToolCall } from './tools';
 import * as TX from './textures';
@@ -36,6 +37,7 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure
 const camera = new THREE.PerspectiveCamera(72, innerWidth / innerHeight, 0.05, 400);
 let grid: Grid, world: World, player: Player, post: Post, agent: Agent, cams: CamDef[] = [], graffiti: THREE.Mesh[] = [];
 let playableHome: THREE.Group;
+let projection: JingProjection;
 const audio = new Audio();
 const characterCard = new CharacterCardStore();
 let characterEditor: ReturnType<typeof mountCharacterEditor> | undefined;
@@ -81,7 +83,7 @@ async function boot() {
   if (isMobile) { show('loading', false); show('mobile'); return; }
   try {
     const health = await fetch('/api/health', { cache: 'no-store' }).then(r => r.json());
-    if (health.interaction_protocol !== 2 || health.character_card_protocol !== 1) {
+    if (health.interaction_protocol !== 2 || health.character_card_protocol !== 1 || health.projection_protocol !== 1) {
       if (['localhost', '127.0.0.1'].includes(location.hostname) && location.port !== '7864') { location.replace('http://127.0.0.1:7864/'); return; }
       throw new Error('旧版服务');
     }
@@ -94,6 +96,8 @@ async function boot() {
   world = new World(grid); setLoad(55); await nextFrame();
   const pm = new THREE.PMREMGenerator(renderer); world.scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; (world.scene as any).environmentIntensity = 0.3;
   const pr = buildProps(world); cams = pr.cams; graffiti = pr.graffiti; setLoad(70); await nextFrame();
+  projection = new JingProjection(world,cams,camOK,()=>playerVisibleNow()?playerRoom():G.lastSeen.room,()=>playerVisibleNow()?camera:null,anchoredAt);
+  await projection.load();
   playableHome = placePlayableHome(buildCareHome(world.mats)); world.scene.add(playableHome);
   world.props.push(...homeColliders(playableHome));
   poseCareHome(playableHome, homeFilmFrame('intro', homeFilmDuration('intro')));
@@ -159,6 +163,7 @@ function anchoredAt(x: number, y: number, z: number): string | null {
   return null;
 }
 const ctx: ToolCtx = {
+  get projection() { return projection; },
   get world() { return world; }, get grid() { return grid; },
   playerPos: () => player.pos.clone(), playerFloor, playerRoom, anchoredAt, after,
   navigate: target => {
@@ -180,8 +185,9 @@ function camOK(roomId: string) {
   if (s.camCovered) return false; if ((G.blackout.get(r.floor) ?? 0) > G.time) return false; if (world.roomLightFactor(r.id) < 0.12) return false; if (s.smoke > 0.8) return false;
   return true;
 }
+function playerVisibleNow() { return G.visible && G.zeroFloorT < 0 && camOK(playerRoom()); }
 function perceive() {
-  const p = player.pos; const r = roomAt(p.x, p.y, p.z); const vis = G.visible && !!r && camOK(r.id);
+  const p = player.pos; const r = roomAt(p.x, p.y, p.z); const vis = playerVisibleNow();
   const fl = floorOfY(p.y); const f = vis ? fl.id : G.lastSeen.floor;
   const hAbove = p.y - fl.y;
   const blind = ROOMS.filter(x => x.cam && !camOK(x.id)).map(x => x.id);
@@ -207,6 +213,7 @@ function perceive() {
   state.navigation_intent = { purpose: state.interaction.guidance_allowed ? 'exit' : vis && G.activeDanger.length ? 'rescue' : 'none', query_changes_goal: false };
   state.navigation = state.interaction.guidance_allowed ? currentNavigation() : { status: 'paused', message: '当前没有有效的出口行程。不附带旧路线；需要协助去某处时可临时调用 find_path。' };
   state.speech = audio.speechState;
+  state.projection = projection.state();
   const ascii = asciiFloor(grid, f, { doors: new Map([...world.doors].map(([id, d]) => [id, { open: d.open, locked: d.locked, cells: d.cells, floor: d.def.floor }])), boxes: world.boxes.map(b => ({ x: b.pos.x, y: b.pos.y, z: b.pos.z })), structures: [...world.structs.values()].filter(s => s.kind !== 'railing').flatMap(s => s.boxes.map(b => ({ x0: Math.floor(b.min[0]), z0: Math.floor(b.min[2]), x1: Math.ceil(b.max[0]), z1: Math.ceil(b.max[2]), y: b.min[1], kind: s.kind }))), player: vis ? { x: p.x, y: p.y, z: p.z } : undefined, anchored: (x, y, z) => !!anchoredAt(x, y, z) });
   return { state, ascii };
 }
@@ -321,7 +328,9 @@ async function applyReply(r: AgentReply, channel: string): Promise<AppliedReply>
     termLogAdd(res);
     await new Promise(rs => setTimeout(rs, 280));
   }
-  const deliveredSay = r.say && !G.ended && subtitleSequence === narrationBeforeTools && current() ? r.say : '';
+  const projectionFailed=results.some(result=>!result.ok&&result.call?.name==='project_self');
+  const spoken=projectionFailed&&r.say?'这里暂时无法显示我的影像。':r.say;
+  const deliveredSay = spoken && !G.ended && subtitleSequence === narrationBeforeTools && current() ? spoken : '';
   if (deliveredSay) {
     while (audio.speechBusy && !G.ended && !(G.visible && G.activeDanger.length) && current()) await new Promise(resolve => setTimeout(resolve, 100));
     if (!G.ended && current()) subtitle(deliveredSay, '静', r.emotion);
@@ -1101,6 +1110,7 @@ function updateHUD(dt: number) {
 // ———————————— 主循环 ————————————
 let last = performance.now(), fps = 60, titleStart = 0;
 function loop() {
+  projection.update(started && !G.ended && mode !== 'film' && mode !== 'title' && mode !== 'loading');
   const t = performance.now(); const dt = Math.min(0.05, (t - last) / 1000); last = t; fps = fps * 0.95 + (1 / Math.max(dt, 0.001)) * 0.05;
   if (mode === 'play') { gameUpdate(dt); updateHUD(dt); }
   else if (mode === 'falling') {
@@ -1155,7 +1165,7 @@ function updateSandDot() {
 // ———————————— 测试钩子 ————————————
 function hooks() {
   return {
-    G, get world() { return world; }, get player() { return player; }, get agent() { return agent; }, get grid() { return grid; }, get post() { return post; }, mode: () => mode,
+    G, get world() { return world; }, get player() { return player; }, get agent() { return agent; }, get grid() { return grid; }, get post() { return post; }, get projection() { return projection; }, get camera() { return camera; }, mode: () => mode,
     tp: (x: number, y: number, z: number, yaw?: number) => player.teleport(x, y, z, yaw), look: (yaw: number, pitch = 0) => { player.yaw = yaw; player.pitch = pitch; },
     give: (id: string, n = 1) => invAdd(id, n), act: () => { target = findTarget(); act(); }, target: () => { target = findTarget(); return target ? { kind: target.kind, id: (target as any).it?.id ?? (target as any).d?.id ?? (target as any).b?.id } : null },
     start: () => startGame(), perceive: () => perceive(), observe: () => { checkEvents(.35); observeResidentActivity(); return perceive(); }, exec: (name: string, args: any) => execTool({ name, args }, ctx), speak, consoleSubmit, openConsole, closeModal, setBoard,
