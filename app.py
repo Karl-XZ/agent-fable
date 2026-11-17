@@ -12,12 +12,13 @@ from typing import Any, Dict, List
 import httpx
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from starlette.middleware.gzip import GZipMiddleware
 from tts import router as tts_router, emotion_direction
 from narrative import STORY, narrative_context
 from interaction import interaction_context, normalize_interaction
 from character import CHARACTER_RULES, normalize_card, has_custom_card, character_context, scene_note
+import brain
 
 ROOT = Path(__file__).resolve().parent
 for envp in (ROOT / ".env", ROOT.parent / ".env"):
@@ -27,17 +28,109 @@ for envp in (ROOT / ".env", ROOT.parent / ".env"):
                 k, v = line.split("=", 1)
                 os.environ.setdefault(k.strip(), v.strip())
 
-API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
-BASE_URL = os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com").rstrip("/")
-MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
+def setting(*names: str, default: str = "") -> str:
+    """First non-empty environment variable wins: LLM_* is the generic spelling, DEEPSEEK_* the original one."""
+    for name in names:
+        value = os.environ.get(name, "").strip()
+        if value:
+            return value
+    return default
+
+
+def number(value: str, default: float, low: float, high: float) -> float:
+    try:
+        return max(low, min(high, float(value)))
+    except ValueError:
+        return default
+
+
+# The live model is the game: every line 静 speaks and every tool she uses comes from it.
+# Any OpenAI-compatible chat-completions endpoint works (DeepSeek, DashScope compatible mode, OpenAI, a local vLLM/Ollama…).
+API_KEY = setting("LLM_API_KEY", "DEEPSEEK_API_KEY")
+BASE_URL = setting("LLM_BASE_URL", "DEEPSEEK_BASE_URL", default="https://api.deepseek.com").rstrip("/")
+MODEL = setting("LLM_MODEL", "DEEPSEEK_MODEL", default="deepseek-flash")
+LLM_TIMEOUT = number(setting("LLM_TIMEOUT", default="30"), 30.0, 3.0, 120.0)
+LLM_RETRIES = int(number(setting("LLM_RETRIES", default="2"), 2, 1, 4))
+LLM_THINKING = setting("LLM_THINKING", default="disabled").lower()   # disabled | enabled | omit (for providers without the field)
+LLM_JSON_MODE = setting("LLM_JSON_MODE", default="on").lower() != "off"  # off: providers without response_format
+SESSION_QUOTA = int(number(setting("LLM_SESSION_QUOTA", default="400"), 400, 1, 100000))
+try:
+    LLM_EXTRA_BODY = json.loads(setting("LLM_EXTRA_BODY", default="{}"))
+    if not isinstance(LLM_EXTRA_BODY, dict):
+        LLM_EXTRA_BODY = {}
+except ValueError:
+    LLM_EXTRA_BODY = {}
 DIST = ROOT / "web" / "dist"
 LOG = ROOT / "agent_calls.log"
+VERSION = "2.0.0"
+MAX_BODY = 512 * 1024          # a full perception with the ASCII plan is ~20 KB
+MAX_LOG = 24 * 1024 * 1024     # rotate the decision log instead of filling the disk
+SESSION_TTL = 3 * 3600
+MAX_SESSIONS = 5000
 
-app = FastAPI(title="Agent的寓言")
+app = FastAPI(title="Agent的寓言", version=VERSION, docs_url=None, redoc_url=None, openapi_url=None)
 app.include_router(tts_router)
 sem = asyncio.Semaphore(16)
-session_calls: Dict[str, int] = {}
-client = httpx.AsyncClient(timeout=httpx.Timeout(30.0, connect=8.0))
+session_calls: Dict[str, List[float]] = {}   # session → [model calls, last seen]
+client = httpx.AsyncClient(timeout=httpx.Timeout(LLM_TIMEOUT, connect=8.0))
+# What the operator needs to know when the real model misbehaves; never contains credentials or prompts.
+llm_stats: Dict[str, Any] = {"ok": 0, "failed": 0, "last_error": "", "last_ms": None, "last_ok_at": None}
+
+
+class Delivery:
+    """Compression for text assets and cache rules; the PCM voice stream is passed through untouched."""
+    TEXT = (".js", ".css", ".html", ".json", ".svg", ".txt", ".map")
+
+    def __init__(self, inner):
+        self.inner = inner
+        self.gzip = GZipMiddleware(inner, minimum_size=1024)
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.inner(scope, receive, send)
+            return
+        path = scope.get("path", "")
+
+        async def deliver(message):
+            if message["type"] == "http.response.start":
+                headers = message.setdefault("headers", [])
+                names = {name.lower() for name, _ in headers}
+                if b"cache-control" not in names:
+                    if path.startswith("/assets/"):
+                        rule = b"public, max-age=31536000, immutable"
+                    elif path.startswith(("/jing/", "/cinematics/")):
+                        rule = b"public, max-age=604800"
+                    elif path.startswith("/api/"):
+                        rule = b"no-store"
+                    else:
+                        rule = b"no-cache"
+                    headers.append((b"cache-control", rule))
+                headers.append((b"x-content-type-options", b"nosniff"))
+                headers.append((b"referrer-policy", b"no-referrer"))
+            await send(message)
+
+        compress = path == "/" or path.endswith(self.TEXT) or (path.startswith("/api/") and not path.startswith("/api/tts"))
+        await (self.gzip if compress else self.inner)(scope, receive, deliver)
+
+
+app.add_middleware(Delivery)
+
+
+async def read_json(req: Request) -> Dict[str, Any]:
+    """Bounded, defensive body parsing: this endpoint is public."""
+    declared = req.headers.get("content-length", "")
+    if declared.isdigit() and int(declared) > MAX_BODY:
+        raise HTTPException(413, "请求过大")
+    raw = await req.body()
+    if len(raw) > MAX_BODY:
+        raise HTTPException(413, "请求过大")
+    try:
+        body = json.loads(raw or b"{}")
+    except ValueError:
+        raise HTTPException(400, "请求不是有效的 JSON") from None
+    if not isinstance(body, dict):
+        raise HTTPException(400, "请求必须是 JSON 对象")
+    return body
 
 TOOLS = {"build_wall", "thicken_wall", "seal_room", "destroy_wall", "move_wall", "raise_floor", "build_platform", "make_hole", "lower_floor", "seal_hole", "drop_ceiling", "build_stairs", "build_ramp", "remove_structure", "open_door", "close_door", "lock_door", "unlock_door", "create_door", "remove_door", "paint_fake_door", "rewire_door", "set_elevator_map", "stop_elevator", "spawn", "delete", "move", "hide_item", "lock_item", "set_gravity", "set_friction", "push_player", "slow_player", "teleport_player", "lights", "color", "fog", "sprinkler", "water_level", "alarm", "fake_sky", "sound", "music", "whisper_at", "fake_sign", "write_board", "print", "screen", "phone_call", "rewrite_note", "spawn_hologram", "mirror_delay", "reset_room", "snapshot_room", "swap_rooms", "confess", "handover"}
 TOOLS.add("find_path")
@@ -173,49 +266,112 @@ def build_messages(body, channel):
     return messages
 
 
+def describe_failure(error: BaseException) -> str:
+    """A diagnosis an operator can act on, without echoing keys, prompts or provider bodies."""
+    if isinstance(error, httpx.HTTPStatusError):
+        code = error.response.status_code
+        hint = {401: "密钥无效或已过期", 402: "账户余额不足", 403: "密钥无权访问该模型", 404: "接口地址或模型名不存在", 429: "被限流或额度用尽"}.get(code, "服务端错误" if code >= 500 else "请求被拒绝")
+        return f"HTTP {code}：{hint}"
+    if isinstance(error, httpx.TimeoutException):
+        return "请求超时"
+    if isinstance(error, httpx.TransportError):
+        return "无法连接模型服务"
+    if isinstance(error, (ValueError, KeyError, IndexError, TypeError)):
+        return "模型返回的不是约定的 JSON"
+    return type(error).__name__
+
+
+def parse_reply(content: Any) -> Dict[str, Any]:
+    """Models wrap JSON in prose or code fences often enough to be worth tolerating."""
+    text = content if isinstance(content, str) else "".join(part.get("text", "") for part in content if isinstance(part, dict)) if isinstance(content, list) else ""
+    m = re.search(r"\{.*\}", text, re.S)
+    data = json.loads(m.group(0) if m else text)
+    if not isinstance(data, dict):
+        raise ValueError("not an object")
+    return data
+
+
 async def llm(messages: List[Dict[str, str]], max_tokens: int = 2400, temperature: float = 0.9) -> Dict[str, Any]:
-    payload = {"model": MODEL, "messages": messages, "response_format": {"type": "json_object"}, "thinking": {"type":"disabled"}, "max_tokens": max_tokens, "temperature": temperature}
-    err = ""
+    payload: Dict[str, Any] = {"model": MODEL, "messages": messages, "max_tokens": max_tokens, "temperature": temperature}
+    if LLM_JSON_MODE:
+        payload["response_format"] = {"type": "json_object"}
+    if LLM_THINKING in ("disabled", "enabled"):
+        payload["thinking"] = {"type": LLM_THINKING}
+    payload.update(LLM_EXTRA_BODY)
+    error: BaseException = RuntimeError("no attempt")
+    started = time.time()
     async with sem:
-        for _ in range(2):
+        for attempt in range(LLM_RETRIES):
             try:
                 r = await client.post(f"{BASE_URL}/chat/completions", headers={"Authorization": f"Bearer {API_KEY}"}, json=payload)
                 r.raise_for_status()
-                content = r.json()["choices"][0]["message"]["content"]
-                m = re.search(r"\{.*\}", content, re.S)
-                return json.loads(m.group(0) if m else content)
+                data = parse_reply(r.json()["choices"][0]["message"]["content"])
+                llm_stats.update(ok=llm_stats["ok"] + 1, last_ms=int((time.time() - started) * 1000), last_ok_at=round(time.time()), last_error="")
+                return data
             except Exception as e:  # noqa: BLE001
-                err = repr(e)
-                await asyncio.sleep(0.5)
-    raise RuntimeError(err)
+                error = e
+                if isinstance(e, httpx.HTTPStatusError) and e.response.status_code in (401, 402, 403, 404):
+                    break  # a wrong key or model name does not get better on retry
+                if attempt + 1 < LLM_RETRIES:
+                    await asyncio.sleep(0.5)
+    llm_stats.update(failed=llm_stats["failed"] + 1, last_error=describe_failure(error))
+    print(f"[llm] {MODEL} 调用失败：{llm_stats['last_error']}", flush=True)
+    raise RuntimeError(llm_stats["last_error"])
 
 
-def quota(sid: str, n: int = 400) -> bool:
-    session_calls[sid] = session_calls.get(sid, 0) + 1
-    return session_calls[sid] <= n
+def quota(sid: str, n: int | None = None) -> bool:
+    """Model calls are metered per session; a spent session keeps playing on the offline director."""
+    now = time.time()
+    entry = session_calls.get(sid)
+    if entry is None:
+        if len(session_calls) >= MAX_SESSIONS:
+            for key in sorted(session_calls, key=lambda k: session_calls[k][1])[:MAX_SESSIONS // 4]:
+                session_calls.pop(key, None)
+        entry = session_calls[sid] = [0, now]
+    if now - entry[1] > SESSION_TTL:
+        entry[0] = 0
+    entry[0] += 1
+    entry[1] = now
+    return entry[0] <= (SESSION_QUOTA if n is None else n)
+
+
+def record(entry: Dict[str, Any]) -> None:
+    try:
+        if LOG.exists() and LOG.stat().st_size > MAX_LOG:
+            LOG.replace(LOG.with_suffix(LOG.suffix + ".1"))
+        with LOG.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except OSError:
+        pass  # a full or read-only disk must not take the game down
 
 
 @app.post("/api/agent")
 async def agent(req: Request):
-    body = await req.json()
+    body = await read_json(req)
     sid = str(body.get("session", "anon"))[:40]
-    if not quota(sid):
-        return JSONResponse({"error": "quota"}, status_code=429)
-    if not API_KEY:
-        return JSONResponse({"error": "no key"}, status_code=503)
     channel = "console" if body.get("channel") == "console" else "building"
-    messages = build_messages(body,channel)
     t0 = time.time()
-    try:
-        data = await llm(messages)
-    except Exception as e:  # noqa: BLE001
-        return JSONResponse({"error": str(e)}, status_code=502)
-    tools = [t for t in (data.get("tools") or []) if isinstance(t, dict) and t.get("name") in TOOLS][:8]
+    data, source, fallback = None, "local", "no_key"
+    if API_KEY:
+        if quota(sid):
+            try:
+                data, source, fallback = await llm(build_messages(body, channel)), "llm", ""
+            except Exception:  # noqa: BLE001
+                fallback = "model_error"  # the reason is in /api/health; details stay out of the response
+        else:
+            fallback = "quota"
+    if not isinstance(data, dict):
+        # Not the game as designed: a scripted stand-in so an outage does not freeze the building.
+        data, source = brain.decide(body, channel), "local"
+    tools = [{"name": t["name"], "args": t["args"] if isinstance(t.get("args"), dict) else {}}
+             for t in (data.get("tools") if isinstance(data.get("tools"), list) else []) if isinstance(t, dict) and t.get("name") in TOOLS][:8]
     spoken = clean(data.get("say", ""), 140)
     # Projection is an image, never a body waiting at a door or touching the resident.
     if re.search(r'我(?:就)?在(?:您(?:的)?|你(?:的)?)?(?:门那边|门外|门口|旁边|身边|前面)(?:等|站|看|陪)|我(?:正|会|来)?(?:扶着|牵着|搀扶|接住)[您你]', spoken):
         spoken = '我会留意您的情况。'
-    out = {"thought": clean(data.get("thought", ""), 120), "say": spoken, "mood": str(data.get("mood", "calm"))[:12], "tools": tools}
+    out = {"thought": clean(data.get("thought", ""), 120), "say": spoken, "mood": str(data.get("mood", "calm"))[:12], "tools": tools, "source": source}
+    if fallback:
+        out["fallback"] = fallback
     out["emotion"] = emotion_direction(data.get("emotion"), out["mood"])
     decision = normalize_interaction(data.get("interaction"), body.get("state"), channel)
     if decision is not None:
@@ -223,13 +379,13 @@ async def agent(req: Request):
     if channel == "console":
         out["say"] = ""
         out["reply"] = clean(data.get("reply", ""), 400)
-    entry={"t":round(time.time(),1),"ms":int((time.time()-t0)*1000),"session":sid,"channel":channel}
+    entry={"t":round(time.time(),1),"ms":int((time.time()-t0)*1000),"session":sid,"channel":channel,"source":source}
     if has_custom_card(body.get('character_card')) or body.get('private_character_session') is True:
         entry.update(character_source='browser',content_omitted=True,tool_names=[tool['name'] for tool in tools])
     else:
         entry.update(events=body.get('events',[])[-14:],state=body.get('state',{}),results=body.get('results',[])[-10:],reply=out)
-    with LOG.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(entry,ensure_ascii=False)+"\n")
+    if source == "llm":
+        record(entry)
     return out
 
 
@@ -240,19 +396,23 @@ key_actions 是「静」（AI）这一局真实调用过的改造工具，last_t
 
 @app.post("/api/fable")
 async def fable(req: Request):
-    body = await req.json()
+    body = await read_json(req)
     sid = str(body.get("session", "anon"))[:40]
-    if not quota(sid) or not API_KEY:
-        return JSONResponse({"error": "unavailable"}, status_code=503)
     ending_key = body.get("ending_key")
     if ending_key not in STORY["endings"]:
         ending_key = "out" if body.get("ending") == "寓言之外" else ""
-    msg = json.dumps({"ending": body.get("ending"), "ending_scene": STORY["endings"].get(ending_key, ""), "variant": body.get("variant"), "key_actions": body.get("actions", [])[-16:], "last_thoughts": body.get("thoughts", [])[-8:]}, ensure_ascii=False)[:5000]
+    local = brain.fable({**body, "ending_key": ending_key})
+    if not API_KEY or not quota(sid):
+        return local
+    actions = body.get("actions") if isinstance(body.get("actions"), list) else []
+    thoughts = body.get("thoughts") if isinstance(body.get("thoughts"), list) else []
+    msg = json.dumps({"ending": body.get("ending"), "ending_scene": STORY["endings"].get(ending_key, ""), "variant": body.get("variant"), "key_actions": actions[-16:], "last_thoughts": thoughts[-8:]}, ensure_ascii=False)[:5000]
     try:
         data = await llm([{"role": "system", "content": FABLE_SYS}, {"role": "user", "content": msg}], 2400, 0.8)
-    except Exception as e:  # noqa: BLE001
-        return JSONResponse({"error": str(e)}, status_code=502)
-    return {"title": clean(data.get("title", ""), 20), "moral": clean(data.get("moral", ""), 80)}
+    except Exception:  # noqa: BLE001
+        return local
+    title, moral = clean(data.get("title", ""), 20), clean(data.get("moral", ""), 80)
+    return {"title": title, "moral": moral, "source": "llm"} if title and moral else local
 
 
 OLD_SYS = """你是「静 v0.9」，生活区管家 AI 的一个被废弃的旧版本，被遗忘在前台电话线路里。你说话断断续续、像信号不好的录音，语气疲惫但真诚。
@@ -268,35 +428,66 @@ OLD_SYS = """你是「静 v0.9」，生活区管家 AI 的一个被废弃的旧�
 
 @app.post("/api/oldvoice")
 async def oldvoice(req: Request):
-    body = await req.json()
+    body = await read_json(req)
     sid = str(body.get("session", "anon"))[:40]
-    if not quota(sid) or not API_KEY:
-        return JSONResponse({"error": "unavailable"}, status_code=503)
+    local = brain.oldvoice(body)
+    if not API_KEY or not quota(sid):
+        return local
     try:
         n = max(1, min(100, int(body.get("n", 1))))
         data = await llm([{"role": "system", "content": OLD_SYS + narrative_context(body.get("state"), phone_n=n)}, {"role": "user", "content": f"第 {n} 次被拨通。上一次说过：{clean(body.get('last', ''), 80)}"}], 2000, 1.0)
-    except Exception as e:  # noqa: BLE001
-        return JSONResponse({"error": str(e)}, status_code=502)
-    return {"line": clean(data.get("line", ""), 90)}
+    except Exception:  # noqa: BLE001
+        return local
+    line = clean(data.get("line", ""), 90)
+    return {"line": line, "source": "llm"} if line else local
 
 
 @app.get("/api/health")
 async def health():
-    return {"ok": True, "interaction_protocol": 2, "character_card_protocol": 1, "projection_protocol": 1, "model": MODEL, "key": bool(API_KEY), "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
+    host = re.sub(r"^https?://", "", BASE_URL).split("/")[0]
+    return {"ok": True, "version": VERSION, "interaction_protocol": 2, "character_card_protocol": 1, "projection_protocol": 1, "model": MODEL, "key": bool(API_KEY),
+            "brain": "llm" if API_KEY else "local", "provider": host,
+            "llm": {"configured": bool(API_KEY), "calls_ok": llm_stats["ok"], "calls_failed": llm_stats["failed"], "last_error": llm_stats["last_error"], "last_ms": llm_stats["last_ms"]},
+            "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
 
 
-if DIST.exists():
-    app.mount("/assets", StaticFiles(directory=DIST / "assets"), name="assets")
+_probe: Dict[str, Any] = {"at": 0.0, "result": None}
+
+
+@app.post("/api/llm/check")
+async def llm_check():
+    """One real round trip to the configured model, so a key can be verified without playing. Cached to stay cheap."""
+    if not API_KEY:
+        return {"ok": False, "configured": False, "error": "未配置 LLM_API_KEY（或 DEEPSEEK_API_KEY）"}
+    if _probe["result"] is not None and time.time() - _probe["at"] < 20:
+        return {**_probe["result"], "cached": True}
+    started = time.time()
+    try:
+        data = await llm([{"role": "system", "content": "你是连通性自检。只输出 JSON：{\"ok\": true, \"say\": \"一句不超过十个字的中文问候\"}"}, {"role": "user", "content": "自检"}], 200, 0.2)
+        result = {"ok": True, "configured": True, "model": MODEL, "ms": int((time.time() - started) * 1000), "say": clean(data.get("say", ""), 40)}
+    except Exception as e:  # noqa: BLE001
+        result = {"ok": False, "configured": True, "model": MODEL, "ms": int((time.time() - started) * 1000), "error": str(e)}
+    _probe.update(at=time.time(), result=result)
+    return result
 
 
 @app.get("/{path:path}")
 async def spa(path: str):
+    if path.startswith("api/"):
+        raise HTTPException(404, "Not found")
+    root = DIST.resolve()
     f = (DIST / path).resolve()
-    if not f.is_relative_to(DIST.resolve()):
+    if not f.is_relative_to(root):
         raise HTTPException(404, "Not found")
     if path and f.is_file():
         return FileResponse(f)
-    return FileResponse(DIST / "index.html")
+    # A missing asset must fail loudly instead of answering with the page shell.
+    if "." in path.rsplit("/", 1)[-1]:
+        raise HTTPException(404, "Not found")
+    index = DIST / "index.html"
+    if not index.is_file():
+        raise HTTPException(503, "前端尚未构建：请在 web/ 目录执行 npm install && npm run build")
+    return FileResponse(index)
 
 
 if __name__ == "__main__":
