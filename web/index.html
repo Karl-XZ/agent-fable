@@ -4,7 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Agent的寓言</title>
-<meta name="description" content="每天，静都会照顾好你的生活。直到有一天，你想出去看看。一款由实时 AI 旁白陪伴的第一人称叙事游戏。" />
+<meta name="description" content="每天，静都会照顾好你的生活。直到有一天，你想出去看看。一款由大模型实时驱动管家 AI 的第一人称叙事游戏。" />
+<meta name="theme-color" content="#0b0a09" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23141310'/><rect x='6' y='14' width='20' height='3' fill='%23F2B66D'/><rect x='14' y='6' width='3' height='3' fill='%235aa8ff'/></svg>" />
 </head>
 <body>
@@ -32,6 +33,7 @@
     <button id="btnAbout" class="serif menu-btn">关于</button>
   </nav>
   <div class="title-foot mono">建议佩戴耳机 · 本作含闪烁画面 · 请使用电脑游玩</div>
+  <div id="engine" class="mono" role="status"><i></i><span id="engineText">正在检查 AI 引擎……</span></div>
 </div>
 
 <div id="about" class="screen hidden modal-wrap">
@@ -39,6 +41,7 @@
     <h2 class="serif">关于《Agent的寓言》</h2>
     <p>每天，餐食会按时送达，房间会被整理干净，静会提醒你休息。你早已习惯这里的生活。直到有一天，你想出去看看。</p>
     <p>沿着她的指引走下去，或者留意那些不太对劲的细节。你可以观察、交谈，也可以试着改变眼前的安排。</p>
+    <p>静由大模型实时驱动：按 <kbd>Enter</kbd> 用自己的话和她说任何事，她会回答、照做，或者拒绝。</p>
     <h3 class="serif">操作</h3>
     <p class="mono small">WASD 移动 · 鼠标 视角 · Shift 跑 · Space 跳 / 上浮 · C 蹲 · E 交互 / 拿起放下 · 鼠标右键 扔 · G 插锚钉 · Enter 说话 · Esc 暂停 / 取消说话 · H 操作提示</p>
     <button class="serif menu-btn close-btn" data-close="about">返回</button>
@@ -52,6 +55,7 @@
   <div id="roomname" class="serif"></div>
   <div id="speechHint" class="hidden serif" role="status">正在说话<span><kbd>Enter</kbd> 说出 · <kbd>Esc</kbd> 取消</span></div>
   <div id="compass" role="img" aria-label="指南针"><div class="compass-window"><div id="compassRose" class="serif" aria-hidden="true"></div></div><i class="compass-pointer"></i><small id="compassHeading" class="mono">北 000°</small></div>
+  <div id="presence" class="mono" role="status"><i></i><span id="presenceText">静 · 注视中</span></div>
   <div id="controls" class="serif">
     <div id="controlsDetails" class="hidden">
       <p><kbd>鼠标</kbd> 环顾 · <kbd>Shift</kbd> 跑 · <kbd>Space</kbd> 跳 / 上浮</p>
@@ -62,13 +66,16 @@
     <button id="controlsToggle" class="mono" aria-controls="controlsDetails" aria-expanded="false">H 操作提示</button>
   </div>
   <div id="subtitle"><span class="who mono">静</span><span class="line serif"></span></div>
+  <div id="thinking" class="mono"><span>静正在思考</span><i></i><i></i><i></i></div>
   <div id="inv" class="mono"></div>
   <div id="toast" class="serif"></div>
   <div id="air" class="hidden"><i></i><span class="mono">屏住呼吸</span></div>
   <div id="trap" class="hidden mono"></div>
   <div id="holdbar" class="hidden"><i></i><span class="mono">启动锚定柱</span></div>
   <div id="anchors" class="mono"></div>
-  <div id="chat" class="hidden"><span class="mono">大声说</span><input id="chatInput" aria-label="说话内容" aria-describedby="speechHint" maxlength="100" autocomplete="off" placeholder="「静」在有麦克风的房间能听到……" /></div>
+  <div id="chatLog" class="hidden" aria-label="最近的对话"></div>
+  <div id="chat" class="hidden"><span class="mono">对静说</span><input id="chatInput" aria-label="说话内容" aria-describedby="speechHint" maxlength="100" autocomplete="off" placeholder="用自己的话说——她听得懂，会回答、照做，或者拒绝" /></div>
+  <div id="chatHints" class="hidden"><button data-say="带我出去吧。">带我出去吧</button><button data-say="把这里的灯关掉。">把这里的灯关掉</button><button data-say="静，让我看看你。">让我看看你</button><button data-say="这里到底是什么地方？">这里到底是什么地方？</button></div>
   <div id="dbg" class="mono hidden"></div>
 </div>
 
@@ -134,6 +141,7 @@
     <div class="set-row"><span>故障特效</span><input type="checkbox" id="fx" checked /></div>
     <div class="set-row"><span>字幕大小</span><input type="range" id="subsize" min="18" max="34" step="1" value="24" /></div>
     <div class="set-row"><span>鼠标灵敏度</span><input type="range" id="sens" min="0.0008" max="0.005" step="0.0002" value="0.0022" /></div>
+    <div class="set-row"><span>AI 引擎</span><span id="engineSetting" class="mono small">检查中……</span></div>
     <div class="set-row character-setting"><span>静的角色卡<small id="characterSummary" class="mono dim">第一次逃离之后，可以改写她的性格。</small></span><button id="btnCharacter" class="mono ghost" disabled>逃离后解锁</button></div>
     <p class="mono small dim">WASD 移动 · Shift 跑 · Space 跳 · C 蹲 · E 交互 · 右键 扔 · G 锚钉 · Enter 说话</p>
     <div class="row"><button id="btnTitle" class="mono ghost">回到标题</button><span class="grow"></span><button id="btnResume" class="serif solid">继续</button></div>
@@ -162,7 +170,7 @@
       <h1 id="endName" class="serif"></h1>
       <p id="endLine" class="serif end-line"></p>
       <p id="characterUnlockNotice" class="mono small hidden">已解锁「静的角色卡」 · 可在设置中调整</p>
-      <div id="fable" class="fable"><div class="mono small">本局的寓言</div><h2 id="fableTitle" class="serif">……</h2><p id="fableMoral" class="serif"></p></div>
+      <div id="fable" class="fable"><div class="mono small">本局的寓言<span id="fableSource" class="hidden">离线兜底文本</span></div><h2 id="fableTitle" class="serif">……</h2><p id="fableMoral" class="serif"></p></div>
       <div id="endStats" class="mono end-stats"></div>
     </header>
     <section class="end-body">

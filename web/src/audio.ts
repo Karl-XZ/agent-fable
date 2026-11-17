@@ -19,6 +19,9 @@ export class Audio {
   get speechState() { return { busy: this.speechBusy, recent: this.speechRecords.slice(-6).map(r => ({ ...r })) }; }
   onSpeakPulse: () => void = () => {};
   onSpeechError: (message: string) => void = () => {};
+  /** 云端语音未配置时置为 false：台词不再请求 /api/tts，改播一段轻柔的合成低吟并保持同样的节奏。 */
+  voiceAvailable = true;
+  private murmurNodes: OscillatorNode[] = [];
   get speak() { return this.speechEnabled; }
   set speak(value: boolean) { this.speechEnabled = value; if (!value) this.stopSpeech(); }
   warmup() { if (this.speak) void fetch('/api/tts/warmup', { method: 'POST' }).catch(() => {}); }
@@ -80,6 +83,8 @@ export class Audio {
     this.speechAbort = undefined;
     for (const source of this.speechSources) source.stop();
     this.speechSources.clear();
+    for (const node of this.murmurNodes) { try { node.stop(); } catch { /* already ended */ } }
+    this.murmurNodes = [];
     this.speechPending = false;
     clearTimeout(this.speechTimeout); this.speechTimeout = undefined;
     const events = this.speechEvents; this.speechEvents = undefined; events?.onEnd?.(false);
@@ -114,6 +119,27 @@ export class Audio {
       if (!controller.signal.aborted && sequence === this.speechSequence) this.onSpeechError('配音暂时无法播放，字幕仍可阅读。');
     } finally { if (sequence === this.speechSequence) { this.speechPending = false; this.finishSpeech(); } }
   }
+  /** 没有云端语音时的替代：随逐字出现的字幕发出很轻的音高起伏，停留时间按正常语速计算。 */
+  private murmur(text: string, whisper: boolean, record: SpeechRecord, sequence: number, events?: SpeechEvents) {
+    const ctx = this.ctx!, scale = [0, 2, 4, 7, 9, 12]; let at = ctx.currentTime + 0.04, spoken = 0;
+    for (const ch of text) {
+      if (/[\s，。！？、…—,.!?：；「」“”（）]/.test(ch)) { at += 0.11; continue; }
+      if (spoken++ % 2 === 0) {
+        const osc = ctx.createOscillator(), gain = ctx.createGain(), filter = ctx.createBiquadFilter();
+        osc.type = 'triangle'; osc.frequency.value = (whisper ? 300 : 494) * Math.pow(2, scale[ch.charCodeAt(0) % scale.length] / 12);
+        filter.type = 'lowpass'; filter.frequency.value = whisper ? 900 : 1700;
+        gain.gain.setValueAtTime(0.0001, at); gain.gain.exponentialRampToValueAtTime(whisper ? 0.016 : 0.03, at + 0.012); gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.085);
+        osc.connect(filter).connect(gain).connect(this.master!); osc.start(at); osc.stop(at + 0.1); this.murmurNodes.push(osc);
+      }
+      at += 0.045;
+    }
+    record.started_at = Date.now(); events?.onStart?.(); this.onSpeakPulse();
+    const seconds = Math.max(1.5, Math.min(11, 0.5 + spoken * 0.2));
+    this.speechTimeout = setTimeout(() => {
+      if (sequence !== this.speechSequence) return;
+      this.speechPending = false; this.speechTimeout = undefined; this.murmurNodes = []; this.finishSpeech();
+    }, seconds * 1000);
+  }
   async say(text: string, emotion = '', mood = 'calm', events?: SpeechEvents) {
     if (!this.speak || !text.trim() || !this.ctx || !this.master) return;
     this.stopSpeech();
@@ -121,6 +147,7 @@ export class Audio {
     this.currentSpeech = record; this.speechRecords.push(record); this.speechRecords = this.speechRecords.slice(-6);
     const sequence = this.speechSequence, ctx = this.ctx;
     this.speechPending = true; this.speechEvents = events;
+    if (!this.voiceAvailable) { this.murmur(text, emotion.includes('低语'), record, sequence, events); return; }
     let started = false;
     const controller = new AbortController(); this.speechAbort = controller;
     const timeout = setTimeout(() => {

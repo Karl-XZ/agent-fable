@@ -50,7 +50,8 @@ async def post(client, path, body):
 
 
 async def main(rounds: int) -> int:
-    print(f"接口：{game.BASE_URL}\n模型：{game.MODEL}\n密钥：{'已配置' if game.API_KEY else '未配置'}")
+    provider = (await game.health())["provider"]  # a coarse label; the address itself may be private
+    print(f"接口：{provider}\n模型：{game.MODEL}\n密钥：{'已配置' if game.API_KEY else '未配置'}")
     if not game.API_KEY:
         print("\n✗ 没有密钥。游戏会运行在「离线兜底」模式：静的台词与决策来自脚本，不是 AI 对话。\n"
               "  在项目根目录创建 .env（参考 .env.example），填入 LLM_API_KEY 后重试。")

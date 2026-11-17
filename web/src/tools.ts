@@ -101,8 +101,9 @@ export function execTool(call: ToolCall, ctx: ToolCtx): ToolResult {
         for (const [x, z] of cells) {
           const iy = iyOf(y + 0.5); if (SOLID(g.get(x, iy, z)) && SOLID(g.get(x, iy + 1, z))) continue;
           const door = doorAtCell(x, z, floor); n++;
-          w.addPending({ min: [x, y, z], max: [x + 1, y + WALL_LAYERS, z + 1] }, 'up', 1.1 + Math.random() * 0.3, () => {
-            for (let k = 0; k < WALL_LAYERS; k++) if (!SOLID(g.get(x, iyOf(y + k + 0.5), z))) g.set(x, iyOf(y + k + 0.5), z, isBoundary(x, z) ? M.Outer : M.Wall);
+          const layers = floor === '2F' && x >= 30 && z >= 18 && isBoundary(x, z) ? 6 : WALL_LAYERS; // 露台护屏有 6 米高
+          w.addPending({ min: [x, y, z], max: [x + 1, y + layers, z + 1] }, 'up', 1.1 + Math.random() * 0.3, () => {
+            for (let k = 0; k < layers; k++) if (!SOLID(g.get(x, iyOf(y + k + 0.5), z))) g.set(x, iyOf(y + k + 0.5), z, isBoundary(x, z) ? M.Outer : M.Wall);
             if (door && !door.removed) w.removeDoor(door);
           });
         }

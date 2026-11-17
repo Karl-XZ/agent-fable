@@ -444,7 +444,9 @@ async def oldvoice(req: Request):
 
 @app.get("/api/health")
 async def health():
-    host = re.sub(r"^https?://", "", BASE_URL).split("/")[0]
+    # A coarse label only: a private workspace address must not leak through a public endpoint.
+    address = BASE_URL.lower()
+    host = next((label for needle, label in (("deepseek", "DeepSeek"), ("dashscope", "阿里云百炼"), ("aliyuncs", "阿里云"), ("openai", "OpenAI"), ("127.0.0.1", "本机"), ("localhost", "本机")) if needle in address), "自定义接口")
     return {"ok": True, "version": VERSION, "interaction_protocol": 2, "character_card_protocol": 1, "projection_protocol": 1, "model": MODEL, "key": bool(API_KEY),
             "brain": "llm" if API_KEY else "local", "provider": host,
             "llm": {"configured": bool(API_KEY), "calls_ok": llm_stats["ok"], "calls_failed": llm_stats["failed"], "last_error": llm_stats["last_error"], "last_ms": llm_stats["last_ms"]},

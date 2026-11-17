@@ -59,7 +59,8 @@ export function buildProps(w: World) {
   };
   const plant = (x: number, y: number, z: number, s = 1) => {
     const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * s, 0.17 * s, 0.4 * s, 12), w.mats.dark); pot.position.set(x, y + 0.2 * s, z); add(pot);
-    for (let i = 0; i < 4; i++) { const f = new THREE.Mesh(new THREE.SphereGeometry(0.28 * s, 10, 8), w.mats.plant); f.position.set(x + (Math.random() - 0.5) * 0.25 * s, y + (0.6 + i * 0.22) * s, z + (Math.random() - 0.5) * 0.25 * s); f.scale.y = 1.3; add(f); }
+    for (let i = 0; i < 6; i++) { const f = new THREE.Mesh(new THREE.IcosahedronGeometry((0.2 + Math.random() * 0.12) * s, 1), w.mats.plant); const a = i * 2.4, r = (i === 5 ? 0 : 0.2) * s; f.position.set(x + Math.cos(a) * r, y + (0.56 + i * 0.15) * s, z + Math.sin(a) * r); f.scale.set(1, 0.75 + Math.random() * 0.5, 1); f.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3); f.castShadow = true; add(f); }
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025 * s, 0.035 * s, 0.5 * s, 6), w.mats.dark); stem.position.set(x, y + 0.6 * s, z); add(stem);
     w.props.push({ min: [x - 0.22 * s, y, z - 0.22 * s], max: [x + 0.22 * s, y + 0.4 * s, z + 0.22 * s], tag: 'prop' });
   };
   const shelf = (x: number, y: number, z: number, sx: number, sz: number, h = 2) => {
@@ -154,7 +155,8 @@ export function buildProps(w: World) {
 
   // —— 1F 中庭：一棵树 ——
   const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.18, 4.5, 8), w.mats.dark); trunk.position.set(21, 2.25, 12.5); add(trunk);
-  for (let i = 0; i < 9; i++) { const f = new THREE.Mesh(new THREE.SphereGeometry(0.9, 12, 10), w.mats.plant); f.position.set(21 + (Math.random() - 0.5) * 1.8, 4.2 + Math.random() * 1.6, 12.5 + (Math.random() - 0.5) * 1.8); add(f); }
+  for (let i = 0; i < 16; i++) { const f = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5 + Math.random() * 0.5, 1), w.mats.plant); const a = i * 2.39996, r = 0.35 + (i % 4) * 0.42; f.position.set(21 + Math.cos(a) * r, 3.9 + (i / 16) * 2.3 + Math.random() * 0.3, 12.5 + Math.sin(a) * r); f.scale.set(1, 0.6 + Math.random() * 0.35, 1); f.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3); f.castShadow = true; add(f); }
+  for (let i = 0; i < 5; i++) { const a = i * 1.257, b = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.07, 1.7, 6), w.mats.dark); b.position.set(21 + Math.cos(a) * 0.45, 4.0, 12.5 + Math.sin(a) * 0.45); b.rotation.set(Math.sin(a) * 0.6, 0, -Math.cos(a) * 0.6); add(b); }
   box(21, 0, 12.5, 2.2, 0.45, 2.2, w.mats.wall);
 
   // —— 2F 201 开放办公 ——

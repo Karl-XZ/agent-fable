@@ -90,12 +90,12 @@ export function buildCareHome(materials: Record<string, THREE.Material>) {
   box('window-chair-back', 1.8, 0.88, 0.43, 0.65, 0.8, 0.1, fabric);
   for (const x of [1.55, 2.05]) for (const z of [-0.1, 0.4]) box('chair-leg', x, 0.22, z, 0.06, 0.44, 0.06, wood);
   box('sofa', 1.7, 0.45, 3.4, 2.3, 0.65, 1, fabric); box('sofa-back', 1.7, 0.92, 3.82, 2.3, 0.8, 0.18, fabric);
-  const windowMaterial = new THREE.MeshStandardMaterial({ color: '#9daaa9', roughness: .6, emissive: '#24353a', emissiveIntensity: .15 });
+  const windowMaterial = new THREE.MeshStandardMaterial({ color: '#9daaa9', roughness: .6, emissive: '#f4c690', emissiveIntensity: .85 });
   box('soft-window', 1.65, 2, -4.9, 2.65, 1.9, 0.025, windowMaterial);
   for (const x of [0.27, 1.65, 3.03]) box('window-frame', x, 2, -4.84, 0.07, 2.06, 0.08, materials.steel);
   box('window-sill', 1.65, 1.02, -4.76, 2.95, 0.1, 0.34, materials.steel);
   const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.18, 0.4, 16), mat('#9e7861')); pot.position.set(3.35, 0.2, -3.5); home.add(pot);
-  const leaves = new THREE.Mesh(new THREE.SphereGeometry(0.44, 16, 10), mat('#687a50')); leaves.scale.y = 1.5; leaves.position.set(3.35, 0.95, -3.5); home.add(leaves);
+  const leaves = new THREE.Mesh(new THREE.IcosahedronGeometry(0.44, 1), new THREE.MeshStandardMaterial({ color: '#5d7a4a', roughness: 0.85, flatShading: true })); leaves.scale.y = 1.5; leaves.position.set(3.35, 0.95, -3.5); home.add(leaves);
   return home;
 }
 
@@ -118,5 +118,6 @@ export function homeColliders(home: THREE.Group) {
 }
 
 export function poseCareHome(home: THREE.Group, frame: ReturnType<typeof homeFilmFrame>) {
-  ((home.getObjectByName('soft-window') as THREE.Mesh).material as THREE.MeshStandardMaterial).color.set(frame.night ? '#1c2529' : '#9daaa9');
+  const pane = (home.getObjectByName('soft-window') as THREE.Mesh).material as THREE.MeshStandardMaterial;
+  pane.color.set(frame.night ? '#1c2529' : '#9daaa9'); pane.emissiveIntensity = frame.night ? 0.05 : 0.85;
 }

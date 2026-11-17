@@ -2,9 +2,9 @@ import { ToolCall, ToolResult } from './tools';
 import { InteractionMemory, InteractionDecision, InteractionTurn } from './interaction';
 import type { CharacterCard } from './character-card';
 
-export interface AgentReply { thought: string; say: string; mood: string; emotion?: string; tools: ToolCall[]; reply?: string; interaction?: InteractionDecision; turn?: InteractionTurn }
+export interface AgentReply { thought: string; say: string; mood: string; emotion?: string; tools: ToolCall[]; reply?: string; interaction?: InteractionDecision; turn?: InteractionTurn; source?: string; fallback?: string }
 export interface AgentEvent { id?: string; type: string; detail: string; t: number; urgent?: boolean }
-export interface LogEntry { t: number; thought: string; say: string; emotion?: string; tools: { label: string; ok: boolean; msg: string }[]; source: 'llm' | 'rule'; channel: string; ms: number; trigger: string[]; interaction?: ReturnType<InteractionMemory['context']> }
+export interface LogEntry { t: number; thought: string; say: string; emotion?: string; tools: { label: string; ok: boolean; msg: string }[]; source: 'llm' | 'rule' | 'local'; channel: string; ms: number; trigger: string[]; interaction?: ReturnType<InteractionMemory['context']> }
 
 export interface Perception { state: Record<string, any>; ascii: string }
 export interface AppliedReply { results: ToolResult[]; deliveredSay: string }
@@ -17,6 +17,8 @@ export class Agent {
   canSpeak: () => boolean = () => true;
   canDecide: () => boolean = () => true;
   canInterrupt: () => boolean = () => true;
+  /** 正在等待模型回复（供界面显示“思考中”）；lastSource 记录上一轮是真实模型还是兜底。 */
+  waiting = false; waitingSince = 0; lastSource: 'llm' | 'rule' | 'local' | '' = '';
   characterCard?: () => CharacterCard | undefined;
   private privateCharacterSession = false;
   private pending: { controller?: AbortController; superseded: boolean } | null = null;
@@ -48,7 +50,7 @@ export class Agent {
     this.lastCall = this.now();
     const evs = channel === 'building' ? this.events.splice(0) : [...this.events.slice(-6)];
     if (consoleMsg) { const event = this.interaction.recordEvent('console', consoleMsg); evs.push({ ...event }); this.history.push({ role: 'console', text: consoleMsg }); }
-    const t0 = performance.now(); let reply!: AgentReply; let source: 'llm' | 'rule' = 'llm';
+    const t0 = performance.now(); let reply!: AgentReply; let source: 'llm' | 'rule' | 'local' = 'llm';
     const queries: ToolResult[] = [];
     let requestTurn = this.interaction.captureTurn();
     const pending = { superseded: false, controller: undefined as AbortController | undefined };
@@ -63,13 +65,14 @@ export class Agent {
         requestTurn = this.interaction.captureTurn();
         const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 26000);
         if (channel === 'building') pending.controller = ctl;
+        this.waiting = true; this.waitingSince = performance.now();
         try {
           const res = await fetch('/api/agent', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal, body: JSON.stringify({ session: this.session, channel, character_card: card, private_character_session: this.privateCharacterSession, state: p.state, ascii: p.ascii, events: evs.map(e => ({ id: e.id, type: e.type, detail: e.detail, t: e.t })), history: this.history.slice(-12), results: [...this.results.filter(r => !r.navigation && !r.projection_walls), ...queries].slice(-10) }) });
           if (!res.ok) throw new Error(String(res.status));
           reply = await res.json(); if (!reply || typeof reply !== 'object' || (reply as any).error) throw new Error('bad');
-        } finally { clearTimeout(to); pending.controller = undefined; }
+        } finally { clearTimeout(to); pending.controller = undefined; this.waiting = false; }
         if (pending.superseded) return null;
-        this.llmOk++;
+        this.llmOk++; source = reply.source === 'local' ? 'local' : 'llm';
         const requests = (reply.tools ?? []).filter(t => t.name === 'find_path' || t.name === 'list_projection_walls').slice(0, 2);
         if (!requests.length) break;
         if (!this.query) throw new Error('Navigation queries unavailable');
@@ -83,6 +86,7 @@ export class Agent {
       if (channel === 'console') reply.reply = reply.reply ?? '[ERR] 连接中断……请稍后再试。';
     }
     const ms = Math.round(performance.now() - t0);
+    this.lastSource = source;
     this.interaction.context(this.perceive().state);
     reply = this.interaction.reconcile(reply, requestTurn, channel);
     reply.turn = { ...this.interaction.captureTurn(), needsResponse: requestTurn.needsResponse, careNeeded: requestTurn.careNeeded };

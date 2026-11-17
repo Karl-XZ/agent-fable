@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Grid, M, NX, NY, NZ, Y0, SOLID, CHUNK, CX, CZ, ROOMS, Room, DOORS, DoorDef, STAIRS, StairDef, stairBoxes, floorById, iyOf, roomAt, BOX_SIZE, SHAFT, ATRIUM_VOID } from './level';
 import * as TX from './textures';
+import { skyLook, roomLightDesign } from './lightvol';
 
 export interface AABB { min: number[]; max: number[]; tag?: string; ref?: any }
 export const overlap = (a: AABB, b: AABB, e = 0) => a.min[0] < b.max[0] - e && a.max[0] > b.min[0] + e && a.min[1] < b.max[1] - e && a.max[1] > b.min[1] + e && a.min[2] < b.max[2] - e && a.max[2] > b.min[2] + e;
@@ -52,7 +53,7 @@ export class World {
   constructor(grid: Grid) {
     this.grid = grid;
     this.scene.background = new THREE.Color('#0e0d0b');
-    this.scene.fog = new THREE.FogExp2(new THREE.Color('#121110'), 0.018);
+    this.scene.fog = new THREE.FogExp2(new THREE.Color('#0d0c0b'), 0.011);
     this.buildMaterials();
     for (let c = 0; c < CX * CZ; c++) this.buildChunk(c);
     this.buildSky();
@@ -69,15 +70,15 @@ export class World {
   buildMaterials() {
     const ct = TX.concreteTexture(11); this.tex.concrete = ct;
     const bump = TX.concreteBump(ct);
-    this.mats.wall = new THREE.MeshStandardMaterial({ map: ct, color: '#948e85', bumpMap: bump, bumpScale: 1.1, roughness: 0.88, envMapIntensity: 0.35 });
+    this.mats.wall = new THREE.MeshStandardMaterial({ map: ct, color: '#a39b90', bumpMap: bump, bumpScale: 1.4, roughness: 0.86, envMapIntensity: 0.3 });
     this.mats.outer = new THREE.MeshStandardMaterial({ map: ct, color: '#7d7870', bumpMap: bump, bumpScale: 1.1, roughness: 0.9, envMapIntensity: 0.3 });
-    this.mats.ceil = new THREE.MeshStandardMaterial({ map: TX.concreteTexture(23), color: '#55514b', roughness: 0.95, envMapIntensity: 0.2 });
-    this.mats.floor = new THREE.MeshStandardMaterial({ map: TX.floorTexture(3, '#57524b'), roughness: 0.2, metalness: 0.08, envMapIntensity: 0.9 });
+    this.mats.ceil = new THREE.MeshStandardMaterial({ map: TX.concreteTexture(23), color: '#6a655d', roughness: 0.95, envMapIntensity: 0.15 });
+    this.mats.floor = new THREE.MeshStandardMaterial({ map: TX.floorTexture(3, '#5d5850'), roughness: 0.3, metalness: 0.08, envMapIntensity: 1.0 });
     this.mats.rock = new THREE.MeshStandardMaterial({ color: '#2b2722', roughness: 1 });
     const mt = TX.metalTexture(31);
     this.mats.metal = new THREE.MeshStandardMaterial({ map: mt, color: '#8a8580', roughness: 0.62, metalness: 0.45, envMapIntensity: 0.5 });
-    this.mats.b1floor = new THREE.MeshStandardMaterial({ map: TX.floorTexture(9, '#4a4640'), roughness: 0.35, metalness: 0.1, envMapIntensity: 0.7 });
-    this.mats.glass = new THREE.MeshPhysicalMaterial({ color: '#b9cfd8', roughness: 0.05, metalness: 0.0, transparent: true, opacity: 0.085, envMapIntensity: 0.7, depthWrite: false, side: THREE.DoubleSide });
+    this.mats.b1floor = new THREE.MeshStandardMaterial({ map: TX.floorTexture(9, '#4a4640'), roughness: 0.3, metalness: 0.15, envMapIntensity: 1.0 });
+    this.mats.glass = new THREE.MeshPhysicalMaterial({ color: '#0e1518', roughness: 0.03, metalness: 0.0, transparent: true, opacity: 0.2, envMapIntensity: 1.5, depthWrite: false, side: THREE.FrontSide });
     this.mats.door = new THREE.MeshStandardMaterial({ color: '#3b3631', roughness: 0.42, metalness: 0.65, envMapIntensity: 0.6 });
     this.mats.steel = new THREE.MeshStandardMaterial({ color: '#5d6166', roughness: 0.35, metalness: 0.85, envMapIntensity: 0.7 });
     this.mats.wood = new THREE.MeshStandardMaterial({ map: TX.woodTexture(5), roughness: 0.6, envMapIntensity: 0.3 });
@@ -89,7 +90,7 @@ export class World {
     this.mats.fabricWarm = new THREE.MeshStandardMaterial({ color: '#7a5a44', roughness: 0.95 });
     this.mats.white = new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffffff').multiplyScalar(3), toneMapped: false });
     this.mats.paper = new THREE.MeshStandardMaterial({ color: '#efe9dc', roughness: 0.9, emissive: '#3a3020', emissiveIntensity: 0.25 });
-    this.mats.plant = new THREE.MeshStandardMaterial({ color: '#3d5a3a', roughness: 0.8 });
+    this.mats.plant = new THREE.MeshStandardMaterial({ color: '#4d6f42', roughness: 0.85, flatShading: true });
     this.mats.plaster = new THREE.MeshStandardMaterial({ color: '#efece6', roughness: 0.9 });
   }
 
@@ -164,18 +165,38 @@ export class World {
   solidAt(x: number, y: number, z: number) { return this.colliders({ min: [x - 0.01, y - 0.01, z - 0.01], max: [x + 0.01, y + 0.01, z + 0.01] }, []).length > 0; }
 
   // ———————————— 天空贴图 ————————————
-  buildSky() {
-    const tex = TX.skyTexture('dusk'); this.tex.sky = tex;
-    const mat = new THREE.MeshBasicMaterial({ map: tex, side: THREE.BackSide, fog: false, toneMapped: true, color: '#8c847e' });
+buildSky() {
+    const mat = new THREE.ShaderMaterial({
+      side: THREE.BackSide, depthWrite: false, fog: false,
+      uniforms: { uTop: { value: new THREE.Color() }, uMid: { value: new THREE.Color() }, uHorizon: { value: new THREE.Color() }, uGround: { value: new THREE.Color() }, uStars: { value: 0 }, uGlow: { value: new THREE.Color() }, uTime: { value: 0 } },
+      vertexShader: `varying vec3 vDir; void main(){ vDir = position; gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 ); }`,
+      fragmentShader: `
+        uniform vec3 uTop, uMid, uHorizon, uGround, uGlow; uniform float uStars, uTime; varying vec3 vDir;
+        float h21( vec2 p ){ return fract( sin( dot( p, vec2( 127.1, 311.7 ) ) ) * 43758.5453 ); }
+        float vn( vec2 p ){ vec2 i = floor( p ), f = fract( p ); f = f * f * ( 3.0 - 2.0 * f ); return mix( mix( h21( i ), h21( i + vec2( 1, 0 ) ), f.x ), mix( h21( i + vec2( 0, 1 ) ), h21( i + vec2( 1, 1 ) ), f.x ), f.y ); }
+        void main(){
+          vec3 d = normalize( vDir ); float h = d.y; float az = atan( d.z, d.x );
+          vec3 col = mix( uHorizon, uMid, smoothstep( -0.02, 0.26, h ) ); col = mix( col, uTop, smoothstep( 0.18, 0.8, h ) );
+          col += uGlow * pow( max( 0.0, dot( normalize( vec3( d.x, 0.0, d.z ) ), normalize( vec3( -1.0, 0.0, 0.25 ) ) ) ), 6.0 ) * smoothstep( 0.45, 0.0, abs( h ) );
+          float cloud = vn( vec2( az * 3.0 + uTime * 0.004, h * 14.0 ) ) * 0.6 + vn( vec2( az * 7.0, h * 30.0 ) ) * 0.4;
+          col = mix( col, col * 1.25 + uGlow * 0.08, smoothstep( 0.55, 0.85, cloud ) * smoothstep( 0.02, 0.2, h ) * smoothstep( 0.7, 0.3, h ) );
+          vec2 sp = vec2( az * 180.0, h * 220.0 ); col += uStars * step( 0.9965, h21( floor( sp ) ) ) * smoothstep( 0.05, 0.3, h ) * vec3( 0.8, 0.85, 1.0 );
+          // 天空是印刷品：每块背板之间有一道细缝
+          float seam = smoothstep( 0.012, 0.0, abs( fract( az / 6.2831853 * 14.0 ) - 0.5 ) ) + smoothstep( 0.004, 0.0, abs( fract( h * 5.0 + 0.5 ) - 0.5 ) ) * step( 0.0, h );
+          col *= 1.0 - 0.07 * min( 1.0, seam );
+          col = mix( uGround, col, smoothstep( -0.1, 0.0, h ) );
+          gl_FragColor = vec4( col, 1.0 );
+        }`,
+    });
     // 一只巨大的“天空盒子”——就是字面意义上的盒子
-    const geo = new THREE.BoxGeometry(96, 64, 84, 1, 1, 1);
-    this.sky = new THREE.Mesh(geo, mat); this.sky.position.set(20, 6, 14); this.sky.renderOrder = -1; this.scene.add(this.sky);
+    this.sky = new THREE.Mesh(new THREE.BoxGeometry(96, 64, 84, 1, 1, 1), mat); this.sky.position.set(20, 6, 14); this.sky.renderOrder = -1; this.scene.add(this.sky);
   }
   setSky(mode: string) {
-    const ok = ['dusk', 'day', 'night', 'storm'].includes(mode) ? mode : 'dusk'; this.skyMode = mode;
-    const mat = this.sky.material as THREE.MeshBasicMaterial;
-    if (mode === 'off') { mat.color.set('#050505'); return; }
-    mat.map?.dispose(); mat.map = TX.skyTexture(ok as any); mat.color.set('#8c847e'); mat.needsUpdate = true;
+    this.skyMode = ['dusk', 'day', 'night', 'storm', 'off'].includes(mode) ? mode : 'dusk';
+    const pal = ({ dusk: ['#141a36', '#5b4a66', '#e89a66', '#1e1a18', '#ff9a4a', 0], day: ['#2f62a0', '#7ea9d4', '#d4e2ec', '#2e2c28', '#fff0d0', 0], night: ['#020308', '#070c1c', '#141c33', '#040506', '#3a4a80', 1], storm: ['#15181d', '#30363d', '#5a626b', '#141516', '#6a7078', 0], off: ['#030303', '#030303', '#030303', '#030303', '#000000', 0] } as Record<string, (string | number)[]>)[this.skyMode];
+    const u = (this.sky.material as THREE.ShaderMaterial).uniforms;
+    u.uTop.value.set(pal[0]); u.uMid.value.set(pal[1]); u.uHorizon.value.set(pal[2]); u.uGround.value.set(pal[3]); u.uGlow.value.set(pal[4]); u.uStars.value = pal[5];
+    if (this.sun) { const look = skyLook(this.skyMode); this.sun.color.set(look.sun); this.sun.intensity = look.sunPower; }
   }
 
   // ———————————— 房间灯光 ————————————
@@ -196,11 +217,10 @@ export class World {
         this.lightAnchors.push({ pos: new THREE.Vector3(px, ceil - 0.25, pz), room: r.id });
       }
     }
-    for (let i = 0; i < 14; i++) { const l = new THREE.PointLight('#ffe8cc', 0, 10, 2); l.castShadow = false; this.scene.add(l); this.lightPool.push(l); }
-    this.scene.add(new THREE.HemisphereLight('#c9d4e0', '#2a2118', 0.05));
-    const sun = new THREE.DirectionalLight('#ffd9a8', 2.6); sun.position.set(6, 34, 2); sun.target.position.set(21, 0, 15); sun.castShadow = true;
+    for (let i = 0; i < 10; i++) { const l = new THREE.PointLight('#ffe8cc', 0, 7.5, 1.6); l.castShadow = false; this.scene.add(l); this.lightPool.push(l); }
+    const sun = new THREE.DirectionalLight('#ffb070', 3.4); sun.position.set(-11, 30, 7); sun.target.position.set(21, 0, 14); sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048); const sc = sun.shadow.camera; sc.left = -30; sc.right = 30; sc.top = 26; sc.bottom = -26; sc.near = 1; sc.far = 80; sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
-    this.scene.add(sun); this.scene.add(sun.target); this.sun = sun;
+    this.scene.add(sun); this.scene.add(sun.target); this.sun = sun; this.setSky('dusk');
   }
   roomLightFactor(id: string) {
     const s = this.rooms.get(id); if (!s) return 1;
@@ -210,7 +230,7 @@ export class World {
     for (const [id, s] of this.rooms) {
       if (s.light === 'flicker') s.flick = Math.random() < 0.12 ? Math.random() * 0.3 : Math.random() < 0.9 ? 1 : 0.2;
       const f = this.roomLightFactor(id); const col = s.light === 'red' ? new THREE.Color('#ff3020') : s.color ?? s.base;
-      s.panels.color.copy(col).multiplyScalar(0.05 + 2.2 * f);
+      s.panels.color.copy(col).multiplyScalar(0.04 + 2.6 * f * Math.min(1, 0.35 + roomLightDesign(id).power));
     }
     if ((this.time * 4 | 0) !== ((this.time - 0.016) * 4 | 0) || this.time < 0.1) {
       const scored = this.lightAnchors.map(a => ({ a, d: a.pos.distanceToSquared(cam) + Math.abs(a.pos.y - cam.y) * 30 })).sort((p, q) => p.d - q.d);
@@ -218,7 +238,7 @@ export class World {
     }
     for (const l of this.lightPool) {
       const id = l.userData.room; if (!id) continue; const s = this.rooms.get(id)!; const f = this.roomLightFactor(id);
-      l.color.copy(s.light === 'red' ? new THREE.Color('#ff3a24') : s.color ?? s.base); l.intensity = 6.5 * f;
+      const design = roomLightDesign(id); l.color.copy(s.light === 'red' ? new THREE.Color('#ff3a24') : s.color ?? design.color); l.intensity = 1.05 * f * design.power;
     }
   }
 

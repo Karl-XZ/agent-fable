@@ -22,6 +22,9 @@ import { buildSandboxModel, refreshSandboxModel } from './sandbox';
 import { findPath, navigationSummary, NavigationTarget } from './navigation';
 import { CharacterCardStore } from './character-card';
 import { mountCharacterEditor } from './character-editor';
+import { LightVolume, patchStandardMaterials, lvUniforms } from './lightvol';
+
+patchStandardMaterials();
 
 const $ = (id: string) => document.getElementById(id)!;
 const show = (id: string, on = true) => $(id).classList.toggle('hidden', !on);
@@ -33,16 +36,24 @@ const nextFrame = () => new Promise(r => requestAnimationFrame(() => r(null)));
 
 // ———————————— 渲染器 ————————————
 const renderer = new THREE.WebGLRenderer({ canvas: $('gl') as HTMLCanvasElement, antialias: false, powerPreference: 'high-performance', preserveDrawingBuffer: true });
-renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.86; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.outputColorSpace = THREE.SRGBColorSpace;
 const camera = new THREE.PerspectiveCamera(72, innerWidth / innerHeight, 0.05, 400);
 let grid: Grid, world: World, player: Player, post: Post, agent: Agent, cams: CamDef[] = [], graffiti: THREE.Mesh[] = [];
 let playableHome: THREE.Group;
 let projection: JingProjection;
+let lightVol: LightVolume;
 const audio = new Audio();
 const characterCard = new CharacterCardStore();
 let characterEditor: ReturnType<typeof mountCharacterEditor> | undefined;
 audio.onSpeechError = message => toast(message, 4500);
 let voiceMood = 'calm';
+// 真实大模型是否已配置：标题页、暂停页与 HUD 都会如实显示
+const engine = { key: false, model: '', provider: '', error: '' };
+function showEngine() {
+  const text = engine.key ? `AI 引擎 · ${engine.provider} · ${engine.model}${engine.error ? ` · 最近错误：${engine.error}` : ''}` : '未配置大模型密钥 · 离线兜底模式（脚本应答，非 AI 对话）';
+  $('engineText').textContent = text; $('engine').classList.toggle('offline', !engine.key || !!engine.error);
+  $('engineSetting').textContent = text; $('engineSetting').classList.toggle('offline', !engine.key || !!engine.error);
+}
 const navigationTarget: NavigationTarget = { floor: '1F', x: 38.5, z: 24.5 };
 function currentNavigation(target = navigationTarget) {
   const room = roomAt(player.pos.x, player.pos.y, player.pos.z);
@@ -71,7 +82,7 @@ const G = {
   fakeDoors: [] as { x: number; y: number; z: number; mesh: THREE.Mesh }[], snapshots: new Map<string, Uint8Array>(), prevVisible: true, injuries: 0,
   stats: { llm: 0, edits: 0, anchoredBlocked: 0 }, fx: true, music: 'calm', lastStep: 0, cineScene: null as THREE.Group | null, confessedAt: -1,
   storyClues: new Set<string>(),
-  memoryDoorReached: false,
+  memoryDoorReached: false, lostAt: -99,
 };
 const timers: { at: number; fn: () => void }[] = [];
 const after = (sec: number, fn: () => void) => timers.push({ at: G.time + sec, fn });
@@ -88,14 +99,17 @@ async function boot() {
       if (['localhost', '127.0.0.1'].includes(location.hostname) && location.port !== '7864') { location.replace('http://127.0.0.1:7864/'); return; }
       throw new Error('旧版服务');
     }
+    engine.key = health.key === true; engine.model = String(health.model ?? ''); engine.provider = String(health.provider ?? ''); engine.error = String(health.llm?.last_error ?? '');
+    audio.voiceAvailable = health.tts?.configured === true;
+    showEngine();
   } catch {
     document.querySelector('#loading .load-text')!.textContent = '服务尚未准备好，请稍后刷新。'; return;
   }
-  audio.warmup();
+  if (audio.voiceAvailable) audio.warmup();
   setLoad(8); await nextFrame();
   grid = buildGrid(); setLoad(20); await nextFrame();
-  world = new World(grid); setLoad(55); await nextFrame();
-  const pm = new THREE.PMREMGenerator(renderer); world.scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; (world.scene as any).environmentIntensity = 0.3;
+  world = new World(grid); lightVol = new LightVolume(world); setLoad(55); await nextFrame();
+  const pm = new THREE.PMREMGenerator(renderer); world.scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; (world.scene as any).environmentIntensity = 0.55;
   const pr = buildProps(world); cams = pr.cams; graffiti = pr.graffiti; setLoad(70); await nextFrame();
   projection = new JingProjection(world,cams,camOK,()=>playerVisibleNow()?playerRoom():G.lastSeen.room,()=>playerVisibleNow()?camera:null,anchoredAt);
   await projection.load();
@@ -143,7 +157,7 @@ let sandbox: THREE.Group, sandInst: THREE.InstancedMesh, sandDot: THREE.Mesh, sa
 function buildSandbox() {
   const model = buildSandboxModel(grid); sandbox = model.group; sandInst = model.blocks; sandDot = model.dot;
   world.scene.add(sandbox); sandDirty = false;
-  world.onGridChanged = () => (sandDirty = true);
+  world.onGridChanged = () => { sandDirty = true; lightVol.dirty = true; };
 }
 let zeroFloor: THREE.Group;
 function buildZeroFloor() {
@@ -255,7 +269,10 @@ function subtitle(text: string, who = '静', emotion = '') {
   clearTimeout(subTimer); el.classList.remove('show');
   const display = () => {
     if (sequence !== subtitleSequence || G.ended) return;
-    el.querySelector('.who')!.textContent = who; el.querySelector('.line')!.textContent = text;
+    el.dataset.who = who; el.querySelector('.who')!.textContent = who;
+    const line = el.querySelector('.line')!;
+    if (who === '静' || who === '低语') line.innerHTML = [...text].map((ch, i) => `<i style="animation-delay:${i * 45}ms">${escapeHtml(ch)}</i>`).join('');
+    else line.textContent = text;
     el.classList.add('show'); displayed = true;
   };
   const finish = (complete: boolean) => {
@@ -725,7 +742,7 @@ function checkEvents(dt: number) {
   const vis = !!r && camOK(rid) && G.zeroFloorT < 0;
   if (vis && rid === '108' && Math.hypot(p.x-38.5,p.z-24.5)<2.5) G.memoryDoorReached=true;
   if (vis) { if (!G.visible && G.time - G.lastSeen.t > 8) agent.push('player_seen', `重新看到住户了：在 ${rid} ${r!.name}`, G.lostSent); G.visible = true; G.lastSeen = { room: rid, floor: r!.floor, t: G.time, x: p.x, z: p.z }; G.lostSent = false; if (G.boardPending && rid) { if (camOK('202')) { G.boardPending = false; agent.push('board', `会议室白板上有字：「${G.board.text}」${G.board.admin ? '（管理员周的笔迹和签名）' : '（住户的字迹）'}`, G.board.admin); } } }
-  else { G.visible = false; if (!G.lostSent && G.time - G.lastSeen.t > 25) { G.lostSent = true; agent.push('player_lost', `已经 ${Math.round(G.time - G.lastSeen.t)} 秒没有看到住户了，最后一次在 ${G.lastSeen.room}`, true); } }
+  else { G.visible = false; if (G.time - G.lastSeen.t > 25 && (!G.lostSent || G.time - G.lostAt > 22)) { G.lostSent = true; G.lostAt = G.time; agent.push('player_lost', `已经 ${Math.round(G.time - G.lastSeen.t)} 秒没有看到住户了，最后一次在 ${G.lastSeen.room}`, true); } }
   if (vis && rid !== G.lastRoom) { G.lastRoom = rid; agent.push('enter_room', `住户进入了 ${rid} ${r!.name}`); }
   if (G.boardPending && camOK('202')) { G.boardPending = false; agent.push('board', `会议室白板上有字：「${G.board.text}」${G.board.admin ? '（管理员周的笔迹和签名）' : '（住户的字迹）'}`, G.board.admin); }
   // 危险
@@ -869,7 +886,7 @@ function buildCine() {
   fallView.copy(camera.quaternion);
   player.enabled = false; player.keys.clear(); document.exitPointerLock?.();
   for (const object of world.scene.children) { object.userData.hiddenByCine = object.visible; object.visible = false; }
-  world.scene.fog = new THREE.FogExp2('#52645d', 0.008); world.scene.background = new THREE.Color('#71817c');
+  world.scene.fog = new THREE.FogExp2('#52645d', 0.008); world.scene.background = new THREE.Color('#71817c'); lvUniforms.uLvOn.value = 0;
   const city = buildRuinedCity(); city.position.set(...landing.origin); city.rotation.y = landing.yaw;
   world.scene.add(city); G.cineScene = city; mode = 'transition'; cineStart = performance.now();
   setTimeout(() => audio.thud(8), landing.seconds * 1000);
@@ -897,7 +914,7 @@ function buildEndData(key: string, variant?: string): EndData {
 async function fetchFable(d: EndData) {
   try {
     const r = await fetch('/api/fable', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ session: agent.session, ending_key: d.key, ending: ENDINGS[d.key].name, variant: d.variant, actions: d.log.flatMap(l => l.tools.filter(t => t.ok).map(t => t.label)).slice(-16), thoughts: d.log.map(l => l.thought).filter(Boolean).slice(-8) }) });
-    const j = await r.json(); if (j.title) { d.fable = { title: j.title, moral: j.moral }; if (mode === 'ending') setFable(d.fable); }
+    const j = await r.json(); if (j.title) { d.fable = { title: j.title, moral: j.moral, source: j.source }; if (mode === 'ending') setFable(d.fable); }
   } catch {}
 }
 function finishVisualEnding(data: EndData) {
@@ -920,12 +937,14 @@ function openChat() {
   mode = 'chat'; player.enabled = false; player.clearInput(); keysE = false;
   document.exitPointerLock?.(); show('chat'); show('speechHint'); $('hud').classList.add('speaking');
   const input = $('chatInput') as HTMLInputElement; input.value = ''; input.focus();
+  $('chatLog').innerHTML = agent.history.filter(h => h.role === 'player' || h.role === 'ai').slice(-5).map(h => `<p class="${h.role === 'ai' ? 'jing' : 'me'}"><b>${h.role === 'ai' ? '静' : '你'}</b>${escapeHtml(h.text)}</p>`).join('');
+  show('chatLog'); show('chatHints');
   observeResidentActivity();
 }
 function closeChat(send = false) {
   const input = $('chatInput') as HTMLInputElement;
   const text = send ? moderate(input.value.trim()) : '';
-  input.value = ''; input.blur(); show('chat', false); show('speechHint', false); $('hud').classList.remove('speaking');
+  input.value = ''; input.blur(); show('chat', false); show('chatLog', false); show('chatHints', false); show('speechHint', false); $('hud').classList.remove('speaking');
   player.clearInput(); mode = 'play'; player.enabled = true;
   observeResidentActivity();
   if (text) speak(text);
@@ -1012,6 +1031,19 @@ function wireUI() {
   $('shareClose').onclick = () => show('share', false);
   addEventListener('resize', () => post.resize());
   document.querySelectorAll('#segQ button')[0].classList.add('on');
+  document.querySelectorAll('#chatHints button').forEach(b => ((b as HTMLElement).onclick = () => { const input = $('chatInput') as HTMLInputElement; input.value = (b as HTMLElement).dataset.say!; input.focus(); }));
+  // 设置保存在此浏览器，下次打开沿用
+  const SETTINGS = 'agent-fable.settings.v1', fields = ['vol', 'tts', 'fx', 'subsize', 'sens'];
+  const save = () => { try { localStorage.setItem(SETTINGS, JSON.stringify({ q: post.quality, ...Object.fromEntries(fields.map(id => { const el = $(id) as HTMLInputElement; return [id, el.type === 'checkbox' ? el.checked : el.value]; })) })); } catch { /* private mode */ } };
+  try {
+    const saved = JSON.parse(localStorage.getItem(SETTINGS) ?? 'null');
+    if (saved && typeof saved === 'object') {
+      for (const id of fields) { const el = $(id) as HTMLInputElement; if (saved[id] === undefined) continue; if (el.type === 'checkbox') el.checked = saved[id] === true; else el.value = String(saved[id]); el.dispatchEvent(new Event(el.type === 'checkbox' ? 'change' : 'input')); }
+      if (['high', 'mid', 'low'].includes(saved.q)) (document.querySelector(`#segQ [data-q="${saved.q}"]`) as HTMLElement).click();
+    }
+  } catch { /* corrupt or unavailable storage: defaults */ }
+  for (const id of fields) $(id).addEventListener('change', save);
+  document.querySelectorAll('#segQ button').forEach(b => b.addEventListener('click', save));
 }
 function resume() { show('pause', false); if (!G.time && mode === 'pause' && !$('title').classList.contains('hidden')) {} if (started) { mode = 'play'; lock(); } else { mode = 'title'; show('title'); } }
 function speak(v: string) {
@@ -1104,6 +1136,11 @@ function updateHUD(dt: number) {
   $('compassHeading').textContent = `${heading.label} ${String(Math.round(heading.degrees) % 360).padStart(3, '0')}°`;
   $('compass').setAttribute('aria-label', `面向${heading.label}，${Math.round(heading.degrees) % 360}度`);
   hudT += dt; if (hudT < 0.1) return; hudT = 0;
+  const seen = playerVisibleNow(), thinking = agent.waiting && performance.now() - agent.waitingSince > 280;
+  const tag = !engine.key ? '<b>离线兜底</b>' : agent.lastSource === 'local' || agent.lastSource === 'rule' ? '<b>模型未响应 · 兜底</b>' : '';
+  const presence = (thinking ? '静 · 思考中' : seen ? '静 · 注视中' : '静 · 看不见你') + tag;
+  if ($('presence').dataset.k !== presence) { $('presence').dataset.k = presence; $('presenceText').innerHTML = presence; $('presence').className = 'mono' + (thinking ? ' thinking' : seen ? '' : ' blind'); }
+  $('thinking').classList.toggle('show', thinking && !$('subtitle').classList.contains('show'));
   target = findTarget(); const h = hintFor(target); if (h !== G.lastHint) { $('hint').innerHTML = h; G.lastHint = h; }
   $('cross').classList.toggle('on', !!target);
   const r = roomAt(player.pos.x, player.pos.y, player.pos.z); const rn = $('roomname');
@@ -1146,6 +1183,7 @@ function loop() {
     if (sandAnim >= 0) { sandAnim += dt; }
     sandT += dt; if (sandDirty && sandT > .25) { sandT = 0; sandDirty = false; refreshSandboxModel(grid, sandInst); }
     updateSandDot();
+    lightVol.update(t / 1000);
     post.set(t / 1000, flags.glitch, flags.flash, 0, flags.fade, G.fx);
     post.draw();
   }

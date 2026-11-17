@@ -17,7 +17,7 @@ export interface EndData {
   trail: { x: number; y: number; z: number; t: number }[];
   edits: { t: number; x: number; y: number; z: number; label: string; ok: boolean }[];
   log: LogEntry[]; stats: { label: string; value: string }[]; breaches: { x: number; y: number; z: number }[];
-  fable?: { title: string; moral: string };
+  fable?: { title: string; moral: string; source?: string };
 }
 const fmt = (t: number) => `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
 const floorOf = (y: number) => (y < -1 ? 'B1' : y < 3.5 ? '1F' : y < 7.5 ? '2F' : 'RF');
@@ -58,7 +58,7 @@ export function renderEnding(grid: Grid, d: EndData) {
   document.getElementById('endLine')!.textContent = e.line;
   document.getElementById('endStats')!.innerHTML = d.stats.map(s => `<div>${s.label}<b>${s.value}</b></div>`).join('');
   const ft = document.getElementById('fableTitle')!, fm = document.getElementById('fableMoral')!;
-  ft.textContent = d.fable?.title ?? '……'; fm.textContent = d.fable?.moral ?? '正在写下这一局的寓意……';
+  ft.textContent = d.fable?.title ?? '……'; fm.textContent = d.fable?.moral ?? '正在写下这一局的寓意……'; document.getElementById('fableSource')?.classList.toggle('hidden', d.fable?.source !== 'local');
   const ol = document.getElementById('endLog')!; ol.innerHTML = '';
   const floors = ['B1', '1F', '2F', 'RF'].filter(f => d.trail.some(p => floorOf(p.y) === f) || d.edits.some(x => floorOf(x.y) === f));
   const maps = document.getElementById('endMaps')!; maps.innerHTML = '';
@@ -68,12 +68,12 @@ export function renderEnding(grid: Grid, d: EndData) {
     if (!l.thought && !l.say && !l.tools.length) continue;
     const li = document.createElement('li');
     const tools = l.tools.length ? `<div class="tl">⟶ ${l.tools.map(t => `<span class="${t.ok ? '' : 'rej'}">${esc(t.label)}</span>`).join('  ')}</div>` : '';
-    li.innerHTML = `<div class="t">${fmt(l.t)}<span class="src">${l.source === 'llm' ? 'LLM' : '规则保底'}${l.channel === 'console' ? ' · 控制台' : ''}</span></div>${l.thought ? `<div class="th">${esc(l.thought)}</div>` : ''}${l.say ? `<div class="sy">${esc(l.say)}</div>` : ''}${tools}`;
+    li.innerHTML = `<div class="t">${fmt(l.t)}<span class="src${l.source === 'llm' ? '' : ' local'}">${l.source === 'llm' ? 'LLM' : l.source === 'local' ? '离线兜底' : '规则保底'}${l.channel === 'console' ? ' · 控制台' : ''}</span></div>${l.thought ? `<div class="th">${esc(l.thought)}</div>` : ''}${l.say ? `<div class="sy">${esc(l.say)}</div>` : ''}${tools}`;
     li.onmouseenter = () => { for (const [f, cv] of Object.entries(cvs)) drawFloor(cv, grid, f, d, false, l.t); };
     ol.appendChild(li);
   }
 }
-export function setFable(f: { title: string; moral: string }) { document.getElementById('fableTitle')!.textContent = f.title; document.getElementById('fableMoral')!.textContent = f.moral; }
+export function setFable(f: { title: string; moral: string; source?: string }) { document.getElementById('fableTitle')!.textContent = f.title; document.getElementById('fableMoral')!.textContent = f.moral; document.getElementById('fableSource')?.classList.toggle('hidden', f.source !== 'local'); }
 function esc(s: string) { return String(s ?? '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]!)); }
 
 export function drawShare(cv: HTMLCanvasElement, grid: Grid, d: EndData) {
