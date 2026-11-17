@@ -23,6 +23,7 @@ import { findPath, navigationSummary, NavigationTarget } from './navigation';
 import { CharacterCardStore } from './character-card';
 import { mountCharacterEditor } from './character-editor';
 import { LightVolume, patchStandardMaterials, lvUniforms } from './lightvol';
+import { GuideLight, DustMotes } from './ambience';
 
 patchStandardMaterials();
 
@@ -42,6 +43,7 @@ let grid: Grid, world: World, player: Player, post: Post, agent: Agent, cams: Ca
 let playableHome: THREE.Group;
 let projection: JingProjection;
 let lightVol: LightVolume;
+let guide: GuideLight, dust: DustMotes, torch: THREE.SpotLight, torchOn = false;
 const audio = new Audio();
 const characterCard = new CharacterCardStore();
 let characterEditor: ReturnType<typeof mountCharacterEditor> | undefined;
@@ -118,6 +120,9 @@ async function boot() {
   poseCareHome(playableHome, homeFilmFrame('intro', homeFilmDuration('intro')));
   player = new Player(world, camera); player.teleport(START.x, START.y, START.z, START.yaw);
   post = new Post(renderer, world.scene, camera); setLoad(82); await nextFrame();
+  guide = new GuideLight(world.scene); dust = new DustMotes(world.scene);
+  torch = new THREE.SpotLight('#fff2d8', 0, 18, 0.5, 0.6, 1.2); torch.position.set(0.18, -0.12, 0); torch.target.position.set(0, 0, -1);
+  camera.add(torch, torch.target); world.scene.add(camera);
   buildMirror(); buildMonitors(); buildSandbox(); buildZeroFloor();
   agent = new Agent(perceive, applyReply, now, fallback);
   agent.characterCard = () => characterCard.payload();
@@ -460,7 +465,7 @@ function act() {
     const it = t.it; if (it.locked) { toast('它被固定住了，拿不起来。'); return; }
     if (it.kind === 'note') { if (!it.rewritten) G.storyClues.add(it.id); it.taken = true; it.mesh.visible = false; openReader(it.title ?? '纸条', (it.rewritten ? ['（字迹和别处不太一样）', ''] : []).concat(it.text ?? [])); if (G.visible) agent.push('pickup', `住户拿起了纸条 ${it.id}「${it.title}」`); return; }
     it.taken = true; it.mesh.visible = false; const base = it.id.replace(/\d+$/, ''); invAdd(base, base === 'PAPER' ? 3 : 1);
-    toast(`拿到：${it.name}`); if (G.visible) { G.knownItems.add(it.name); agent.push('pickup', `住户拿起了 ${it.name}（${it.room}）`); }
+    toast(base === 'FLASHLIGHT' ? '拿到：手电。按 F 开关。' : `拿到：${it.name}`, base === 'FLASHLIGHT' ? 4200 : 3200); if (G.visible) { G.knownItems.add(it.name); agent.push('pickup', `住户拿起了 ${it.name}（${it.room}）`); }
     return;
   }
   if (t.kind === 'box') { if (t.b.locked) { toast('箱子被固定在地上了。'); return; } if (G.holding) return; G.holding = t.b; t.b.held = true; t.b.frozen = false; audio.door(); return; }
@@ -795,6 +800,11 @@ const rs = (id: string) => world.rooms.get(id);
 
 function slowChecks(dt: number) {
   scanBreaches();
+  // 她在指路时，地上的光带指向那扇门；约定一暂停，光就熄灭
+  if (G.visible && !G.ended && agent.interaction.context().guidance_allowed) {
+    const route = findPath(world, player.pos, player.yaw, navigationTarget, true);
+    guide.setPath(route.waypoints?.length ? [{ x: player.pos.x, y: player.pos.y, z: player.pos.z }, ...route.waypoints] : null);
+  } else guide.setPath(null);
   // 风声：靠近外壳缺口
   let dmin = 99; for (const c of G.breachCells) dmin = Math.min(dmin, Math.hypot(c.x - player.pos.x, c.z - player.pos.z) + Math.abs(c.y - player.pos.y) * 0.6);
   audio.loop('wind', 'wind', dmin < 14 ? Math.min(0.22, 0.6 / (dmin + 1.5)) : 0);
@@ -999,6 +1009,7 @@ function wireUI() {
       if (e.code === 'KeyG' && !e.repeat) plantStake();
       if (e.code === 'Enter' && !e.repeat) { e.preventDefault(); openChat(); }
       if (e.code === 'KeyH' && !e.repeat) toggleControls();
+      if (e.code === 'KeyF' && !e.repeat && G.inv.has('FLASHLIGHT')) { torchOn = !torchOn; torch.intensity = torchOn ? 70 : 0; audio.type(); toast(torchOn ? '手电打开了。' : '手电关上了。', 1400); }
       if (e.code === 'Escape') { e.preventDefault(); mode = 'pause'; player.clearInput(); document.exitPointerLock?.(); show('pause'); }
       if (e.code === 'Backquote') show('dbg', $('dbg').classList.contains('hidden'));
     } else if (mode === 'reader' && (e.code === 'KeyE' || e.code === 'Escape')) { e.preventDefault(); closeModal(); }
@@ -1184,6 +1195,8 @@ function loop() {
     sandT += dt; if (sandDirty && sandT > .25) { sandT = 0; sandDirty = false; refreshSandboxModel(grid, sandInst); }
     updateSandDot();
     lightVol.update(t / 1000);
+    guide.update(dt); dust.update(dt, camera.position);
+    if (mode === 'play') { const rid = playerRoom(), on = playerVisibleNow(); for (const c of cams) if (c.room === rid) (c.mesh.userData.led.material as THREE.MeshBasicMaterial).color.setRGB(on ? 3 : 0.1, on ? 0.22 : 0.02, on ? 0.18 : 0.02); }
     post.set(t / 1000, flags.glitch, flags.flash, 0, flags.fade, G.fx);
     post.draw();
   }

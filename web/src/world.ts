@@ -238,7 +238,7 @@ buildSky() {
     }
     for (const l of this.lightPool) {
       const id = l.userData.room; if (!id) continue; const s = this.rooms.get(id)!; const f = this.roomLightFactor(id);
-      const design = roomLightDesign(id); l.color.copy(s.light === 'red' ? new THREE.Color('#ff3a24') : s.color ?? design.color); l.intensity = 1.05 * f * design.power;
+      const design = roomLightDesign(id); l.color.copy(s.light === 'red' ? new THREE.Color('#ff3a24') : s.color ?? design.color); l.intensity = 0.55 * f * design.power;
     }
   }
 

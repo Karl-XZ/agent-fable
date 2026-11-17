@@ -177,3 +177,25 @@ def test_decision_log_rotates(monkeypatch, tmp_path):
     game.record({"a": 1})
     assert json.loads(log.read_text(encoding="utf-8")) == {"a": 1}
     assert (tmp_path / "calls.log.1").stat().st_size == 2048
+
+
+def test_backup_model_answers_before_the_offline_script(monkeypatch):
+    seen = []
+
+    async def post(url, **kwargs):
+        seen.append((url, kwargs["json"]["model"], kwargs["headers"]["Authorization"]))
+        if url.startswith("http://primary"):
+            return httpx.Response(500, json={}, request=httpx.Request("POST", url))
+        return httpx.Response(200, json={"choices": [{"message": {"content": "{\"say\": \"备用在线\", \"tools\": []}"}}]}, request=httpx.Request("POST", url))
+    monkeypatch.setattr(game.client, "post", post)
+    monkeypatch.setattr(game, "API_KEY", "primary-key")
+    monkeypatch.setattr(game, "BASE_URL", "http://primary/v1")
+    monkeypatch.setattr(game, "LLM_RETRIES", 1)
+    monkeypatch.setattr(game, "BACKUP_KEY", "backup-key")
+    monkeypatch.setattr(game, "BACKUP_URL", "http://backup/v1")
+    monkeypatch.setattr(game, "BACKUP_MODEL", "qwen-test")
+    out = call("POST", "/api/agent", json={"session": "backup", "state": {}}).json()
+    assert out["source"] == "llm" and out["say"] == "备用在线" and "fallback" not in out
+    assert [s[:2] for s in seen] == [("http://primary/v1/chat/completions", game.MODEL), ("http://backup/v1/chat/completions", "qwen-test")]
+    assert seen[1][2] == "Bearer backup-key"
+    assert asyncio.run(game.health())["llm"]["backup"]["used"] >= 1

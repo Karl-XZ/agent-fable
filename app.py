@@ -54,6 +54,10 @@ LLM_RETRIES = int(number(setting("LLM_RETRIES", default="2"), 2, 1, 4))
 LLM_THINKING = setting("LLM_THINKING", default="disabled").lower()   # disabled | enabled | omit (for providers without the field)
 LLM_JSON_MODE = setting("LLM_JSON_MODE", default="on").lower() != "off"  # off: providers without response_format
 SESSION_QUOTA = int(number(setting("LLM_SESSION_QUOTA", default="400"), 400, 1, 100000))
+# 备用模型：主模型失败时先换一个真实模型再试，仍不行才轮到离线兜底。
+BACKUP_KEY = setting("LLM_BACKUP_API_KEY", "QWEN_API_KEY")
+BACKUP_URL = setting("LLM_BACKUP_BASE_URL", "QWEN_BASE_URL").rstrip("/")
+BACKUP_MODEL = setting("LLM_BACKUP_MODEL", "QWEN_MODEL", default="qwen-plus")
 try:
     LLM_EXTRA_BODY = json.loads(setting("LLM_EXTRA_BODY", default="{}"))
     if not isinstance(LLM_EXTRA_BODY, dict):
@@ -298,24 +302,32 @@ async def llm(messages: List[Dict[str, str]], max_tokens: int = 2400, temperatur
     if LLM_THINKING in ("disabled", "enabled"):
         payload["thinking"] = {"type": LLM_THINKING}
     payload.update(LLM_EXTRA_BODY)
+    routes = [(BASE_URL, API_KEY, payload, LLM_RETRIES, MODEL)]
+    if BACKUP_KEY and BACKUP_URL:
+        backup = {"model": BACKUP_MODEL, "messages": messages, "max_tokens": max_tokens, "temperature": temperature, "response_format": {"type": "json_object"}}
+        routes.append((BACKUP_URL, BACKUP_KEY, backup, 1, BACKUP_MODEL))
     error: BaseException = RuntimeError("no attempt")
     started = time.time()
     async with sem:
-        for attempt in range(LLM_RETRIES):
-            try:
-                r = await client.post(f"{BASE_URL}/chat/completions", headers={"Authorization": f"Bearer {API_KEY}"}, json=payload)
-                r.raise_for_status()
-                data = parse_reply(r.json()["choices"][0]["message"]["content"])
-                llm_stats.update(ok=llm_stats["ok"] + 1, last_ms=int((time.time() - started) * 1000), last_ok_at=round(time.time()), last_error="")
-                return data
-            except Exception as e:  # noqa: BLE001
-                error = e
-                if isinstance(e, httpx.HTTPStatusError) and e.response.status_code in (401, 402, 403, 404):
-                    break  # a wrong key or model name does not get better on retry
-                if attempt + 1 < LLM_RETRIES:
-                    await asyncio.sleep(0.5)
-    llm_stats.update(failed=llm_stats["failed"] + 1, last_error=describe_failure(error))
-    print(f"[llm] {MODEL} 调用失败：{llm_stats['last_error']}", flush=True)
+        for index, (base, key, body, tries, model) in enumerate(routes):
+            for attempt in range(tries):
+                try:
+                    r = await client.post(f"{base}/chat/completions", headers={"Authorization": f"Bearer {key}"}, json=body)
+                    r.raise_for_status()
+                    data = parse_reply(r.json()["choices"][0]["message"]["content"])
+                    llm_stats.update(ok=llm_stats["ok"] + 1, last_ms=int((time.time() - started) * 1000), last_ok_at=round(time.time()), last_error="" if index == 0 else llm_stats["last_error"], last_model=model)
+                    if index:
+                        llm_stats["backup_used"] = llm_stats.get("backup_used", 0) + 1
+                    return data
+                except Exception as e:  # noqa: BLE001
+                    error = e
+                    if isinstance(e, httpx.HTTPStatusError) and e.response.status_code in (401, 402, 403, 404):
+                        break  # a wrong key or model name does not get better on retry
+                    if attempt + 1 < tries:
+                        await asyncio.sleep(0.5)
+            llm_stats["last_error"] = describe_failure(error) + ("" if index == 0 else "（备用模型）")
+            print(f"[llm] {model} 调用失败：{llm_stats['last_error']}", flush=True)
+    llm_stats["failed"] += 1
     raise RuntimeError(llm_stats["last_error"])
 
 
@@ -449,7 +461,8 @@ async def health():
     host = next((label for needle, label in (("deepseek", "DeepSeek"), ("dashscope", "阿里云百炼"), ("aliyuncs", "阿里云"), ("openai", "OpenAI"), ("127.0.0.1", "本机"), ("localhost", "本机")) if needle in address), "自定义接口")
     return {"ok": True, "version": VERSION, "interaction_protocol": 2, "character_card_protocol": 1, "projection_protocol": 1, "model": MODEL, "key": bool(API_KEY),
             "brain": "llm" if API_KEY else "local", "provider": host,
-            "llm": {"configured": bool(API_KEY), "calls_ok": llm_stats["ok"], "calls_failed": llm_stats["failed"], "last_error": llm_stats["last_error"], "last_ms": llm_stats["last_ms"]},
+            "llm": {"configured": bool(API_KEY), "calls_ok": llm_stats["ok"], "calls_failed": llm_stats["failed"], "last_error": llm_stats["last_error"], "last_ms": llm_stats["last_ms"],
+                    "backup": {"configured": bool(BACKUP_KEY and BACKUP_URL), "model": BACKUP_MODEL if BACKUP_KEY and BACKUP_URL else "", "used": llm_stats.get("backup_used", 0)}},
             "tts": {"provider": "aliyun", "model": os.environ.get("DASHSCOPE_TTS_MODEL", "qwen-audio-3.1-tts-flash"), "configured": bool(os.environ.get("DASHSCOPE_API_KEY") and os.environ.get("DASHSCOPE_TTS_WS_URL"))}}
 
 
